@@ -49,11 +49,11 @@ sections:
   - review_Guardianship_Assistant: Review your answers
 ---
 objects:
-  - Guardian: ALPeopleList.using(ask_number=True,target_number=1)
-  - Attorney: ALPeopleList
-  - Assent: ALPeopleList
-  - Petitioner: ALPeopleList.using(there_are_any=True)
-  - Respondent: ALPeopleList.using(ask_number=True,target_number=1)
+  - Guardian: ALIndividual
+  - Attorney: ALIndividual
+  - Assent: ALIndividual
+  - Petitioner: ALIndividual
+  - Respondent: ALIndividual
 
 ---
 ###################### Main order ######################
@@ -80,11 +80,15 @@ comment: |
 id: interview_order_Guardianship_Assistant
 code: |
   # Set the allowed courts for this interview
+  if not last_option: 
+    all_done
   allowed_courts = interview_metadata["Guardianship_Assistant"]["allowed courts"]
   nav.set_section('review_Guardianship_Assistant')
   user_role = 'plaintiff'
-  last_option
-  Language_english_yes
+  Petitioner.address.city
+  Respondent.birthdate.format()
+  if Langauge_other_yes:
+    Other_language
   Respondent_address_date
   set_progress(9.09)
   Current_Guardian_Attached
@@ -101,19 +105,16 @@ code: |
   set_progress(27.27)
   Attorney_BBO
   docket_numbers.gather()
-  Respondent.birthdate.format()
   Attorney.address.state
   Respondent.name.first
   set_progress(36.36)
   Attorney.phone_number
   Attorney.address.zip
-  Petitioner.address.city
   Assent
   Guardian.address.state
   set_progress(45.45)
   Attorney.address.city
   Respondent
-  Respondent_name_middleinitial
   Respondent.gender
   Guardian.phone_number
   Attorney.address.address
@@ -129,7 +130,6 @@ code: |
   Guardian.email
   Respondent.phone_number
   Petitioner.name.first
-  Petitioner_name_MI
   Petitioner.phone_number
   set_progress(72.73)
   Attorney.email
@@ -174,17 +174,11 @@ buttons:
   - "Research Alternatives": False
   - "Proceed with Guardianship": True
 ---
-mandatory: True
-code: |
- if last_option: False
- all_done
----
-mandatory: True
 question: |
   Thank you for using the Guardianship Assistant
 subquestion: |
   If you decide to move forward with Guardianship please visit again.
-sets: all_done
+event: all_done
 ---
 id: Review your form before you sign it
 continue button field: Guardianship_Assistant_preview_question
@@ -203,23 +197,12 @@ subquestion: |
 ---
 id: What is the Petitioner s name
 question: |
-  What is the Petitioner's name?
+  Do you have a Co-Petitioner?
 subquestion: |
-  The "Petitioner" is the person asking the court to appoint a guardian for the Respondent.
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian for the Respondent.
 fields:
-  - 'Petitioner name mi': Petitioner_name_MI
-    maxlength: 15
   - 'Copetitioner attachment': copetitioner_attachment_yes
     datatype: yesno
----
-id: What is the Respondent s name
-question: |
-  What is the Respondent's name?
-subquestion: |
-  The "Respondent" is the person the Petitioner is seeking guardianship for.
-fields:
-  - 'Respondent name middleinitial': Respondent_name_middleinitial
-    maxlength: 18
 ---
 id: Tell me about the Petitioner
 question: |
@@ -242,7 +225,7 @@ id: Tell me more about Respondent
 question: |
   Tell me more about Respondent?
 fields:
-  - 'Language english': Language_english_yes
+  - 'Primary Language english': Language_english_yes
     datatype: yesno
   - 'Langauge other': Langauge_other_yes
     datatype: yesno
