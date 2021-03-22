@@ -1,6 +1,9 @@
 include:
   - docassemble.AssemblyLine:al_package.yml
   - docassemble.MassAccess:massaccess.yml
+  - Bond_MPC_801.yml
+  - mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person.yml
+  - mpc825-treatment-plan.yml
 ---
 comment: |
   The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
@@ -85,17 +88,23 @@ code: |
   allowed_courts = interview_metadata["Guardianship_Assistant"]["allowed courts"]
   nav.set_section('review_Guardianship_Assistant')
   user_role = 'plaintiff'
+  Petitioner.name.first
+  Respondent.name.first
+  has_copetitioner
+  if has_copetitioner:
+    CoPetitioner_name_first
+    CoPetitioner_address_address
   Petitioner.address.city
-  Respondent.birthdate.format()
-  if Langauge_other_yes:
-    Other_language
+  Petitioner_relationship
+  if not Same_address_yes:
+    Respondent.address.address
+  Respondent_DOB
   Respondent_address_date
+  Gurrent_Guardian
   set_progress(9.09)
-  Current_Guardian_Attached
   Respondent_intellectual_disabled
   Has_Assets_uncertain
   Petitioner_appointee
-  coguardian_attachment_yes
   set_progress(18.18)
   Limited_Guardian_yes
   subJudgment_yes
@@ -106,7 +115,6 @@ code: |
   Attorney_BBO
   docket_numbers.gather()
   Attorney.address.state
-  Respondent.name.first
   set_progress(36.36)
   Attorney.phone_number
   Attorney.address.zip
@@ -114,7 +122,6 @@ code: |
   Guardian.address.state
   set_progress(45.45)
   Attorney.address.city
-  Respondent
   Respondent.gender
   Guardian.phone_number
   Attorney.address.address
@@ -128,13 +135,16 @@ code: |
   set_progress(63.64)
   Guardian.address.unit
   Guardian.email
-  Respondent.phone_number
   Petitioner.name.first
   Petitioner.phone_number
   set_progress(72.73)
   Attorney.email
   Guardian.address.city
   Guardian.name.first
+  #add conditional logic if we don't need the form
+  interview_order_Bond_MPC_801
+  interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
+  interview_order_mpc825treatmentplan
   Attorney.address.unit
   Attorney
   interview_order_Guardianship_Assistant = True
@@ -177,8 +187,185 @@ buttons:
 question: |
   Thank you for using the Guardianship Assistant
 subquestion: |
-  If you decide to move forward with Guardianship please visit again.
+  Below please find some resources to help you get started. If you decide to move forward with Guardianship please visit again.
+  Other options may include one or more of the following:
+
+  * [Supported Decision Making](https://supporteddecisions.org);
+  * [Healthcare Proxy](https://masshealthdecisions.org/health-care-proxy/#:~:text=The%20Massachusetts%20Health%20Care%20Proxy,or%20communicate%20those%20decisions%20yourself.Healthcare Proxy Forms);
+  * [Representative Payeee](https://www.ssa.gov/payee/faqrep.htm); and/or
+  * [Durable Power of Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 event: all_done
+---
+mandatory: True
+id: Has Co-Petitioner?
+question: |
+  Is there a Co-Petitioner?
+subquestion: |
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian for the Respondent.
+yesno: has_copetitioner
+---
+mandatory: True
+Code: |
+ if has_copetitioner:
+   copetitioner_attachment_yes == True
+ else:
+   copetitioner_attachment_yes == False
+---
+question: |
+  What is the Co-Petitioner's name?
+subquestion: |
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian for $ { Respondent.name.first } ${ Respondent.name.last }.
+fields:
+ - First Name: CoPetitioner_name_first
+ - Middle Name: CoPetitioner_name_middle
+   required: False
+ - Last Name: CoPetitioner_name_last
+ - Suffix: CoPetitioner_name_suffix
+   required: False
+---
+question: | 
+  Tell us more about the ${ CoPetitioner_name_first } ${ CoPetitioner_name_last}.
+fields:
+  - Does ${ CoPetitioner_name_first } ${ CoPetitioner_name_last } live at a different address than ${ Petitioner.name.full }: CoPetitioner_Petitioner_different_address
+    datatype: yesnoradio
+    required: false
+  - Street Address: CoPetitioner_address_address
+    show if: CoPetitioner_Petitioner_different_address
+  - Apartment or Unit Number: CoPetitioner_address_unit
+    show if: CoPetitioner_Petitioner_different_address
+  - City: CoPetitioner_address_city
+    show if: CoPetitioner_Petitioner_different_address
+  - State: CoPetitioner_address_state
+    hint: e.g. MA
+    show if: CoPetitioner_Petitioner_different_address
+  - Zip Code: CoPetitioner_address_zip
+    show if: CoPetitioner_Petitioner_different_address
+  - Primary Phone: CoPetitioner_primary_phone
+  - E-mail Address: CoPetitioner_email
+  - Relationship to Respondent: CoPetitioner_relationship
+    hint: e.g. parent, child, sibling, aunt/uncle, grandparent, etc.
+  - Why is the Co-Petitioner interested in the appointment of a Guardian for ${ Respondent.name.first } ${ Respondent.name.last }? Please explain in 1-3 sentences: CoPetitioner_interests
+    input type: area
+    rows: 10
+---
+mandatory: True
+id: Tell me more about the Petitioner
+question: |
+  Tell me more about ${ Petitioner.name.first } ${Petitioner.name.last }.
+fields:
+  - E-mail Address: Petitioner_Email
+    maxlength: 37
+  - Relationship to ${ Respondent.name.first} ${ Respondent.name.last}: Petitioner_relationship
+    hint: parent, child, sibling, aunt/uncle, grandparent, etc.
+  - Why is ${ Petitioner.name.first} ${ Petitioner.name.last} seeking a guardianship for ${ Respondent.name.first} ${ Respondent.name.last}? Please explain in 1-3 sentences: Petitioner_interest_list
+    input type: area
+    rows: 10  
+---
+mandatory: True
+id: Tell me more about Respondent
+question: |
+  Tell me more about the ${ Respondent.name.first } ${Respondent.name.last }.
+fields:
+   - Date of Birth: Respondent_DOB
+     datatype: date 
+   - Age: Respondent_Age
+     hint: in years
+     maxlength: 6
+   - Gender Identity: Respondent.gender
+     choices:
+       - Male
+       - Female
+       - Does not identity as male or female
+   - Primary Language: primary_language
+     choices:
+       - English
+       - Spanish
+       - Other
+   - Other language: primary_language
+     show if:
+       variable: primary_language
+       is: Other
+   - Primary Phone Number: Respondent.phone_number
+   - Is the primary address of ${ Respondent.name.first } ${ Respondent.name.last } the same as ${ Petitioner.name.first } ${ Petitioner.name.last }?: Same_address_yes
+     datatype: yesnoradio
+   - Do they have a MOLST (Medical Orders for Life-Sustaining Treatment)?: RespondentMOLST
+     datatype: yesnoradio
+     help: |
+       A document executed by the Respondent that describes a person’s wishes about end-of-life medical care. For more information on what a MOLST is please visit: https://www.molst-ma.org/.
+   - Are they a Veteran?: RespondentVA
+     datatype: yesnoradio
+   - Please select all of the relationships ${ Respondent.name.first } ${ Respondent.name.last } has: has_family
+     datatype: checkboxes
+     choices:
+      - Spouse
+      - Child of Children
+      - Living Parent or Sibling
+      - Care Taker within the last 60 days
+---
+mandatory: True
+question: |
+  Tell me more about ${ Respondent.name.first } ${ Respondent.name.last }'s primary housing or living arrangements.
+subquestion: |
+  This may be different than their current address.
+fields:
+   - When did ${ Respondent.name.first } ${ Respondent.name.last } begin living there?: Respondent_address_date
+     datatype: date
+     help: |
+        If you do not know, please provide your best guess.
+   - Does ${ Respondent.name.first } ${ Respondent.name.last } currently live here?: Potential_Residence_current
+     datatype: yesnoradio
+   - Will ${ Respondent.name.first } ${ Respondent.name.last } live here if the guardianship is granted?: Potential_Residence_same
+     datatype: yesnoradio
+---
+mandatory: True
+question: |
+  ${ Respondent.name.first } ${ Respondent.name.last }'s Relationships
+subquestion: |
+  The following questions are about current relationships ${ Respondent.name.first } ${ Respondent.name.last } has:
+fields:
+  - Do they have a current Guardian?: Gurrent_Guardian
+    datatype: yesnomaybe
+  - Do they have a document, like a will, nominating a Guardian?: Gurrent_GuardianDoc
+    datatype: yesnomaybe 
+  - Do they have a current Conservator?: Gurrent_Conservator
+    datatype: yesnomaybe
+    help: |
+      The court may appoint a Conservator to manage the Respondent’s finances if the court determines the Respondent is unable to do so themselves. A Conservator is usually only appointed when the Respondent has more than $5,000 worth of money and assets.
+  - Do they have a Representative Payee?: RepPayee
+    datatype: yesnomaybe
+  - Do they have a Representative Health Care Agent or Proxy?: HealthProxy
+    datatype: yesnomaybe
+  - Do they have a Durable Power of Attorney?: DPA
+    datatype: yesnomaybe
+---
+mandatory: True
+id: Respondent incapacity
+question: |
+  The following questions concern ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity
+fields:
+  - Is ${ Respondent.name.first } ${ Respondent.name.last } intellectually disabled: Respondent_intellectual_disabled
+    datatype: yesnoradio
+  - Because you are NOT alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
+    datatype: yesnoradio
+    required: False
+#    show if not: Respondent_intellectual_disabled
+#  - Note: |
+#      The Medical Certificate must be based on an exam of Maria Montoya within 30 days of filing the Petition. An updated Medical Certificate, based on a new exam, is required within 30 days of the hearing.
+  - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
+    datatype: yesnoradio
+    show if: Respondent_intellectual_disabled
+#  - Note: |
+#     The Clinical Team Report must be based on exams of Maria Montoya conducted within 180 days of filing the Petition. If there is a chance the Clinical Team Report will be more than 180 days before filing the Petition, consider scheduling exams so that the licensed psychologist, registered nurse, and licensed social worked can issue a new Clincal Team Report.
+  - Describe the nature and extent of ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity: Incapacity_reasons
+    input type: area
+    rows: 6
+    help: |
+       For example, they have limited verbal communication skills.
+  - Why is a guardianship needed?: Guardianship_reasons
+    input type: area
+    rows: 6
+    help: |
+       Explain in 1-3 sentences.
 ---
 id: Review your form before you sign it
 continue button field: Guardianship_Assistant_preview_question
@@ -195,56 +382,9 @@ subquestion: |
   
   Remember to come back to this window to continue and sign your form.
 ---
-id: What is the Petitioner s name
 question: |
-  Do you have a Co-Petitioner?
-subquestion: |
-  The "Co-Petitioner" is a second person asking the court to appoint a guardian for the Respondent.
+  Kisha Find a place for these
 fields:
-  - 'Copetitioner attachment': copetitioner_attachment_yes
-    datatype: yesno
----
-id: Tell me about the Petitioner
-question: |
-  Tell me about the Petitioner?
-fields:
-  - 'Petitioner address street1': Petitioner_Address_street1
-    maxlength: 27
-  - 'Petitioner address state': Petitioner_address_State
-    maxlength: 6
-  - 'Petitioner address unit': Petitioner_Address_unit
-    maxlength: 15
-  - 'Petitioner relationship': Petitioner_relationship
-    maxlength: 24
-  - 'Petitioner email': Petitioner_Email
-    maxlength: 37
-  - 'Petitioner interest list': Petitioner_interest_list
-    maxlength: 384
----
-id: Tell me more about Respondent
-question: |
-  Tell me more about Respondent?
-fields:
-  - 'Primary Language english': Language_english_yes
-    datatype: yesno
-  - 'Langauge other': Langauge_other_yes
-    datatype: yesno
-  - 'Other language': Other_language
-    maxlength: 21
-  - 'Respondent age': Respondent_Age
-    maxlength: 6
-  - 'Respondent address city': Respondent_address_City
-    maxlength: 20
-  - 'Respondent address street': Respondent_Address_street
-    maxlength: 24
-  - 'Respondent address unit': Respondent_Address_unit
-    maxlength: 12
-  - 'Respondent address state': Respondent_address_State
-    maxlength: 6
-  - 'Respondent address zip': Respondent_address_Zip
-    maxlength: 11
-  - 'Same address': Same_address_yes
-    datatype: yesno
   - 'Different address': Different_address_yes
     datatype: yesno
   - 'Respondent family spouse': Respondent_family_spouse_yes
@@ -364,9 +504,9 @@ fields:
 ---
 id: Tell me more about Respondent s primary housing or living arrangements This may b different than Petitioner s current address
 question: |
-  Tell me more about Respondent's primary housing or living arrangements. This may b different than Petitioner's current address.
+  Where does the Respondent live?
 fields:
-  - 'Date of Respondent address': Respondent_address_date
+  - 'Date Respondent moved in': movein_date 
     datatype: date
   - 'Respondent current address1': Respondent_Current_address1
     maxlength: 27
@@ -447,19 +587,6 @@ fields:
     datatype: yesno
   - 'Dpa info': DPA_info
     maxlength: 84
----
-id: The following questions concern Kevin Montoya s incapacity
-question: |
-  The following questions concern Kevin Montoya's incapacity
-fields:
-  - 'Respondent intellectual disabled': Respondent_intellectual_disabled
-    datatype: yesno
-  - 'Medcert filed': MedCert_filed
-    datatype: yesno
-  - 'Guardianship reasons': Guardianship_reasons
-    maxlength: 360
-  - 'Incapacity reasons': Incapacity_reasons
-    maxlength: 360
 ---
 id: Tell me about Respondent s finances
 question: |
@@ -665,9 +792,10 @@ subquestion: |
 objects:
   - Guardianship_Assistant_attachment: ALDocument.using(title="The Adult Guardianship Assistant provides information on adult guardianship in Massachusetts and guides users in filling out court forms.", filename="Guardianship Assistant", enabled=True, has_addendum=False)
 ---
+#list all attachments 
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
-  - al_court_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
+  - al_user_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
+  - al_court_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
 ---
 attachment:
     variable name: Guardianship_Assistant_attachment[i]

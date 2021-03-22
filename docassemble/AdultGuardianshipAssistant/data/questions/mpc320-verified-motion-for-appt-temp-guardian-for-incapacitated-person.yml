@@ -56,7 +56,6 @@ objects:
 
 ---
 ###################### Main order ######################
-mandatory: True
 comment: |
   This block includes the logic for standalone interviews.
   Delete mandatory: True to include in another interview

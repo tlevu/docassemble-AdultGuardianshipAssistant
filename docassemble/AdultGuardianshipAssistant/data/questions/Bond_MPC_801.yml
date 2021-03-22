@@ -55,7 +55,6 @@ objects:
 
 ---
 ###################### Main order ######################
-mandatory: True
 comment: |
   This block includes the logic for standalone interviews.
   Delete mandatory: True to include in another interview
@@ -216,8 +215,9 @@ subquestion: |
   
   ${ al_user_bundle.send_button_html() }
 ---
+#.enabled is set if trigger happens 
 objects:
-  - Bond_MPC_801_attachment: ALDocument.using(title="Bond mpc 801", filename="Bond_MPC_801", enabled=True, has_addendum=False)
+  - Bond_MPC_801_attachment: ALDocument.using(title="Bond mpc 801", filename="Bond_MPC_801", has_addendum=False)
 ---
 objects:
   - al_user_bundle: ALDocumentBundle.using(elements=[Bond_MPC_801_attachment], filename="Bond_MPC_801.pdf", title="All forms to download for your records")
