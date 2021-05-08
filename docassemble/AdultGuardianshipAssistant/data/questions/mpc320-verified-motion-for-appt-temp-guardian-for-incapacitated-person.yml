@@ -206,11 +206,7 @@ subquestion: |
   ${ al_user_bundle.send_button_html() }
 ---
 objects:
-  - mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment: ALDocument.using(title="File a petition for temporary guardianship", filename="mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person", enabled=True, has_addendum=False)
----
-objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment], filename="mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person.pdf", title="All forms to download for your records")
-  - al_court_bundle: ALDocumentBundle.using(elements=[mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment], filename="mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person.pdf", title="All forms to download for your records")
+  - mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment: ALDocument.using(title="File a petition for temporary guardianship", filename="mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person", has_addendum=False)
 ---
 attachment:
     variable name: mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment[i]

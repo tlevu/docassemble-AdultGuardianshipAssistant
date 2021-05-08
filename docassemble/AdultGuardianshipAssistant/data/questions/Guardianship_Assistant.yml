@@ -54,7 +54,6 @@ sections:
 objects:
   - Guardian: ALIndividual
   - Attorney: ALIndividual
-  - Assent: ALIndividual
   - Petitioner: ALIndividual
   - Respondent: ALIndividual
 
@@ -88,12 +87,15 @@ code: |
   allowed_courts = interview_metadata["Guardianship_Assistant"]["allowed courts"]
   nav.set_section('review_Guardianship_Assistant')
   user_role = 'plaintiff'
+  temporary_needed
   Petitioner.name.first
   Respondent.name.first
   has_copetitioner
   if has_copetitioner:
     CoPetitioner_name_first
     CoPetitioner_address_address
+  else:
+    Petitioner.address.city
   Petitioner.address.city
   Petitioner_relationship
   if not Same_address_yes:
@@ -103,7 +105,7 @@ code: |
   Gurrent_Guardian
   set_progress(9.09)
   Respondent_intellectual_disabled
-  Has_Assets_uncertain
+  Has_Assets
   Petitioner_appointee
   set_progress(18.18)
   Limited_Guardian_yes
@@ -118,7 +120,6 @@ code: |
   set_progress(36.36)
   Attorney.phone_number
   Attorney.address.zip
-  Assent
   Guardian.address.state
   set_progress(45.45)
   Attorney.address.city
@@ -127,6 +128,10 @@ code: |
   Attorney.address.address
   set_progress(54.55)
   Guardian.name.last
+  coguardian_attachment_yes
+  if coguardian_attachment_yes:
+    coguardian_name_first
+    CoGuardian_relationship
   Respondent.name.last
   Petitioner.address.zip
   Petitioner_Address_street1
@@ -141,7 +146,7 @@ code: |
   Attorney.email
   Guardian.address.city
   Guardian.name.first
-  #add conditional logic if we don't need the form
+  #TODOadd conditional logic if we don't need the form
   interview_order_Bond_MPC_801
   interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
   interview_order_mpc825treatmentplan
@@ -197,6 +202,14 @@ subquestion: |
 event: all_done
 ---
 mandatory: True
+id: Temporary Guardianship
+question: | 
+  Do you need guardianship for urgent situation or appointment in the next 90 days?
+yesno: temporary_needed
+note:  |
+  You may request a temporary guardianship if there is an emergency or urgent situation or appointment which requires a guardian within the next 90 days.
+---
+mandatory: True
 id: Has Co-Petitioner?
 question: |
   Is there a Co-Petitioner?
@@ -214,7 +227,7 @@ Code: |
 question: |
   What is the Co-Petitioner's name?
 subquestion: |
-  The "Co-Petitioner" is a second person asking the court to appoint a guardian for $ { Respondent.name.first } ${ Respondent.name.last }.
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian for ${ Respondent.name.first } ${ Respondent.name.last }.
 fields:
  - First Name: CoPetitioner_name_first
  - Middle Name: CoPetitioner_name_middle
@@ -226,7 +239,7 @@ fields:
 question: | 
   Tell us more about the ${ CoPetitioner_name_first } ${ CoPetitioner_name_last}.
 fields:
-  - Does ${ CoPetitioner_name_first } ${ CoPetitioner_name_last } live at a different address than ${ Petitioner.name.full }: CoPetitioner_Petitioner_different_address
+  - Does ${ CoPetitioner_name_first } ${ CoPetitioner_name_last } live at a different address than ${ Petitioner.name.first } ${ Petitioner.name.last}: CoPetitioner_Petitioner_different_address
     datatype: yesnoradio
     required: false
   - Street Address: CoPetitioner_address_address
@@ -309,7 +322,6 @@ subquestion: |
   This may be different than their current address.
 fields:
    - When did ${ Respondent.name.first } ${ Respondent.name.last } begin living there?: Respondent_address_date
-     datatype: date
      help: |
         If you do not know, please provide your best guess.
    - Does ${ Respondent.name.first } ${ Respondent.name.last } currently live here?: Potential_Residence_current
@@ -341,31 +353,32 @@ fields:
 mandatory: True
 id: Respondent incapacity
 question: |
-  The following questions concern ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity
+  The following questions concern ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity.
 fields:
-  - Is ${ Respondent.name.first } ${ Respondent.name.last } intellectually disabled: Respondent_intellectual_disabled
-    datatype: yesnoradio
-  - Because you are NOT alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
-    datatype: yesnoradio
-    required: False
-#    show if not: Respondent_intellectual_disabled
-#  - Note: |
-#      The Medical Certificate must be based on an exam of Maria Montoya within 30 days of filing the Petition. An updated Medical Certificate, based on a new exam, is required within 30 days of the hearing.
-  - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
-    datatype: yesnoradio
-    show if: Respondent_intellectual_disabled
-#  - Note: |
-#     The Clinical Team Report must be based on exams of Maria Montoya conducted within 180 days of filing the Petition. If there is a chance the Clinical Team Report will be more than 180 days before filing the Petition, consider scheduling exams so that the licensed psychologist, registered nurse, and licensed social worked can issue a new Clincal Team Report.
-  - Describe the nature and extent of ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity: Incapacity_reasons
-    input type: area
-    rows: 6
-    help: |
+ - Is ${ Respondent.name.first } ${ Respondent.name.last } intellectually disabled: Respondent_intellectual_disabled
+   datatype: yesnoradio
+ - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is NOT intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
+   datatype: yesnoradio
+   show if:
+     variable: Respondent_intellectual_disabled
+     is: False
+   help: |
+     The Medical Certificate must be based on an exam of ${ Respondent.name.first } ${ Respondent.name.last } within 30 days of filing the Petition. An updated Medical Certificate, based on a new exam, is required within 30 days of the hearing.
+ - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
+   datatype: yesnoradio
+   show if: Respondent_intellectual_disabled
+   help: |
+     The Clinical Team Report must be based on exams of ${ Respondent.name.first } ${ Respondent.name.last } conducted within 180 days of filing the Petition. If there is a chance the Clinical Team Report will be more than 180 days before filing the Petition, consider scheduling exams so that the licensed psychologist, registered nurse, and licensed social worked can issue a new Clincal Team Report.
+ - Describe the nature and extent of ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity: Incapacity_reasons
+   input type: area
+   rows: 6
+   help: |
        For example, they have limited verbal communication skills.
-  - Why is a guardianship needed?: Guardianship_reasons
-    input type: area
-    rows: 6
-    help: |
-       Explain in 1-3 sentences.
+ - Why is a guardianship needed?: Guardianship_reasons
+   input type: area
+   rows: 6
+   help: |
+     Explain in 1-3 sentences.
 ---
 id: Review your form before you sign it
 continue button field: Guardianship_Assistant_preview_question
@@ -382,6 +395,7 @@ subquestion: |
   
   Remember to come back to this window to continue and sign your form.
 ---
+# TODO - these will need to be reformatted/input into the correct page
 question: |
   Kisha Find a place for these
 fields:
@@ -502,15 +516,14 @@ fields:
   - 'Respondentva uncertain': RespondentVA_uncertain
     datatype: yesno
 ---
-id: Tell me more about Respondent s primary housing or living arrangements This may b different than Petitioner s current address
+id: Tell me more about ${ Respondent.name.first } s primary housing or living arrangements This may b different than Petitioner s current address
 question: |
-  Where does the Respondent live?
+  Where does ${ Respondent.name.first } live?
 fields:
-  - 'Date Respondent moved in': movein_date 
-    datatype: date
-  - 'Respondent current address1': Respondent_Current_address1
+  - Approximate date Respondent moved in': movein_date 
+  - '${ Respondent.name.first } current address1': Respondent_Current_address1
     maxlength: 27
-  - 'Respodnent current state': Respodnent_Current_state
+  - '${ Respondent.name.first }s current state': Respodnent_Current_state
     maxlength: 6
   - 'Respondent current zip': Respondent_Current_zip
     maxlength: 11
@@ -537,9 +550,9 @@ fields:
 ---
 id: Respondent s Relationships
 question: |
-  Respondent's Relationships
+  ${Respondent.name.first} 's Relationships
 subquestion: |
-  The following questions are about current relationships Respondent has:
+  The following questions are about current relationships ${Respondent.name.first} has:
 fields:
   - 'Current guardian attached': Current_Guardian_Attached
     datatype: yesno
@@ -588,54 +601,78 @@ fields:
   - 'Dpa info': DPA_info
     maxlength: 84
 ---
-id: Tell me about Respondent s finances
+mandatory: True
+id: Tell me about ${ Respondent.name.first } s finances
 question: |
-  Tell me about Respondent's finances.
+  Tell me about ${ Respondent.name.first }'s finances.
 fields:
-  - 'Has assets uncertain': Has_Assets_uncertain
-    datatype: yesno
-  - 'Has assets': Has_Assets
-    datatype: yesno
-  - 'Respondent property1': Respondent_Property1
+  - Do they have any assets(bank account, property, insurance, pension, etc.)?: Has_Assets
+    datatype: yesnomaybe
+  - 'What type of asset is this (bank account, property, insurance, pension, etc.)?': Respondent_Property1
+    maxlength: 134 
+    help: |
+      Do not include sensitive information like names of institutions or account numbers.
+    show if: Has_Assets
+  - About how much money is this asset worth?: Respondent_Property1_value
+    maxlength: 44
+    show if: Has_Assets
+  - Do they have another asset?: Another_asset
+    datatype: yesnomaybe
+    show if: Another_asset
+  - 'What type of asset is this (bank account, property, insurance, pension, etc.)': Respondent_Property2
     maxlength: 134
-  - 'Respondent property1 value': Respondent_Property1_value
+    show if: Another_asset
+  - 'About How much money is this asset worth': Respondent_Property2_value
     maxlength: 44
-  - 'Respondent property2': Respondent_Property2
-    maxlength: 134
-  - 'Respondent property2 value': Respondent_Property2_value
-    maxlength: 44
-  - 'Respondent property total': Respondent_Property_total
+    show if: Another_asset
+  - Do they have any other assets?: Respondent_asset_attachment_yes
+    datatype: yesnomaybe
+    show if: Another_asset
+#TODO need to add code that says they need to attach extra doc to petition
+  - 'About how much money in total do they have in assets': Respondent_Property_total
     maxlength: 22
-  - 'Has income': Has_Income
-    datatype: yesno
-  - 'Has income uncertain': Has_Income_uncertain
-    datatype: yesno
-  - 'Respondent income1': Respondent_Income1
+    show if: Respondent_asset_attachment_yes
+  - 'Do they have future income? (ex: paychecks, social security pension, long-term disability, etc)': Has_Income
+    datatype: yesnomaybe
+#TODO need maybe to set this variable - 'Has income uncertain': Has_Income_uncertain
+  - 'What type of income is this? (ex: paycheck, social security, etc.)': Respondent_Income1
     maxlength: 136
-  - 'Respondent income1 value': Respondent_Income1_value
+    show if: Has_Income
+  - 'About how much money per month is expected from this source of income?': Respondent_Income1_value
     maxlength: 44
-  - 'Respondent income2': Respondent_Income2
+    show if: Has_Income
+  - Do they have a second source of income?: second_income
+    datatype: yesnomaybe
+    show if: Has_Income
+  - 'What type of income is this? (ex: paycheck, social security, etc.)': Respondent_Income2
     maxlength: 136
-  - 'Respondent income2 value': Respondent_Income2_value
+    show if: second_income
+  - 'About how much money per month is expected from this source of income?': Respondent_Income2_value
     maxlength: 44
-  - 'Respondent income2 total': Respondent_Income2_total
+    show if: second_income
+  - Do they have additional sources of income?: Respondent_income_attachment_yes
+    datatype: yesno
+    show if: second_incomePetitioner_Signature
+#TODO need to add code that says they need to attach extra doc to petition - or ask Quinten about addendum
+  - 'About how much money in total do they have in income?': Respondent_Income2_total
     maxlength: 22
-  - 'Respondent income attachment': Respondent_income_attachment_yes
-    datatype: yesno
+    show if: Has_Income
 ---
 id: Tell me more about who should be appointed guardian
 question: |
   Tell me more about who should be appointed guardian.
 fields:
-  - 'Petitioner appointee': Petitioner_appointee
+  - 'Is the proposed guardian ${Petitioner.name.full } ?': Petitioner_appointee
+    datatype: yesnoradio
+  - 'Is there a specific person you want the court to appoint as guardian for ${ Respondent.name.full }': Other_appointee_yes
     datatype: yesno
-  - 'Other appointee': Other_appointee_yes
-    datatype: yesno
-  - 'Guardian name mi': Guardian_name_MI
+    show if: petitioner_appointee 
+  - 'First Name': Guardian.name.first
+  - 'Middle Name': Guardian.name.middle
     maxlength: 16
-  - 'Guardian address street': Guardian_Address_Street
+  - 'Address': Guardian.address.address
     maxlength: 28
-  - 'Guardian relationship': Guardian_relationship
+  - "What is ${Guardian_name_first }'s relationship to ${Respondent.name.full }?": Guardian_relationship
     maxlength: 24
   - 'Guardian poa': guardian_poa_yes
     datatype: yesno
@@ -668,8 +705,30 @@ id: Would you like the court to consider appointing a co guardian
 question: |
   Would you like the court to consider appointing a co-guardian?
 subquestion: |
-  More than one person can serve as a guardian. When this happens, the guardians are referred to as co-guardians.
+  More than one person can serve as a guardian. Co-guardians have equal decision-making power.
 yesno: coguardian_attachment_yes
+---
+id: Co-Guardian information
+question: |
+  Tell us about the proposed Co-Guardian
+fields:
+  - First Name: coguardian_name_first
+  - Middle Initial: coguardian_name_middle
+  - Last Name: coguardian_name_last
+  - Address: coguardian_address_address
+  - Unit: coguardian_address_unit
+  - City: coguardian_address_city
+  - State: coguardian_address_state
+  - Zip: coguardian_address_zip
+  - email: coguardian_email
+  - Primary phone: CoGuardian_phone
+---
+id: Additional Co-Guardian Info
+question: |
+  Tell us more about the proposed Co-Guardian
+Fields:
+  - Relationship to ${ Respondent.name.first}: CoGuardian_relationship
+  - Reasons that ${ coguardian_name_first } should be appointed co-guardian: CoGuardian_reasons
 ---
 id: What type of guardianship is being sought
 question: |
@@ -743,6 +802,7 @@ fields:
   - 'Other bondwaiver': Other_Bondwaiver
     maxlength: 216
 ---
+#TODO - remove these fields from the actual PDF and then delete this section.
 id: REMOVE THESE FIELDS
 question: |
   REMOVE THESE FIELDS
@@ -792,10 +852,22 @@ subquestion: |
 objects:
   - Guardianship_Assistant_attachment: ALDocument.using(title="The Adult Guardianship Assistant provides information on adult guardianship in Massachusetts and guides users in filling out court forms.", filename="Guardianship Assistant", enabled=True, has_addendum=False)
 ---
-#list all attachments 
+# TODO list all attachments 
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
-  - al_court_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
+  - al_user_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment, mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment, mpc825treatmentplan_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
+  - al_court_bundle: ALDocumentBundle.using(elements=[Guardianship_Assistant_attachment,Bond_MPC_801_attachment, mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment, mpc825treatmentplan_attachment], filename="Guardianship Assistant.pdf", title="All forms to download for your records")
+---
+code: |
+  if temporary_needed:
+    mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment.enabled = True
+  else: 
+    mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment.enabled = False
+---
+code: |
+  if AntiPsychMeds_yes:
+    mpc825treatmentplan_attachment.enabled = True
+  else: 
+    mpc825treatmentplan_attachment.enabled = False
 ---
 attachment:
     variable name: Guardianship_Assistant_attachment[i]
@@ -811,9 +883,7 @@ attachment:
       - "Attorney_phone": ${ Attorney.phone_number }
       - "Attorney_address_zip": ${ Attorney.address.zip }
       - "Petitioner_address_city": ${ Petitioner.address.city }
-      - "Assent4_name": ${ Assent }
       - "Guardian_address_state": ${ Guardian.address.state }
-      - "Assent3_name": ${ Assent }
       - "Attorney_address_city": ${ Attorney.address.city }
       - "Respondent_name": ${ Respondent }
       - "Respondent_gender": ${ Respondent.gender }
@@ -827,13 +897,11 @@ attachment:
       - "Guardian_address_unit": ${ Guardian.address.unit }
       - "Guardian_e-mail": ${ Guardian.email }
       - "Respondent_phone": ${ Respondent.phone_number }
-      - "Assent2_name": ${ Assent }
       - "Petitioner_name_first": ${ Petitioner.name.first }
       - "Petitioner_phone": ${ Petitioner.phone_number }
       - "Attorney_email": ${ Attorney.email }
       - "Guardian_address_city": ${ Guardian.address.city }
       - "Guardian_name_first": ${ Guardian.name.first }
-      - "Assent1_name": ${ Assent }
       - "Attorney_address_unit": ${ Attorney.address.unit }
       - "Attorney_name": ${ Attorney }
       - "County": ${ County }
@@ -990,7 +1058,7 @@ attachment:
       - "RespondentVA_yes": ${ RespondentVA }
       - "RespondentVA_no": ${ not RespondentVA }
       - "RespondentVA_uncertain": ${ RespondentVA_uncertain }
-      - "Has_Assets_uncertain": ${ Has_Assets_uncertain }
+      - "Has_Assets_uncertain": ${ Has_Assets is None }
       - "Has_Assets_yes": ${ Has_Assets }
       - "Has_Assets_no": ${ not Has_Assets }
       - "Respondent_Property1": ${ Respondent_Property1 }
@@ -1040,14 +1108,6 @@ attachment:
       - "Petitioner_Signature": ${ Petitioner_Signature if i == 'final' else '' }
       # It's a signature: test which file version this is; leave empty unless it's the final version)
       - "Copetitioner_Signature": ${ Copetitioner_Signature if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Assent_Signature": ${ Assent_Signature if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Assent2_signtaure": ${ Assent2_signtaure if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Assent3_Signature": ${ Assent3_Signature if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Assent4_Signature": ${ Assent4_Signature if i == 'final' else '' }
       # It's a signature: test which file version this is; leave empty unless it's the final version)
       - "Attorney_signature": ${ Attorney_signature if i == 'final' else '' }
 ---
@@ -1606,14 +1666,10 @@ review:
     button: |
       **Respondentva uncertain**:
       ${ word(yesno(RespondentVA_uncertain)) }
-  - Edit: Has_Assets_uncertain
-    button: |
-      **Has assets uncertain**:
-      ${ word(yesno(Has_Assets_uncertain)) }
   - Edit: Has_Assets
     button: |
       **Has assets**:
-      ${ word(yesno(Has_Assets)) }
+      ${ (Has_Assets) }
   - Edit: Respondent_Property1
     button: |
       **Respondent property1**:
@@ -1815,10 +1871,6 @@ review:
     button: |
       **Petitioner.address.city**:
       ${ Petitioner.address.city }
-  - Edit: Assent
-    button: |
-      **Assent**:
-      ${ Assent }
   - Edit: Guardian.address.state
     button: |
       **Guardian.address.state**:
@@ -1911,22 +1963,6 @@ review:
     button: |
       **Copetitioner_Signature**:
       ${ Copetitioner_Signature }
-  - Edit: Assent_Signature
-    button: |
-      **Assent_Signature**:
-      ${ Assent_Signature }
-  - Edit: Assent2_signtaure
-    button: |
-      **Assent2_signtaure**:
-      ${ Assent2_signtaure }
-  - Edit: Assent3_Signature
-    button: |
-      **Assent3_Signature**:
-      ${ Assent3_Signature }
-  - Edit: Assent4_Signature
-    button: |
-      **Assent4_Signature**:
-      ${ Assent4_Signature }
   - Edit: Attorney_signature
     button: |
       **Attorney_signature**:

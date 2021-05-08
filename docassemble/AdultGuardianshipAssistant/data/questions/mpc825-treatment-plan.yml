@@ -178,11 +178,7 @@ subquestion: |
   ${ al_user_bundle.send_button_html() }
 ---
 objects:
-  - mpc825treatmentplan_attachment: ALDocument.using(title="Mpc825-treatment-plan", filename="mpc825-treatment-plan", enabled=True, has_addendum=False)
----
-objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[mpc825treatmentplan_attachment], filename="mpc825-treatment-plan.pdf", title="All forms to download for your records")
-  - al_court_bundle: ALDocumentBundle.using(elements=[mpc825treatmentplan_attachment], filename="mpc825-treatment-plan.pdf", title="All forms to download for your records")
+  - mpc825treatmentplan_attachment: ALDocument.using(title="Mpc825-treatment-plan", filename="mpc825-treatment-plan", has_addendum=False)
 ---
 attachment:
     variable name: mpc825treatmentplan_attachment[i]
