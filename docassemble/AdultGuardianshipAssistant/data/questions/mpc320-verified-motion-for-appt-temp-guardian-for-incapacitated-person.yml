@@ -1,76 +1,8 @@
-include:
-  - docassemble.AssemblyLine:al_package.yml
-  - docassemble.MassAccess:massaccess.yml
----
-comment: |
-  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
-metadata:
-  title: |
-    Temporary Guardianship Petition
-  short title: |
-    Temporary Guardianship
-  tags:
-    - ES-00-00-00-00
-    - HE-00-00-00-00
----
-comment: |
-  This section is used by AssemblyLine to control how some of the questions work.
-mandatory: True
-code: |
-  interview_metadata # make sure we initialize the object
-  if not defined("interview_metadata['mpc320verifiedmotionforappttempguardianforincapacitatedperson']"):
-    interview_metadata.initializeObject('mpc320verifiedmotionforappttempguardianforincapacitatedperson')
-  interview_metadata['mpc320verifiedmotionforappttempguardianforincapacitatedperson'].update({
-    'title': 'Temporary Guardianship Petition',
-    'short title': 'Temporary Guardianship',
-    'description': 'File a petition for temporary guardianship',
-    'original_form': '',
-    'allowed courts': [
-      'Probate and Family Court',
-    ],
-    'categories': [
-      'ES-00-00-00-00',
-      'HE-00-00-00-00',
-    ],
-    'logic block variable': 'mpc320verifiedmotionforappttempguardianforincapacitatedperson',
-    'attachment block variable': 'mpc320verifiedmotionforappttempguardianforincapacitatedperson_attachment',
-    'typical role': 'plaintiff',
-  })
----
-code: |
-  interview_short_title = 'Get a Temporary Guardianship'
----
-code: |
-  al_form_type = 'other'
----
-features:
-  navigation: True
----
-sections:
-  - review_mpc320verifiedmotionforappttempguardianforincapacitatedperson: Review your answers
 ---
 objects:
   - Respondent: ALPeopleList.using(ask_number=True,target_number=1)
   - Petitioner: ALPeopleList.using(ask_number=True,target_number=1)
   - TempGuardian: ALPeopleList.using(ask_number=True,target_number=1)
-
----
-###################### Main order ######################
-comment: |
-  This block includes the logic for standalone interviews.
-  Delete mandatory: True to include in another interview
-id: main_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
-code: |
-  al_intro_screen
-  mpc320verifiedmotionforappttempguardianforincapacitatedperson_intro
-  # Interview order block has form-specific logic controlling order/branching
-  interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
-  signature_date
-  # Save (anonymized) interview statistics.
-  store_variables_snapshot(data={'zip': users[0].address.zip})
-  mpc320verifiedmotionforappttempguardianforincapacitatedperson_preview_question  # Pre-canned preview screen
-  basic_questions_signature_flow
-  mpc320verifiedmotionforappttempguardianforincapacitatedperson_download
 ---
 #################### Interview order #####################
 comment: |
@@ -84,24 +16,13 @@ code: |
   Temporary_guardianship_reasons
   County
   Bond_WithSureties
-  set_progress(20.0)
   Respondent
   Petitioner.name.first
   TempGuardian.name.last
-  set_progress(40.0)
   TempGuardian.name.first
   Petitioner.name.last
   Petitioner.name.middle_initial()
   interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson = True
----
-comment: |
-  This question is used to introduce your interview. Please customize
-id: Temporary Guardianship Petition
-continue button field: mpc320verifiedmotionforappttempguardianforincapacitatedperson_intro
-question: |
-  Temporary Guardianship Petition
-subquestion: |
-  File a petition for temporary guardianship
 ---
 id: Review your form before you sign it
 continue button field: mpc320verifiedmotionforappttempguardianforincapacitatedperson_preview_question
@@ -252,143 +173,143 @@ attachment:
       - "ApplyInsurance_yes": ${ ApplyInsurance_yes }
       - "AdditionalRequest_yes": ${ AdditionalRequest_yes }
       - "Additional_requests": ${ Additional_requests }
----
-id: mpc320verifiedmotionforappttempguardianforincapacitatedperson review screen
-event: review_mpc320verifiedmotionforappttempguardianforincapacitatedperson
-question: |
-  Review Screen
-subquestion: |
-  Edit your answers below
-review: 
-  - Edit: County
-    button: |
-      **County**:
-      ${ County }
-  - Edit: Temporary_guardianship_reasons
-    button: |
-      **Reasons why temporary guardianship is needed**:
-      ${ Temporary_guardianship_reasons }
-  - Edit: Temporary_guardianship_harm_avoided
-    button: |
-      **Harms that will occur without Temporary Guardianship**:
-      ${ Temporary_guardianship_harm_avoided }
-  - Edit: Temporary_guardianship_Actions_needed
-    button: |
-      **Actions the Temporary Guardian will take**:
-      ${ Temporary_guardianship_Actions_needed }
-  - Edit: Has_HealthProxy
-    button: |
-      **Does Respondent have a Healthcare Proxy?**:
-      ${ word(yesno(Has_HealthProxy)) }
-  - Edit: Has_HealthProxy_uncertain
-    button: |
-      **I do not know if the Respondent has a Healthcare Proxy**:
-      ${ word(yesno(Has_HealthProxy_uncertain)) }
-  - Edit: HealthProxy_attached_yes
-    button: |
-      **Evidence of a Healthcare Proxy is attached**:
-      ${ word(yesno(HealthProxy_attached_yes)) }
-  - Edit: HealthProxy_attached_filed
-    button: |
-      **Evidence of a Healthcare Proxy was previously filed.**:
-      ${ word(yesno(HealthProxy_attached_filed)) }
-  - Edit: HealthProxy_attached_unavailable
-    button: |
-      **Evidence of a Healthcare Proxy is unavailable**:
-      ${ word(yesno(HealthProxy_attached_unavailable)) }
-  - Edit: Has_DPA
-    button: |
-      **Respondent has a Durable Power of Attorney**:
-      ${ word(yesno(Has_DPA)) }
-  - Edit: Has_DPA_uncertain
-    button: |
-      **I do not know whether the Respondent has  Durable Power of Attorney**:
-      ${ word(yesno(Has_DPA_uncertain)) }
-  - Edit: DPA_attached_yes
-    button: |
-      **Evidence of a Durable Power of Attorney is attached.**:
-      ${ word(yesno(DPA_attached_yes)) }
-  - Edit: Has_DPA_filed
-    button: |
-      **Evidence of a Durable Power of Attorney was previously filed**:
-      ${ word(yesno(Has_DPA_filed)) }
-  - Edit: Has_DPA_unavailable
-    button: |
-      **Evidence of a Durable Power of Attorney is attached.**:
-      ${ word(yesno(Has_DPA_unavailable)) }
-  - Edit: Appoint_Petitioner_yes
-    button: |
-      **The Petitioner should be appointed as Temporary Guardian**:
-      ${ word(yesno(Appoint_Petitioner_yes)) }
-  - Edit: Appoint_TempGuardian_yes
-    button: |
-      **The person below should be appointed as Temporary Guardian**:
-      ${ word(yesno(Appoint_TempGuardian_yes)) }
-  - Edit: TempGuardian_name_MI
-    button: |
-      **Middle name**:
-      ${ TempGuardian_name_MI }
-  - Edit: Appoint_Suitable_yes
-    button: |
-      **Another suitable person should be appointed Temporary Guardian**:
-      ${ word(yesno(Appoint_Suitable_yes)) }
-  - Edit: Bond_WithSureties
-    button: |
-      **Serve with sureties**:
-      ${ word(yesno(Bond_WithSureties)) }
-  - Edit: Sureties_reasons
-    button: |
-      **Reasons for serving with/without sureties**:
-      ${ Sureties_reasons }
-  - Edit: CourtAuthorization_yes
-    button: |
-      **Additional Court authorization sought**:
-      ${ word(yesno(CourtAuthorization_yes)) }
-  - Edit: AdmitNursing_yes
-    button: |
-      **Admit to nursing facility**:
-      ${ word(yesno(AdmitNursing_yes)) }
-  - Edit: AntiPsychMeds_yes
-    button: |
-      **Treat Respondent with antipsychotic meds**:
-      ${ word(yesno(AntiPsychMeds_yes)) }
-  - Edit: SubJudgement_yes
-    button: |
-      **Another action requiring substituted judgment**:
-      ${ word(yesno(SubJudgement_yes)) }
-  - Edit: RevokeProxy_yes
-    button: |
-      **To revoke Responden't Healthcare Proxy**:
-      ${ word(yesno(RevokeProxy_yes)) }
-  - Edit: ApplyInsurance_yes
-    button: |
-      **Apply for health insurance benefits including MassHealth on behalf of the Respondent**:
-      ${ word(yesno(ApplyInsurance_yes)) }
-  - Edit: AdditionalRequest_yes
-    button: |
-      **Additional requests**:
-      ${ word(yesno(AdditionalRequest_yes)) }
-  - Edit: Additional_requests
-    button: |
-      **Additional requests**:
-      ${ Additional_requests }
-  - Edit: Respondent
-    button: |
-      **Respondent**:
-      ${ Respondent }
-  - Edit: Petitioner.name.first
-    button: |
-      **Petitioner.name.first**:
-      ${ Petitioner.name.first }
-  - Edit: TempGuardian.name.last
-    button: |
-      **TempGuardian.name.last**:
-      ${ TempGuardian.name.last }
-  - Edit: TempGuardian.name.first
-    button: |
-      **TempGuardian.name.first**:
-      ${ TempGuardian.name.first }
-  - Edit: Petitioner.name.last
-    button: |
-      **Petitioner.name.last**:
-      ${ Petitioner.name.last }
+# ---
+# id: mpc320verifiedmotionforappttempguardianforincapacitatedperson review screen
+# event: review_mpc320verifiedmotionforappttempguardianforincapacitatedperson
+# question: |
+#   Review Screen
+# subquestion: |
+#   Edit your answers below
+# review: 
+#   - Edit: County
+#     button: |
+#       **County**:
+#       ${ County }
+#   - Edit: Temporary_guardianship_reasons
+#     button: |
+#       **Reasons why temporary guardianship is needed**:
+#       ${ Temporary_guardianship_reasons }
+#   - Edit: Temporary_guardianship_harm_avoided
+#     button: |
+#       **Harms that will occur without Temporary Guardianship**:
+#       ${ Temporary_guardianship_harm_avoided }
+#   - Edit: Temporary_guardianship_Actions_needed
+#     button: |
+#       **Actions the Temporary Guardian will take**:
+#       ${ Temporary_guardianship_Actions_needed }
+#   - Edit: Has_HealthProxy
+#     button: |
+#       **Does Respondent have a Healthcare Proxy?**:
+#       ${ word(yesno(Has_HealthProxy)) }
+#   - Edit: Has_HealthProxy_uncertain
+#     button: |
+#       **I do not know if the Respondent has a Healthcare Proxy**:
+#       ${ word(yesno(Has_HealthProxy_uncertain)) }
+#   - Edit: HealthProxy_attached_yes
+#     button: |
+#       **Evidence of a Healthcare Proxy is attached**:
+#       ${ word(yesno(HealthProxy_attached_yes)) }
+#   - Edit: HealthProxy_attached_filed
+#     button: |
+#       **Evidence of a Healthcare Proxy was previously filed.**:
+#       ${ word(yesno(HealthProxy_attached_filed)) }
+#   - Edit: HealthProxy_attached_unavailable
+#     button: |
+#       **Evidence of a Healthcare Proxy is unavailable**:
+#       ${ word(yesno(HealthProxy_attached_unavailable)) }
+#   - Edit: Has_DPA
+#     button: |
+#       **Respondent has a Durable Power of Attorney**:
+#       ${ word(yesno(Has_DPA)) }
+#   - Edit: Has_DPA_uncertain
+#     button: |
+#       **I do not know whether the Respondent has  Durable Power of Attorney**:
+#       ${ word(yesno(Has_DPA_uncertain)) }
+#   - Edit: DPA_attached_yes
+#     button: |
+#       **Evidence of a Durable Power of Attorney is attached.**:
+#       ${ word(yesno(DPA_attached_yes)) }
+#   - Edit: Has_DPA_filed
+#     button: |
+#       **Evidence of a Durable Power of Attorney was previously filed**:
+#       ${ word(yesno(Has_DPA_filed)) }
+#   - Edit: Has_DPA_unavailable
+#     button: |
+#       **Evidence of a Durable Power of Attorney is attached.**:
+#       ${ word(yesno(Has_DPA_unavailable)) }
+#   - Edit: Appoint_Petitioner_yes
+#     button: |
+#       **The Petitioner should be appointed as Temporary Guardian**:
+#       ${ word(yesno(Appoint_Petitioner_yes)) }
+#   - Edit: Appoint_TempGuardian_yes
+#     button: |
+#       **The person below should be appointed as Temporary Guardian**:
+#       ${ word(yesno(Appoint_TempGuardian_yes)) }
+#   - Edit: TempGuardian_name_MI
+#     button: |
+#       **Middle name**:
+#       ${ TempGuardian_name_MI }
+#   - Edit: Appoint_Suitable_yes
+#     button: |
+#       **Another suitable person should be appointed Temporary Guardian**:
+#       ${ word(yesno(Appoint_Suitable_yes)) }
+#   - Edit: Bond_WithSureties
+#     button: |
+#       **Serve with sureties**:
+#       ${ word(yesno(Bond_WithSureties)) }
+#   - Edit: Sureties_reasons
+#     button: |
+#       **Reasons for serving with/without sureties**:
+#       ${ Sureties_reasons }
+#   - Edit: CourtAuthorization_yes
+#     button: |
+#       **Additional Court authorization sought**:
+#       ${ word(yesno(CourtAuthorization_yes)) }
+#   - Edit: AdmitNursing_yes
+#     button: |
+#       **Admit to nursing facility**:
+#       ${ word(yesno(AdmitNursing_yes)) }
+#   - Edit: AntiPsychMeds_yes
+#     button: |
+#       **Treat Respondent with antipsychotic meds**:
+#       ${ word(yesno(AntiPsychMeds_yes)) }
+#   - Edit: SubJudgement_yes
+#     button: |
+#       **Another action requiring substituted judgment**:
+#       ${ word(yesno(SubJudgement_yes)) }
+#   - Edit: RevokeProxy_yes
+#     button: |
+#       **To revoke Responden't Healthcare Proxy**:
+#       ${ word(yesno(RevokeProxy_yes)) }
+#   - Edit: ApplyInsurance_yes
+#     button: |
+#       **Apply for health insurance benefits including MassHealth on behalf of the Respondent**:
+#       ${ word(yesno(ApplyInsurance_yes)) }
+#   - Edit: AdditionalRequest_yes
+#     button: |
+#       **Additional requests**:
+#       ${ word(yesno(AdditionalRequest_yes)) }
+#   - Edit: Additional_requests
+#     button: |
+#       **Additional requests**:
+#       ${ Additional_requests }
+#   - Edit: Respondent
+#     button: |
+#       **Respondent**:
+#       ${ Respondent }
+#   - Edit: Petitioner.name.first
+#     button: |
+#       **Petitioner.name.first**:
+#       ${ Petitioner.name.first }
+#   - Edit: TempGuardian.name.last
+#     button: |
+#       **TempGuardian.name.last**:
+#       ${ TempGuardian.name.last }
+#   - Edit: TempGuardian.name.first
+#     button: |
+#       **TempGuardian.name.first**:
+#       ${ TempGuardian.name.first }
+#   - Edit: Petitioner.name.last
+#     button: |
+#       **Petitioner.name.last**:
+#       ${ Petitioner.name.last }
