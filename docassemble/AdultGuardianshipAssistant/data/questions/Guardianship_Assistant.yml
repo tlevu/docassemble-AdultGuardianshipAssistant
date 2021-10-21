@@ -85,6 +85,7 @@ code: |
   user_role = 'plaintiff'
   last_option
   Language_english_yes
+  Respondent_Age
   Respondent_address_date
   set_progress(9.09)
   Current_Guardian_Attached
@@ -171,8 +172,8 @@ subquestion: |
   * [Durable Power of Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 field: last_option
 buttons:
-  - "Research Alternatives": False
-  - "Proceed with Guardianship": True
+  -"Research Alternatives": False
+  -"Proceed with Guardianship": True
 ---
 mandatory: True
 code: |
@@ -238,9 +239,9 @@ fields:
   - 'Petitioner interest list': Petitioner_interest_list
     maxlength: 384
 ---
-id: Tell me more about Respondent
-question: |
-  Tell me more about Respondent?
+id: Prim Lang
+question: | 
+  Respondent's primary language
 fields:
   - 'Language english': Language_english_yes
     datatype: yesno
@@ -248,6 +249,12 @@ fields:
     datatype: yesno
   - 'Other language': Other_language
     maxlength: 21
+    required: False
+---
+id: Tell me more about Respondent
+question: |
+  Tell me more about Respondent?
+fields:
   - 'Respondent age': Respondent_Age
     maxlength: 6
   - 'Respondent address city': Respondent_address_City
