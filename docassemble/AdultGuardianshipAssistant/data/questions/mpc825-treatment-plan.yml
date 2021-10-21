@@ -1,0 +1,277 @@
+include:
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.MassAccess:massaccess.yml
+---
+comment: |
+  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
+metadata:
+  title: |
+    Guardianship Treatment Plan
+  short title: |
+    Treatment Plan
+  tags:
+    - ES-00-00-00-00
+    - HE-00-00-00-00
+---
+comment: |
+  This section is used by AssemblyLine to control how some of the questions work.
+mandatory: True
+code: |
+  interview_metadata # make sure we initialize the object
+  if not defined("interview_metadata['mpc825treatmentplan']"):
+    interview_metadata.initializeObject('mpc825treatmentplan')
+  interview_metadata['mpc825treatmentplan'].update({
+    'title': 'Guardianship Treatment Plan',
+    'short title': 'Treatment Plan',
+    'description': 'Mpc825-treatment-plan',
+    'original_form': '',
+    'allowed courts': [
+      'Probate and Family Court',
+    ],
+    'categories': [
+      'ES-00-00-00-00',
+      'HE-00-00-00-00',
+    ],
+    'logic block variable': 'mpc825treatmentplan',
+    'attachment block variable': 'mpc825treatmentplan_attachment',
+    'typical role': 'plaintiff',
+  })
+---
+code: |
+  interview_short_title = 'Create a Treatment Plan'
+---
+code: |
+  al_form_type = 'other'
+---
+features:
+  navigation: True
+---
+sections:
+  - review_mpc825treatmentplan: Review your answers
+---
+objects:
+  - Respondent: ALPeopleList.using(ask_number=True,target_number=1)
+
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+id: main_order_mpc825treatmentplan
+code: |
+  al_intro_screen
+  mpc825treatmentplan_intro
+  # Interview order block has form-specific logic controlling order/branching
+  interview_order_mpc825treatmentplan
+  signature_date
+  # Save (anonymized) interview statistics.
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  mpc825treatmentplan_preview_question  # Pre-canned preview screen
+  basic_questions_signature_flow
+  mpc825treatmentplan_download
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic of questions in the interview
+id: interview_order_mpc825treatmentplan
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["mpc825treatmentplan"]["allowed courts"]
+  nav.set_section('review_mpc825treatmentplan')
+  user_role = 'plaintiff'
+  Respondent
+  Tell_us_about_the_Respondents_Medication
+  AltAntiPsych_meds1
+  set_progress(33.33)
+  What_county_will_you_file_this_treatment_plan_in
+  interview_order_mpc825treatmentplan = True
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Guardianship Treatment Plan
+continue button field: mpc825treatmentplan_intro
+question: |
+  Guardianship Treatment Plan
+subquestion: |
+  Mpc825-treatment-plan
+---
+id: Review your form before you sign it
+continue button field: mpc825treatmentplan_preview_question
+question: |
+  Review your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page. 
+  
+   ${ al_user_bundle.as_pdf(key='preview') }
+  
+  Click the image to open it in a new tab. Click the 'Make changes' button to fix any mistakes.
+  
+  ${ action_button_html(url_action('review_mpc825treatmentplan'), label='Make changes', color='info') } 
+  
+  Remember to come back to this window to continue and sign your form.
+---
+id: Tell us about the Respondent s Medication
+continue button field: Tell_us_about_the_Respondents_Medication
+question: |
+  Tell us about the Respondent's Medication
+subquestion: |
+  Please list only the antipsychotic medications that the Respondent has been prescribed.
+fields:
+  - 'Medication name': AntiPsych_meds1
+    maxlength: 118
+  - 'Dosage': AntiPsych_meds1_dose
+    maxlength: 64
+  - 'Medication name': AntiPsych_meds2
+    maxlength: 118
+  - 'Dosage': AntiPsych_meds2_dose
+    maxlength: 64
+  - 'Medication name': AntiPsych_meds3
+    maxlength: 118
+  - 'Dosage': AntiPsych_meds3_dose
+    maxlength: 64
+---
+id: Alternative medications
+question: |
+  Alternative medications
+subquestion: |
+  Please list alternatives to the Respondent's prescribed antipsychotic medications.
+fields:
+  - 'Alternative medication name': AltAntiPsych_meds1
+    maxlength: 118
+  - 'Dosage': AltAntiPsych_meds1_dose
+    maxlength: 64
+  - 'Alternative medication name': AltAntiPsych_meds2
+    maxlength: 118
+  - 'Dosage': AltAntiPsych_meds2_dose
+    maxlength: 64
+  - 'Alternative medication name': AltAntiPsych_meds3
+    maxlength: 118
+  - 'Dosage': AltAntiPsych_meds3_dose
+    maxlength: 64
+  - 'Alternative medication name': AltAntiPsych_meds4
+    maxlength: 118
+  - 'Dosage': AltAntiPsych_meds4_dose
+    maxlength: 64
+---
+id: What county will you file this treatment plan in
+continue button field: What_county_will_you_file_this_treatment_plan_in
+question: |
+  What county will you file this treatment plan in?
+fields:
+  - 'County': County
+    maxlength: 27
+---
+progress: 100
+id: download
+event: mpc825treatmentplan_download
+question: |
+  Your form is ready to download.
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Make changes" button to fix any mistakes. 
+  
+  ${ action_button_html(url_action('review_mpc825treatmentplan'), label='Make changes', color='info') } 
+  
+  ${ al_user_bundle.download_list_html() }
+  
+  ${ al_user_bundle.send_button_html() }
+---
+objects:
+  - mpc825treatmentplan_attachment: ALDocument.using(title="Mpc825-treatment-plan", filename="mpc825-treatment-plan", has_addendum=False)
+---
+attachment:
+    variable name: mpc825treatmentplan_attachment[i]
+    name: Treatment Plan
+    filename: Treatment-Plan
+    skip undefined: True
+    pdf template file: mpc825-treatment-plan.pdf
+    fields: 
+      - "Respondent_name": ${ Respondent }
+      - "County": ${ County }
+      - "AntiPsych_meds1": ${ AntiPsych_meds1 }
+      - "AntiPsych_meds1_dose": ${ AntiPsych_meds1_dose }
+      - "AntiPsych_meds2": ${ AntiPsych_meds2 }
+      - "AntiPsych_meds2_dose": ${ AntiPsych_meds2_dose }
+      - "AntiPsych_meds3": ${ AntiPsych_meds3 }
+      - "AntiPsych_meds3_dose": ${ AntiPsych_meds3_dose }
+      - "AltAntiPsych_meds1": ${ AltAntiPsych_meds1 }
+      - "AltAntiPsych_meds1_dose": ${ AltAntiPsych_meds1_dose }
+      - "AltAntiPsych_meds2": ${ AltAntiPsych_meds2 }
+      - "AltAntiPsych_meds2_dose": ${ AltAntiPsych_meds2_dose }
+      - "AltAntiPsych_meds3": ${ AltAntiPsych_meds3 }
+      - "AltAntiPsych_meds3_dose": ${ AltAntiPsych_meds3_dose }
+      - "AltAntiPsych_meds4": ${ AltAntiPsych_meds4 }
+      - "AltAntiPsych_meds4_dose": ${ AltAntiPsych_meds4_dose }
+---
+id: mpc825treatmentplan review screen
+event: review_mpc825treatmentplan
+question: |
+  Review Screen
+subquestion: |
+  Edit your answers below
+review: 
+  - Edit: County
+    button: |
+      **County**:
+      ${ County }
+  - Edit: AntiPsych_meds1
+    button: |
+      **Medication name**:
+      ${ AntiPsych_meds1 }
+  - Edit: AntiPsych_meds1_dose
+    button: |
+      **Dosage**:
+      ${ AntiPsych_meds1_dose }
+  - Edit: AntiPsych_meds2
+    button: |
+      **Medication name**:
+      ${ AntiPsych_meds2 }
+  - Edit: AntiPsych_meds2_dose
+    button: |
+      **Dosage**:
+      ${ AntiPsych_meds2_dose }
+  - Edit: AntiPsych_meds3
+    button: |
+      **Medication name**:
+      ${ AntiPsych_meds3 }
+  - Edit: AntiPsych_meds3_dose
+    button: |
+      **Dosage**:
+      ${ AntiPsych_meds3_dose }
+  - Edit: AltAntiPsych_meds1
+    button: |
+      **Alternative medication name**:
+      ${ AltAntiPsych_meds1 }
+  - Edit: AltAntiPsych_meds1_dose
+    button: |
+      **Dosage**:
+      ${ AltAntiPsych_meds1_dose }
+  - Edit: AltAntiPsych_meds2
+    button: |
+      **Alternative medication name**:
+      ${ AltAntiPsych_meds2 }
+  - Edit: AltAntiPsych_meds2_dose
+    button: |
+      **Dosage**:
+      ${ AltAntiPsych_meds2_dose }
+  - Edit: AltAntiPsych_meds3
+    button: |
+      **Alternative medication name**:
+      ${ AltAntiPsych_meds3 }
+  - Edit: AltAntiPsych_meds3_dose
+    button: |
+      **Dosage**:
+      ${ AltAntiPsych_meds3_dose }
+  - Edit: AltAntiPsych_meds4
+    button: |
+      **Alternative medication name**:
+      ${ AltAntiPsych_meds4 }
+  - Edit: AltAntiPsych_meds4_dose
+    button: |
+      **Dosage**:
+      ${ AltAntiPsych_meds4_dose }
+  - Edit: Respondent
+    button: |
+      **Respondent**:
+      ${ Respondent }

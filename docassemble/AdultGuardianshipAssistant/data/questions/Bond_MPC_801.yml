@@ -1,0 +1,476 @@
+include:
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.MassAccess:massaccess.yml
+---
+comment: |
+  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
+metadata:
+  title: |
+    Bond mpc 801
+  short title: |
+    Bond mpc 801
+  tags:
+    - ES-00-00-00-00
+---
+comment: |
+  This section is used by AssemblyLine to control how some of the questions work.
+mandatory: True
+code: |
+  interview_metadata # make sure we initialize the object
+  if not defined("interview_metadata['Bond_MPC_801']"):
+    interview_metadata.initializeObject('Bond_MPC_801')
+  interview_metadata['Bond_MPC_801'].update({
+    'title': 'Bond mpc 801',
+    'short title': 'Bond mpc 801',
+    'description': 'Bond mpc 801',
+    'original_form': '',
+    'allowed courts': [
+      'Probate and Family Court',
+    ],
+    'categories': [
+      'ES-00-00-00-00',
+    ],
+    'logic block variable': 'Bond_MPC_801',
+    'attachment block variable': 'Bond_MPC_801_attachment',
+    'typical role': 'plaintiff',
+  })
+---
+code: |
+  interview_short_title = 'Get a Bond mpc 801'
+---
+code: |
+  al_form_type = 'other'
+---
+features:
+  navigation: True
+---
+sections:
+  - review_Bond_MPC_801: Review your answers
+---
+objects:
+  - Corporate: ALPeopleList.using(ask_number=True,target_number=1)
+  - personal_surety: ALPeopleList.using(ask_number=True,target_number=1)
+  - Fiduciary: ALPeopleList.using(there_are_any=True)
+  - Respondent: ALPeopleList.using(ask_number=True,target_number=1)
+
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+id: main_order_Bond_MPC_801
+code: |
+  al_intro_screen
+  Bond_MPC_801_intro
+  # Interview order block has form-specific logic controlling order/branching
+  interview_order_Bond_MPC_801
+  signature_date
+  # Save (anonymized) interview statistics.
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  Bond_MPC_801_preview_question  # Pre-canned preview screen
+  basic_questions_signature_flow
+  Bond_MPC_801_download
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic of questions in the interview
+id: interview_order_Bond_MPC_801
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["Bond_MPC_801"]["allowed courts"]
+  nav.set_section('review_Bond_MPC_801')
+  user_role = 'plaintiff'
+  Are_you_filing_a_corporate_bond
+  withoutsureties_yes
+  County
+  Fiduciary.name.last
+  Fiduciary.address.zip
+  set_progress(16.67)
+  personal_surety.address.unit
+  personal_surety.name.first
+  personal_surety.address.city
+  Fiduciary.phone_number
+  Fiduciary.name.first
+  set_progress(33.33)
+  Fiduciary.address.city
+  Corporate
+  personal_surety.name.middle
+  Fiduciary.address.address
+  Respondent
+  set_progress(50.0)
+  personal_surety.address.zip
+  personal_surety.address.address
+  Fiduciary.address.state
+  Fiduciary.address.unit
+  personal_surety.name.last
+  set_progress(66.67)
+  personal_surety.phone_number
+  interview_order_Bond_MPC_801 = True
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Bond mpc 801
+continue button field: Bond_MPC_801_intro
+question: |
+  Bond mpc 801
+subquestion: |
+  Bond mpc 801
+---
+id: Review your form before you sign it
+continue button field: Bond_MPC_801_preview_question
+question: |
+  Review your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page. 
+  
+   ${ al_user_bundle.as_pdf(key='preview') }
+  
+  Click the image to open it in a new tab. Click the 'Make changes' button to fix any mistakes.
+  
+  ${ action_button_html(url_action('review_Bond_MPC_801'), label='Make changes', color='info') } 
+  
+  Remember to come back to this window to continue and sign your form.
+---
+id: Are you filing a corporate bond
+continue button field: Are_you_filing_a_corporate_bond
+question: |
+  Are you filing a corporate bond?
+fields:
+  - 'Corporate bond': CorporateBond_yes
+    datatype: yesno
+  - 'Corporate bond number': CorporateBond_number
+    maxlength: 15
+  - 'Corporate Bond number': CorporateBond_number2
+    maxlength: 18
+  - 'Penal Sum': PenalSum_bond2
+    maxlength: 18
+  - 'State of Incorporation': state_incorporated
+    maxlength: 23
+  - 'Business location': business_location_address
+    maxlength: 48
+---
+id: Tell us about the proposed Guardian
+question: |
+  Tell us about the proposed Guardian.
+subquestion: |
+  By completing this Bond document, the proposed Guardian promises to appear before the court in any proceeding that relates to the estate of the Respondent.
+fields:
+  - 'File without sureties': withoutsureties_yes
+    datatype: yesno
+  - 'File with sureties': Withsureties_yes
+    datatype: yesno
+  - 'Middle Initial': Fiduciary1_name_MI
+    maxlength: 8
+  - 'Middle initial': Fiduciary2_name_MI
+    maxlength: 8
+  - 'Appointment title': Appointment_title
+    maxlength: 53
+  - 'Last name': personal_surety_name2_last
+    maxlength: 30
+  - 'Middle name': personal_surety_name2_middle
+    maxlength: 22
+  - 'First name': personal_surety_name2_first
+    maxlength: 30
+  - 'Address': personal_surety_address2_address
+    maxlength: 68
+  - 'Apt/unit no': personal_surety_address2_unit
+    maxlength: 16
+  - 'City': personal_surety_address2_city
+    maxlength: 21
+  - 'Zip': personal_surety_address2_zip
+    maxlength: 10
+  - 'Primary phone': personal_surety_phone2
+    maxlength: 25
+---
+id: Tell us about the Respondent
+question: |
+  Tell us about the Respondent
+fields:
+  - 'County': County
+    maxlength: 27
+  - 'Real estate value': RealEstate_value
+    maxlength: 18
+  - 'Personal estate value': PersonalEstate_value
+    maxlength: 17
+  - 'Penal sum bond': PenalSum_bond
+    maxlength: 63
+  - 'Date': Date
+    datatype: date
+  - 'Date 2': Date_2
+    datatype: date
+---
+progress: 100
+id: download
+event: Bond_MPC_801_download
+question: |
+  Your form is ready to download.
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Make changes" button to fix any mistakes. 
+  
+  ${ action_button_html(url_action('review_Bond_MPC_801'), label='Make changes', color='info') } 
+  
+  ${ al_user_bundle.download_list_html() }
+  
+  ${ al_user_bundle.send_button_html() }
+---
+#.enabled is set if trigger happens 
+objects:
+  - Bond_MPC_801_attachment: ALDocument.using(title="Bond mpc 801", filename="Bond_MPC_801", has_addendum=False)
+---
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[Bond_MPC_801_attachment], filename="Bond_MPC_801.pdf", title="All forms to download for your records")
+  - al_court_bundle: ALDocumentBundle.using(elements=[Bond_MPC_801_attachment], filename="Bond_MPC_801.pdf", title="All forms to download for your records")
+---
+attachment:
+    variable name: Bond_MPC_801_attachment[i]
+    name: Bond mpc 801
+    filename: Bond-mpc-801
+    skip undefined: True
+    pdf template file: Bond_MPC_801.pdf
+    fields: 
+      - "Fiduciary1_name_last": ${ Fiduciary.name.last }
+      - "Fiduciary1_address_zip": ${ Fiduciary.address.zip }
+      - "personal_surety_address_unit": ${ personal_surety.address.unit }
+      - "personal_surety_name_first": ${ personal_surety.name.first }
+      - "Fiduciary2_name_last": ${ Fiduciary.name.last }
+      - "personal_surety_address_city": ${ personal_surety.address.city }
+      - "Fiduciary2_phone": ${ Fiduciary.phone_number }
+      - "Fiduciary1_name_first": ${ Fiduciary.name.first }
+      - "Fiduciary2_address_city": ${ Fiduciary.address.city }
+      - "Corporate_name": ${ Corporate }
+      - "Fiduciary1_phone": ${ Fiduciary.phone_number }
+      - "personal_surety_name_middle": ${ personal_surety.name.middle }
+      - "Fiduciary2_address_street": ${ Fiduciary.address.address }
+      - "Respondent_name": ${ Respondent }
+      - "personal_surety_address_zip": ${ personal_surety.address.zip }
+      - "personal_surety_address_address": ${ personal_surety.address.address }
+      - "Fiduciary2_address_state": ${ Fiduciary.address.state }
+      - "Fiduciary2_address_zip": ${ Fiduciary.address.zip }
+      - "Fiduciary1_address_state": ${ Fiduciary.address.state }
+      - "Respondent_name": ${ Respondent }
+      - "Fiduciary1_address_city": ${ Fiduciary.address.city }
+      - "Fiduciary2_name_first": ${ Fiduciary.name.first }
+      - "Fiduciary1_address_street": ${ Fiduciary.address.address }
+      - "Fiduciary2_address_unit": ${ Fiduciary.address.unit }
+      - "personal_surety_name_last": ${ personal_surety.name.last }
+      - "Fiduciary1_address_unit": ${ Fiduciary.address.unit }
+      - "personal_surety_phone": ${ personal_surety.phone_number }
+      - "withoutsureties_yes": ${ withoutsureties_yes }
+      - "Withsureties_yes": ${ Withsureties_yes }
+      - "CorporateBond_yes": ${ CorporateBond_yes }
+      - "CorporateBond_number": ${ CorporateBond_number }
+      - "County": ${ County }
+      - "RealEstate_value": ${ RealEstate_value }
+      - "PersonalEstate_value": ${ PersonalEstate_value }
+      - "PenalSum_bond": ${ PenalSum_bond }
+      - "Fiduciary1_name_MI": ${ Fiduciary1_name_MI }
+      - "Fiduciary2_name_MI": ${ Fiduciary2_name_MI }
+      - "Appointment_title": ${ Appointment_title }
+      - "Date": ${ Date }
+      - "Date_2": ${ Date_2 }
+      - "personal_surety_name2_last": ${ personal_surety_name2_last }
+      - "personal_surety_name2_middle": ${ personal_surety_name2_middle }
+      - "personal_surety_name2_first": ${ personal_surety_name2_first }
+      - "personal_surety_address2_address": ${ personal_surety_address2_address }
+      - "personal_surety_address2_unit": ${ personal_surety_address2_unit }
+      - "personal_surety_address2_city": ${ personal_surety_address2_city }
+      - "personal_surety_address2_zip": ${ personal_surety_address2_zip }
+      - "personal_surety_phone2": ${ personal_surety_phone2 }
+      - "CorporateBond_number2": ${ CorporateBond_number2 }
+      - "PenalSum_bond2": ${ PenalSum_bond2 }
+      - "state_incorporated": ${ state_incorporated }
+      - "business_location_address": ${ business_location_address }
+      # It's a signature: test which file version this is; leave empty unless it's the final version)
+      - "Fiduciary1_signature": ${ Fiduciary1_signature if i == 'final' else '' }
+      # It's a signature: test which file version this is; leave empty unless it's the final version)
+      - "Fiduciary2_signature": ${ Fiduciary2_signature if i == 'final' else '' }
+---
+id: Bond_MPC_801 review screen
+event: review_Bond_MPC_801
+question: |
+  Review Screen
+subquestion: |
+  Edit your answers below
+review: 
+  - Edit: withoutsureties_yes
+    button: |
+      **File without sureties**:
+      ${ word(yesno(withoutsureties_yes)) }
+  - Edit: Withsureties_yes
+    button: |
+      **File with sureties**:
+      ${ word(yesno(Withsureties_yes)) }
+  - Edit: CorporateBond_yes
+    button: |
+      **Corporate bond**:
+      ${ word(yesno(CorporateBond_yes)) }
+  - Edit: CorporateBond_number
+    button: |
+      **Corporate bond number**:
+      ${ CorporateBond_number }
+  - Edit: County
+    button: |
+      **County**:
+      ${ County }
+  - Edit: RealEstate_value
+    button: |
+      **Real estate value**:
+      ${ RealEstate_value }
+  - Edit: PersonalEstate_value
+    button: |
+      **Personal estate value**:
+      ${ PersonalEstate_value }
+  - Edit: PenalSum_bond
+    button: |
+      **Penal sum bond**:
+      ${ PenalSum_bond }
+  - Edit: Fiduciary1_name_MI
+    button: |
+      **Middle Initial**:
+      ${ Fiduciary1_name_MI }
+  - Edit: Fiduciary2_name_MI
+    button: |
+      **Middle initial**:
+      ${ Fiduciary2_name_MI }
+  - Edit: Appointment_title
+    button: |
+      **Appointment title**:
+      ${ Appointment_title }
+  - Edit: Date
+    button: |
+      **Date**:
+      ${ Date }
+  - Edit: Date_2
+    button: |
+      **Date 2**:
+      ${ Date_2 }
+  - Edit: personal_surety_name2_last
+    button: |
+      **Last name**:
+      ${ personal_surety_name2_last }
+  - Edit: personal_surety_name2_middle
+    button: |
+      **Middle name**:
+      ${ personal_surety_name2_middle }
+  - Edit: personal_surety_name2_first
+    button: |
+      **First name**:
+      ${ personal_surety_name2_first }
+  - Edit: personal_surety_address2_address
+    button: |
+      **Address**:
+      ${ personal_surety_address2_address }
+  - Edit: personal_surety_address2_unit
+    button: |
+      **Apt/unit no**:
+      ${ personal_surety_address2_unit }
+  - Edit: personal_surety_address2_city
+    button: |
+      **City**:
+      ${ personal_surety_address2_city }
+  - Edit: personal_surety_address2_zip
+    button: |
+      **Zip**:
+      ${ personal_surety_address2_zip }
+  - Edit: personal_surety_phone2
+    button: |
+      **Primary phone**:
+      ${ personal_surety_phone2 }
+  - Edit: CorporateBond_number2
+    button: |
+      **Corporate Bond number**:
+      ${ CorporateBond_number2 }
+  - Edit: PenalSum_bond2
+    button: |
+      **Penal Sum**:
+      ${ PenalSum_bond2 }
+  - Edit: state_incorporated
+    button: |
+      **State of Incorporation**:
+      ${ state_incorporated }
+  - Edit: business_location_address
+    button: |
+      **Business location**:
+      ${ business_location_address }
+  - Edit: Fiduciary.name.last
+    button: |
+      **Fiduciary.name.last**:
+      ${ Fiduciary.name.last }
+  - Edit: Fiduciary.address.zip
+    button: |
+      **Fiduciary.address.zip**:
+      ${ Fiduciary.address.zip }
+  - Edit: personal_surety.address.unit
+    button: |
+      **personal_surety.address.unit**:
+      ${ personal_surety.address.unit }
+  - Edit: personal_surety.name.first
+    button: |
+      **personal_surety.name.first**:
+      ${ personal_surety.name.first }
+  - Edit: personal_surety.address.city
+    button: |
+      **personal_surety.address.city**:
+      ${ personal_surety.address.city }
+  - Edit: Fiduciary.phone_number
+    button: |
+      **Fiduciary.phone_number**:
+      ${ Fiduciary.phone_number }
+  - Edit: Fiduciary.name.first
+    button: |
+      **Fiduciary.name.first**:
+      ${ Fiduciary.name.first }
+  - Edit: Fiduciary.address.city
+    button: |
+      **Fiduciary.address.city**:
+      ${ Fiduciary.address.city }
+  - Edit: Corporate
+    button: |
+      **Corporate**:
+      ${ Corporate }
+  - Edit: personal_surety.name.middle
+    button: |
+      **personal_surety.name.middle**:
+      ${ personal_surety.name.middle }
+  - Edit: Fiduciary.address.address
+    button: |
+      **Fiduciary.address.address**:
+      ${ Fiduciary.address.address }
+  - Edit: Respondent
+    button: |
+      **Respondent**:
+      ${ Respondent }
+  - Edit: personal_surety.address.zip
+    button: |
+      **personal_surety.address.zip**:
+      ${ personal_surety.address.zip }
+  - Edit: personal_surety.address.address
+    button: |
+      **personal_surety.address.address**:
+      ${ personal_surety.address.address }
+  - Edit: Fiduciary.address.state
+    button: |
+      **Fiduciary.address.state**:
+      ${ Fiduciary.address.state }
+  - Edit: Fiduciary.address.unit
+    button: |
+      **Fiduciary.address.unit**:
+      ${ Fiduciary.address.unit }
+  - Edit: personal_surety.name.last
+    button: |
+      **personal_surety.name.last**:
+      ${ personal_surety.name.last }
+  - Edit: personal_surety.phone_number
+    button: |
+      **personal_surety.phone_number**:
+      ${ personal_surety.phone_number }
+  - Edit: Fiduciary1_signature
+    button: |
+      **Fiduciary1_signature**:
+      ${ Fiduciary1_signature }
+  - Edit: Fiduciary2_signature
+    button: |
+      **Fiduciary2_signature**:
+      ${ Fiduciary2_signature }
