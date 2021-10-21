@@ -55,8 +55,8 @@ objects:
   - Guardian: ALIndividual
   - Attorney: ALIndividual
   - Petitioner: ALIndividual
+  - Copetitioner: ALIndividual
   - Respondent: ALIndividual
-
 ---
 ###################### Main order ######################
 mandatory: True
@@ -102,7 +102,7 @@ code: |
     Respondent.address.address
   Respondent_DOB
   Respondent_address_date
-  Gurrent_Guardian
+  Current_Guardian
   set_progress(9.09)
   Respondent_intellectual_disabled
   Has_Assets
@@ -154,36 +154,49 @@ code: |
   Attorney
   interview_order_Guardianship_Assistant = True
 ---
-comment: |
-  This question is used to introduce your interview. Please customize
 id: Request a Guardanship
 continue button field: Guardianship_Assistant_intro
 question: |
   Adult Guardianship Assistant
 subquestion: |
-    **The Adult Guardianship Assistant provides information on adult guardianship in Massachusetts and guides users in filling out court forms.**
+    **The Adult Guardianship Assistant provides information on adult
+    guardianship in Massachusetts and guides users in filling out court forms.**
 
-    This interview should take approximately 30-60 minutes to complete. At any time during the interview, you can save your answers and return later to finish the interview.
+    This interview should take approximately 30-60 minutes to complete. At any
+    time during the interview, you can save your answers and return later to
+    finish the interview.
 
-    Please see the [Glossary of Terms](https://suffolklitlab.org/selfhelp/health_glossary.html#top) to help you complete this interview. The Glossary opens in a separate window and defines some of the words and phrases used in this interview that may not be familiar to most people.
+    Please see the [Glossary of
+    Terms](https://suffolklitlab.org/selfhelp/health_glossary.html#top) to help
+    you complete this interview. The Glossary opens in a separate window and
+    defines some of the words and phrases used in this interview that may not be
+    familiar to most people.
 
-    At the end of this interview, you will be able to download partially completed court documents and a "next steps" checklist.
+    At the end of this interview, you will be able to download partially
+    completed court documents and a "next steps" checklist.
 
-    *Disclaimer: This questionnaire is informational only, and is not legal advice. Use of this questionnaire does not create an attorney-client relatiobship. Please contact an attorney for legal advice directed at any specific concerns you may have.*
+    *Disclaimer: This questionnaire is informational only, and is not legal
+    advice. Use of this questionnaire does not create an attorney-client
+    relatiobship. Please contact an attorney for legal advice directed at any
+    specific concerns you may have.*
 ---
 id: Guardianship Filter
 mandatory: true
 question: |
   Is Guardianship the right choice for you?
 subquestion: |
-  **Guardianships transfer decision-making power away from an individual to the Guardian. It is meant to be used in situations where the individual cannot make or communicate decisions or preferences. Guardianships are difficult to undo and should be viewed as a last resort**
+  **Guardianships transfer decision-making power away from an individual to the
+  Guardian. It is meant to be used in situations where the individual cannot
+  make or communicate decisions or preferences. Guardianships are difficult to
+  undo and should be viewed as a last resort**
 
     Other options may include one or more of the following:
 
-  * [Supported Decision Making](https://supporteddecisions.org);
-  * [Healthcare Proxy](https://masshealthdecisions.org/health-care-proxy/#:~:text=The%20Massachusetts%20Health%20Care%20Proxy,or%20communicate%20those%20decisions%20yourself.Healthcare Proxy Forms);
-  * [Representative Payeee](https://www.ssa.gov/payee/faqrep.htm); and/or
-  * [Durable Power of Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
+  * [Supported Decision Making](https://supporteddecisions.org); * [Healthcare
+  Proxy](https://masshealthdecisions.org/health-care-proxy/#:~:text=The%20Massachusetts%20Health%20Care%20Proxy,or%20communicate%20those%20decisions%20yourself.Healthcare
+  Proxy Forms); * [Representative Payeee](https://www.ssa.gov/payee/faqrep.htm);
+  and/or * [Durable Power of
+  Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 field: last_option
 buttons:
   -"Research Alternatives": False
@@ -192,13 +205,15 @@ buttons:
 question: |
   Thank you for using the Guardianship Assistant
 subquestion: |
-  Below please find some resources to help you get started. If you decide to move forward with Guardianship please visit again.
-  Other options may include one or more of the following:
+  Below please find some resources to help you get started. If you decide to
+  move forward with Guardianship please visit again. Other options may include
+  one or more of the following:
 
-  * [Supported Decision Making](https://supporteddecisions.org);
-  * [Healthcare Proxy](https://masshealthdecisions.org/health-care-proxy/#:~:text=The%20Massachusetts%20Health%20Care%20Proxy,or%20communicate%20those%20decisions%20yourself.Healthcare Proxy Forms);
-  * [Representative Payeee](https://www.ssa.gov/payee/faqrep.htm); and/or
-  * [Durable Power of Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
+  * [Supported Decision Making](https://supporteddecisions.org); * [Healthcare
+  Proxy](https://masshealthdecisions.org/health-care-proxy/#:~:text=The%20Massachusetts%20Health%20Care%20Proxy,or%20communicate%20those%20decisions%20yourself.Healthcare
+  Proxy Forms); * [Representative Payeee](https://www.ssa.gov/payee/faqrep.htm);
+  and/or * [Durable Power of
+  Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 event: all_done
 ---
 mandatory: True
@@ -207,7 +222,8 @@ question: |
   Do you need guardianship for urgent situation or appointment in the next 90 days?
 yesno: temporary_needed
 note:  |
-  You may request a temporary guardianship if there is an emergency or urgent situation or appointment which requires a guardian within the next 90 days.
+  You may request a temporary guardianship if there is an emergency or urgent
+  situation or appointment which requires a guardian within the next 90 days.
 ---
 mandatory: True
 id: Has Co-Petitioner?
@@ -227,7 +243,8 @@ Code: |
 question: |
   What is the Co-Petitioner's name?
 subquestion: |
-  The "Co-Petitioner" is a second person asking the court to appoint a guardian for ${ Respondent.name.first } ${ Respondent.name.last }.
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian
+  for ${ Respondent }.
 fields:
  - First Name: CoPetitioner_name_first
  - Middle Name: CoPetitioner_name_middle
@@ -237,7 +254,8 @@ fields:
    required: False
 ---
 question: | 
-  Tell us more about the ${ CoPetitioner_name_first } ${ CoPetitioner_name_last}.
+  Tell us more about the ${ CoPetitioner_name_first } ${
+  CoPetitioner_name_last}.
 fields:
   - Does ${ CoPetitioner_name_first } ${ CoPetitioner_name_last } live at a different address than ${ Petitioner.name.first } ${ Petitioner.name.last}: CoPetitioner_Petitioner_different_address
     datatype: yesnoradio
@@ -257,7 +275,7 @@ fields:
   - E-mail Address: CoPetitioner_email
   - Relationship to Respondent: CoPetitioner_relationship
     hint: e.g. parent, child, sibling, aunt/uncle, grandparent, etc.
-  - Why is the Co-Petitioner interested in the appointment of a Guardian for ${ Respondent.name.first } ${ Respondent.name.last }? Please explain in 1-3 sentences: CoPetitioner_interests
+  - Why is the Co-Petitioner interested in the appointment of a Guardian for ${ Respondent }? Please explain in 1-3 sentences: CoPetitioner_interests
     input type: area
     rows: 10
 ---
@@ -277,7 +295,7 @@ fields:
 mandatory: True
 id: Tell me more about Respondent
 question: |
-  Tell me more about the ${ Respondent.name.first } ${Respondent.name.last }.
+  Tell me more about the ${ Respondent.familiar() } ${Respondent.name.last }.
 fields:
    - Date of Birth: Respondent_DOB
      datatype: date 
@@ -299,7 +317,7 @@ fields:
        variable: primary_language
        is: Other
    - Primary Phone Number: Respondent.phone_number
-   - Is the primary address of ${ Respondent.name.first } ${ Respondent.name.last } the same as ${ Petitioner.name.first } ${ Petitioner.name.last }?: Same_address_yes
+   - Is the primary address of ${ Respondent } the same as ${ Petitioner.name.first } ${ Petitioner.name.last }?: Same_address_yes
      datatype: yesnoradio
    - Do they have a MOLST (Medical Orders for Life-Sustaining Treatment)?: RespondentMOLST
      datatype: yesnoradio
@@ -307,7 +325,7 @@ fields:
        A document executed by the Respondent that describes a person’s wishes about end-of-life medical care. For more information on what a MOLST is please visit: https://www.molst-ma.org/.
    - Are they a Veteran?: RespondentVA
      datatype: yesnoradio
-   - Please select all of the relationships ${ Respondent.name.first } ${ Respondent.name.last } has: has_family
+   - Please select all of the relationships ${ Respondent } has: has_family
      datatype: checkboxes
      choices:
       - Spouse
@@ -317,29 +335,29 @@ fields:
 ---
 mandatory: True
 question: |
-  Tell me more about ${ Respondent.name.first } ${ Respondent.name.last }'s primary housing or living arrangements.
+  Tell me more about ${ Respondent }'s primary housing or living arrangements.
 subquestion: |
   This may be different than their current address.
 fields:
-   - When did ${ Respondent.name.first } ${ Respondent.name.last } begin living there?: Respondent_address_date
+   - When did ${ Respondent } begin living there?: Respondent_address_date
      help: |
         If you do not know, please provide your best guess.
-   - Does ${ Respondent.name.first } ${ Respondent.name.last } currently live here?: Potential_Residence_current
+   - Does ${ Respondent } currently live here?: Potential_Residence_current
      datatype: yesnoradio
-   - Will ${ Respondent.name.first } ${ Respondent.name.last } live here if the guardianship is granted?: Potential_Residence_same
+   - Will ${ Respondent } live here if the guardianship is granted?: Potential_Residence_same
      datatype: yesnoradio
 ---
 mandatory: True
 question: |
-  ${ Respondent.name.first } ${ Respondent.name.last }'s Relationships
+  ${ Respondent }'s Relationships
 subquestion: |
-  The following questions are about current relationships ${ Respondent.name.first } ${ Respondent.name.last } has:
+  The following questions are about current relationships ${ Respondent } has:
 fields:
-  - Do they have a current Guardian?: Gurrent_Guardian
+  - Do they have a current Guardian?: Current_Guardian
     datatype: yesnomaybe
-  - Do they have a document, like a will, nominating a Guardian?: Gurrent_GuardianDoc
+  - Do they have a document, like a will, nominating a Guardian?: Current_GuardianDoc
     datatype: yesnomaybe 
-  - Do they have a current Conservator?: Gurrent_Conservator
+  - Do they have a current Conservator?: Current_Conservator
     datatype: yesnomaybe
     help: |
       The court may appoint a Conservator to manage the Respondent’s finances if the court determines the Respondent is unable to do so themselves. A Conservator is usually only appointed when the Respondent has more than $5,000 worth of money and assets.
@@ -353,23 +371,31 @@ fields:
 mandatory: True
 id: Respondent incapacity
 question: |
-  The following questions concern ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity.
+  The following questions concern ${ Respondent }'s incapacity.
 fields:
- - Is ${ Respondent.name.first } ${ Respondent.name.last } intellectually disabled: Respondent_intellectual_disabled
+ - Is ${ Respondent } intellectually disabled: Respondent_intellectual_disabled
    datatype: yesnoradio
- - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is NOT intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
+ - Because you are alleging that ${ Respondent } is NOT intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
    datatype: yesnoradio
    show if:
      variable: Respondent_intellectual_disabled
      is: False
    help: |
-     The Medical Certificate must be based on an exam of ${ Respondent.name.first } ${ Respondent.name.last } within 30 days of filing the Petition. An updated Medical Certificate, based on a new exam, is required within 30 days of the hearing.
- - Because you are alleging that ${ Respondent.name.first } ${ Respondent.name.last } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
+     The Medical Certificate must be based on an exam of ${
+     Respondent.name.first } ${ Respondent.name.last } within 30 days of filing
+     the Petition. An updated Medical Certificate, based on a new exam, is
+     required within 30 days of the hearing.
+ - Because you are alleging that ${ Respondent } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
    datatype: yesnoradio
    show if: Respondent_intellectual_disabled
    help: |
-     The Clinical Team Report must be based on exams of ${ Respondent.name.first } ${ Respondent.name.last } conducted within 180 days of filing the Petition. If there is a chance the Clinical Team Report will be more than 180 days before filing the Petition, consider scheduling exams so that the licensed psychologist, registered nurse, and licensed social worked can issue a new Clincal Team Report.
- - Describe the nature and extent of ${ Respondent.name.first } ${ Respondent.name.last }'s incapacity: Incapacity_reasons
+     The Clinical Team Report must be based on exams of ${ Respondent.name.first
+     } ${ Respondent.name.last } conducted within 180 days of filing the
+     Petition. If there is a chance the Clinical Team Report will be more than
+     180 days before filing the Petition, consider scheduling exams so that the
+     licensed psychologist, registered nurse, and licensed social worked can
+     issue a new Clincal Team Report.
+ - Describe the nature and extent of ${ Respondent }'s incapacity: Incapacity_reasons
    input type: area
    rows: 6
    help: |
@@ -516,18 +542,18 @@ fields:
   - 'Respondentva uncertain': RespondentVA_uncertain
     datatype: yesno
 ---
-id: Tell me more about ${ Respondent.name.first } s primary housing or living arrangements This may b different than Petitioner s current address
+id: Tell me more about ${ Respondent.familiar() } s primary housing or living arrangements This may b different than Petitioner s current address
 question: |
-  Where does ${ Respondent.name.first } live?
+  Where does ${ Respondent.familiar() } live?
 fields:
   - Approximate date Respondent moved in': movein_date 
-  - '${ Respondent.name.first } current address1': Respondent_Current_address1
+  - '${ Respondent.familiar() } current address1': Respondent_Current_address1
     maxlength: 27
-  - '${ Respondent.name.first }s current state': Respodnent_Current_state
+  - '${ Respondent.familiar() }s current state': Respodnent_Current_state
     maxlength: 6
   - 'Respondent current zip': Respondent_Current_zip
     maxlength: 11
-  - 'Respodent current city': Respodent_Current_city
+  - 'Respondent current city': Respondent_Current_city
     maxlength: 20
   - 'Respondent current address2': Respondent_Current_address2
     maxlength: 15
@@ -602,9 +628,9 @@ fields:
     maxlength: 84
 ---
 mandatory: True
-id: Tell me about ${ Respondent.name.first } s finances
+id: Tell me about ${ Respondent.familiar() } s finances
 question: |
-  Tell me about ${ Respondent.name.first }'s finances.
+  Tell me about ${ Respondent.familiar() }'s finances.
 fields:
   - Do they have any assets(bank account, property, insurance, pension, etc.)?: Has_Assets
     datatype: yesnomaybe
@@ -879,7 +905,7 @@ attachment:
       - "docket_number": ${ docket_numbers[0] }
       - "Respondent_birthdate": ${ Respondent.birthdate.format() }
       - "Attorney_address_state": ${ Attorney.address.state }
-      - "Respondent_name_first": ${ Respondent.name.first }
+      - "Respondent_name_first": ${ Respondent.familiar() }
       - "Attorney_phone": ${ Attorney.phone_number }
       - "Attorney_address_zip": ${ Attorney.address.zip }
       - "Petitioner_address_city": ${ Petitioner.address.city }
@@ -921,7 +947,7 @@ attachment:
       - "Respondent_Current_address1": ${ Respondent_Current_address1 }
       - "Respodnent_Current_state": ${ Respodnent_Current_state }
       - "Respondent_Current_zip": ${ Respondent_Current_zip }
-      - "Respodent_Current_city": ${ Respodent_Current_city }
+      - "Respondent_Current_city": ${ Respondent_Current_city }
       - "Respondent_Current_address2": ${ Respondent_Current_address2 }
       - "Potential_Residence_same": ${ Potential_Residence_same }
       - "Potential_Residence_current": ${ Potential_Residence_current }
@@ -1104,12 +1130,9 @@ attachment:
       - "Date_5": ${ Date_5 }
       - "Date_6": ${ Date_6 }
       - "Attorney_BBO": ${ Attorney_BBO }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Petitioner_Signature": ${ Petitioner_Signature if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Copetitioner_Signature": ${ Copetitioner_Signature if i == 'final' else '' }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Attorney_signature": ${ Attorney_signature if i == 'final' else '' }
+      - "Petitioner_Signature": ${ Petitioner.signature_if_final(i) }
+      - "Copetitioner_Signature": ${ Copetitioner.signature_if_final(i) }
+      - "Attorney_signature": ${ Attorney.signature_if_final(i) }
 ---
 id: Guardianship_Assistant review screen
 event: review_Guardianship_Assistant
@@ -1186,10 +1209,10 @@ review:
     button: |
       **Respondent current zip**:
       ${ Respondent_Current_zip }
-  - Edit: Respodent_Current_city
+  - Edit: Respondent_Current_city
     button: |
-      **Respodent current city**:
-      ${ Respodent_Current_city }
+      **Respondent current city**:
+      ${ Respondent_Current_city }
   - Edit: Respondent_Current_address2
     button: |
       **Respondent current address2**:
@@ -1858,7 +1881,7 @@ review:
   - Edit: Respondent.name.first
     button: |
       **Respondent.name.first**:
-      ${ Respondent.name.first }
+      ${ Respondent.familiar() }
   - Edit: Attorney.phone_number
     button: |
       **Attorney.phone_number**:
