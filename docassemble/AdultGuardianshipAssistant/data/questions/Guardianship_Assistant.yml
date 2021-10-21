@@ -186,8 +186,8 @@ subquestion: |
   * [Durable Power of Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 field: last_option
 buttons:
-  - "Research Alternatives": False
-  - "Proceed with Guardianship": True
+  -"Research Alternatives": False
+  -"Proceed with Guardianship": True
 ---
 question: |
   Thank you for using the Guardianship Assistant
