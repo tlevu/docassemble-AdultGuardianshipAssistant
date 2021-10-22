@@ -411,8 +411,7 @@ subquestion: |
   Click the image to open it in a new tab. Click the 'Make changes' button to
   fix any mistakes.
   
-  ${ action_button_html(url_action('review_Guardianship_Assistant'), label='Make
-  changes', color='info') } 
+  ${ action_button_html(url_action('review_Guardianship_Assistant'), label='Make changes', color='info') } 
   
   Remember to come back to this window to continue and sign your form.
 ---
