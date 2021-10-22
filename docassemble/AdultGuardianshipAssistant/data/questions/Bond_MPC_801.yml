@@ -2,7 +2,7 @@
 objects:
   - Corporate: ALPeopleList.using(ask_number=True,target_number=1)
   - personal_surety: ALIndividual
-  - Fiduciary: ALPeopleList.using(there_are_any=True)
+  - Fiduciary: ALIndividual
 ---
 #################### Interview order #####################
 comment: |
@@ -208,8 +208,7 @@ attachment:
       - "PenalSum_bond2": ${ PenalSum_bond2 }
       - "state_incorporated": ${ state_incorporated }
       - "business_location_address": ${ business_location_address }
-      # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "Fiduciary1_signature": ${ Fiduciary1_signature if i == 'final' else '' }
+      - "Fiduciary1_signature": ${ Fiduciary.signature_if_final(i) }
       # It's a signature: test which file version this is; leave empty unless it's the final version)
       - "Fiduciary2_signature": ${ Fiduciary2_signature if i == 'final' else '' }
 ---

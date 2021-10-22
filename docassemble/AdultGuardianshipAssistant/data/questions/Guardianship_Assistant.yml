@@ -239,9 +239,9 @@ code: |
 code: |
   # TODO: use ALDocumentBundle
   if has_copetitioner:
-    copetitioner_attachment_yes == True
+    copetitioner_attachment_yes = True
   else:
-    copetitioner_attachment_yes == False
+    copetitioner_attachment_yes = False
 ---
 sets: 
   - users[1].name.first
@@ -304,7 +304,7 @@ fields:
       - English
       - Spanish
       - Other
-  - Other language: primary_language
+  - Other language: primary_language_other
     show if:
       variable: primary_language
       is: Other
@@ -690,7 +690,7 @@ fields:
     maxlength: 16
   - 'Address': Guardian.address.address
     maxlength: 28
-  - "What is ${Guardian_name_first }'s relationship to ${other_parties[0].name.full }?": Guardian_relationship
+  - "What is ${Guardian.familiar() }'s relationship to ${other_parties[0].name.full }?": Guardian_relationship
     maxlength: 24
   - 'Guardian poa': guardian_poa_yes
     datatype: yesno
@@ -925,8 +925,11 @@ attachment:
       - "County": ${ County }
       - "Respondent_name_middleinitial": ${ other_parties[0].name.middle_initial() }
       - "Language_english_yes": ${ primary_language == 'English' }
-      - "Langauge_other_yes": ${ not primary_language in ['English', 'Spanish'] }
-      - "Other_language": ${ Other_language }
+      - "Langauge_other_yes": ${ primary_language == 'Other' }
+      - "Other_language": |
+          % if primary_language == 'Other':
+          ${ primary_language_other }
+          % endif
       - "Respondent_Age": ${ other_parties[0].age_in_years() }
       - "Respondent_address_City": ${ other_parties[0].address.city }
       - "Respondent_Address_street": ${ other_parties[0].address.address }
