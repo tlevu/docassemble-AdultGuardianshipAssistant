@@ -653,7 +653,6 @@ fields:
     show if: Respondent_asset_attachment_yes
   - 'Do they have future income? (ex: paychecks, social security pension, long-term disability, etc)': Has_Income
     datatype: yesnomaybe
-# TODO need maybe to set this variable - 'Has income uncertain': Has_Income_uncertain
   - 'What type of income is this? (ex: paycheck, social security, etc.)': Respondent_Income1
     maxlength: 136
     show if: Has_Income
@@ -924,9 +923,9 @@ attachment:
       - "Attorney_address_unit": ${ Attorney.address.unit }
       - "Attorney_name": ${ Attorney }
       - "County": ${ County }
-      - "Respondent_name_middleinitial": ${ Respondent_name_middleinitial }
-      - "Language_english_yes": ${ Language_english_yes }
-      - "Langauge_other_yes": ${ Langauge_other_yes }
+      - "Respondent_name_middleinitial": ${ other_parties[0].name.middle_initial() }
+      - "Language_english_yes": ${ primary_language == 'English' }
+      - "Langauge_other_yes": ${ not primary_language in ['English', 'Spanish'] }
       - "Other_language": ${ Other_language }
       - "Respondent_Age": ${ other_parties[0].age_in_years() }
       - "Respondent_address_City": ${ other_parties[0].address.city }
@@ -952,7 +951,7 @@ attachment:
       - "Respondent_New_address_unit": ${ Respondent_New_address_unit }
       - "Respondent_intellectual_disabled_yes": ${ Respondent_intellectual_disabled }
       - "Respondent_intellectual_disabled_no": ${ not Respondent_intellectual_disabled }
-      - "Petitioner_name_MI": ${ Petitioner_name_MI }
+      - "Petitioner_name_MI": ${ users[0].name.middle }
       - "Petitioner_Address_street1": ${ users[0].address.address }
       - "Petitioner_address_State": ${ users[0].address.state }
       - "Petitioner_Address_unit": ${ users[0].address.unit }
@@ -963,8 +962,8 @@ attachment:
       - "Petitioner_appointee_yes": ${ Petitioner_appointee }
       - "petitioner_appointee_no": ${ not Petitioner_appointee }
       - "Other_appointee_yes": ${ Other_appointee_yes }
-      - "Guardian_name_MI": ${ Guardian_name_MI }
-      - "Guardian_Address_Street": ${ Guardian_Address_Street }
+      - "Guardian_name_MI": ${ Guardian.name.middle }
+      - "Guardian_Address_Street": ${ Guardian.address.address }
       - "Guardian_relationship": ${ Guardian_relationship }
       - "coguardian_attachment_yes": ${ coguardian_attachment_yes }
       - "guardian_poa_yes": ${ guardian_poa_yes }
@@ -1088,7 +1087,7 @@ attachment:
       - "Petition_Assetattachment_yes": ${ Petition_Assetattachment_yes }
       - "Has_Income_yes": ${ Has_Income }
       - "Has_Income_no": ${ not Has_Income }
-      - "Has_Income_uncertain": ${ Has_Income_uncertain }
+      - "Has_Income_uncertain": ${ Has_Income is None }
       - "Respondent_Income1": ${ Respondent_Income1 }
       - "Respondent_Income1_value": ${ Respondent_Income1_value }
       - "Respondent_Income2": ${ Respondent_Income2 }
@@ -1124,7 +1123,7 @@ attachment:
       - "Date_6": ${ Date_6 }
       - "Attorney_BBO": ${ Attorney_BBO }
       - "Petitioner_Signature": ${ users[0].signature_if_final(i) }
-      - "Copetitioner_Signature": ${ Copetitioner.signature_if_final(i) }
+      - "Copetitioner_Signature": ${ users[1].signature_if_final(i) }
       - "Attorney_signature": ${ Attorney.signature_if_final(i) }
 # ---
 # id: Guardianship_Assistant review screen
@@ -1138,10 +1137,6 @@ attachment:
 #     button: |
 #       **County**:
 #       ${ County }
-#   - Edit: Respondent_name_middleinitial
-#     button: |
-#       **Respondent name middleinitial**:
-#       ${ Respondent_name_middleinitial }
 #   - Edit: Language_english_yes
 #     button: |
 #       **Language english**:
@@ -1246,10 +1241,10 @@ attachment:
 #     button: |
 #       **Respondent intellectual disabled**:
 #       ${ word(yesno(Respondent_intellectual_disabled)) }
-#   - Edit: Petitioner_name_MI
+#   - Edit: users[0].name.middle
 #     button: |
 #       **Petitioner name mi**:
-#       ${ Petitioner_name_MI }
+#       ${ users[0].name.middle }
 #   - Edit: users[0].address.address
 #     button: |
 #       **Petitioner address street1**:
@@ -1286,14 +1281,14 @@ attachment:
 #     button: |
 #       **Other appointee**:
 #       ${ word(yesno(Other_appointee_yes)) }
-#   - Edit: Guardian_name_MI
+#   - Edit: Guardian.name.middle
 #     button: |
 #       **Guardian name mi**:
-#       ${ Guardian_name_MI }
-#   - Edit: Guardian_Address_Street
+#       ${ Guardian.name.middle }
+#   - Edit: Guardian.address.address
 #     button: |
 #       **Guardian address street**:
-#       ${ Guardian_Address_Street }
+#       ${ Guardian.address.address }
 #   - Edit: Guardian_relationship
 #     button: |
 #       **Guardian relationship**:
@@ -1714,10 +1709,6 @@ attachment:
 #     button: |
 #       **Has income**:
 #       ${ word(yesno(Has_Income)) }
-#   - Edit: Has_Income_uncertain
-#     button: |
-#       **Has income uncertain**:
-#       ${ word(yesno(Has_Income_uncertain)) }
 #   - Edit: Respondent_Income1
 #     button: |
 #       **Respondent income1**:
