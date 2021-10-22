@@ -1126,860 +1126,860 @@ attachment:
       - "Petitioner_Signature": ${ users[0].signature_if_final(i) }
       - "Copetitioner_Signature": ${ Copetitioner.signature_if_final(i) }
       - "Attorney_signature": ${ Attorney.signature_if_final(i) }
----
-id: Guardianship_Assistant review screen
-event: review_Guardianship_Assistant
-question: |
-  Review Screen
-subquestion: |
-  Edit your answers below
-review: 
-  - Edit: County
-    button: |
-      **County**:
-      ${ County }
-  - Edit: Respondent_name_middleinitial
-    button: |
-      **Respondent name middleinitial**:
-      ${ Respondent_name_middleinitial }
-  - Edit: Language_english_yes
-    button: |
-      **Language english**:
-      ${ word(yesno(Language_english_yes)) }
-  - Edit: Langauge_other_yes
-    button: |
-      **Langauge other**:
-      ${ word(yesno(Langauge_other_yes)) }
-  - Edit: Other_language
-    button: |
-      **Other language**:
-      ${ Other_language }
-  - Edit: other_parties[0].birthdate
-    button: |
-      **Respondent's birthdate**:
-      ${ other_parties[0].birthdate }
-  - Edit: other_parties[0].address.city
-    button: |
-      **Respondent address city**:
-      ${ other_parties[0].address.city }
-  - Edit: Respondent_Address_street
-    button: |
-      **Respondent address street**:
-      ${ Respondent_Address_street }
-  - Edit: Respondent_Address_unit
-    button: |
-      **Respondent address unit**:
-      ${ Respondent_Address_unit }
-  - Edit: Respondent_address_State
-    button: |
-      **Respondent address state**:
-      ${ Respondent_address_State }
-  - Edit: Respondent_address_Zip
-    button: |
-      **Respondent address zip**:
-      ${ Respondent_address_Zip }
-  - Edit: Respondent_address_date
-    button: |
-      **Date of Respondent address**:
-      ${ Respondent_address_date }
-  - Edit: Same_address_yes
-    button: |
-      **Same address**:
-      ${ word(yesno(Same_address_yes)) }
-  - Edit: Different_address_yes
-    button: |
-      **Different address**:
-      ${ word(yesno(Different_address_yes)) }
-  - Edit: Respondent_Current_address1
-    button: |
-      **Respondent current address1**:
-      ${ Respondent_Current_address1 }
-  - Edit: Respodnent_Current_state
-    button: |
-      **Respodnent current state**:
-      ${ Respodnent_Current_state }
-  - Edit: Respondent_Current_zip
-    button: |
-      **Respondent current zip**:
-      ${ Respondent_Current_zip }
-  - Edit: Respondent_Current_city
-    button: |
-      **Respondent current city**:
-      ${ Respondent_Current_city }
-  - Edit: Respondent_Current_address2
-    button: |
-      **Respondent current address2**:
-      ${ Respondent_Current_address2 }
-  - Edit: Potential_Residence_same
-    button: |
-      **Potential residence same**:
-      ${ word(yesno(Potential_Residence_same)) }
-  - Edit: Potential_Residence_current
-    button: |
-      **Potential residence current**:
-      ${ word(yesno(Potential_Residence_current)) }
-  - Edit: Potential_residence_new
-    button: |
-      **Potential residence new**:
-      ${ word(yesno(Potential_residence_new)) }
-  - Edit: Respondent_New_address1
-    button: |
-      **Respondent new address1**:
-      ${ Respondent_New_address1 }
-  - Edit: Respondent_New_address_state
-    button: |
-      **Respondent new address state**:
-      ${ Respondent_New_address_state }
-  - Edit: Respondent_New_address_zip
-    button: |
-      **Respondent new address zip**:
-      ${ Respondent_New_address_zip }
-  - Edit: Respondent_New_address_city
-    button: |
-      **Respondent new address city**:
-      ${ Respondent_New_address_city }
-  - Edit: Respondent_New_address_unit
-    button: |
-      **Respondent new address unit**:
-      ${ Respondent_New_address_unit }
-  - Edit: Respondent_intellectual_disabled
-    button: |
-      **Respondent intellectual disabled**:
-      ${ word(yesno(Respondent_intellectual_disabled)) }
-  - Edit: Petitioner_name_MI
-    button: |
-      **Petitioner name mi**:
-      ${ Petitioner_name_MI }
-  - Edit: users[0].address.address
-    button: |
-      **Petitioner address street1**:
-      ${ users[0].address.address }
-  - Edit: Petitioner_address_State
-    button: |
-      **Petitioner address state**:
-      ${ Petitioner_address_State }
-  - Edit: Petitioner_Address_unit
-    button: |
-      **Petitioner address unit**:
-      ${ Petitioner_Address_unit }
-  - Edit: Petitioner_relationship
-    button: |
-      **Petitioner relationship**:
-      ${ Petitioner_relationship }
-  - Edit: users[0].email
-    button: |
-      **Petitioner email**:
-      ${ users[0].email }
-  - Edit: Petitioner_interest_list
-    button: |
-      **Petitioner interest list**:
-      ${ Petitioner_interest_list }
-  - Edit: copetitioner_attachment_yes
-    button: |
-      **Copetitioner attachment**:
-      ${ word(yesno(copetitioner_attachment_yes)) }
-  - Edit: Petitioner_appointee
-    button: |
-      **Petitioner appointee**:
-      ${ word(yesno(Petitioner_appointee)) }
-  - Edit: Other_appointee_yes
-    button: |
-      **Other appointee**:
-      ${ word(yesno(Other_appointee_yes)) }
-  - Edit: Guardian_name_MI
-    button: |
-      **Guardian name mi**:
-      ${ Guardian_name_MI }
-  - Edit: Guardian_Address_Street
-    button: |
-      **Guardian address street**:
-      ${ Guardian_Address_Street }
-  - Edit: Guardian_relationship
-    button: |
-      **Guardian relationship**:
-      ${ Guardian_relationship }
-  - Edit: coguardian_attachment_yes
-    button: |
-      **Coguardian attachment**:
-      ${ word(yesno(coguardian_attachment_yes)) }
-  - Edit: guardian_poa_yes
-    button: |
-      **Guardian poa**:
-      ${ word(yesno(guardian_poa_yes)) }
-  - Edit: guardian_parent_yes
-    button: |
-      **Guardian parent**:
-      ${ word(yesno(guardian_parent_yes)) }
-  - Edit: guardian_spouse_yes
-    button: |
-      **Guardian spouse**:
-      ${ word(yesno(guardian_spouse_yes)) }
-  - Edit: guardian_appointee_not_listed_yes
-    button: |
-      **Guardian appointee not listed**:
-      ${ word(yesno(guardian_appointee_not_listed_yes)) }
-  - Edit: Limited_Guardian_yes
-    button: |
-      **Limited guardian**:
-      ${ word(yesno(Limited_Guardian_yes)) }
-  - Edit: insurance_benefits_yes
-    button: |
-      **Insurance benefits**:
-      ${ word(yesno(insurance_benefits_yes)) }
-  - Edit: financial_records_yes
-    button: |
-      **Financial records**:
-      ${ word(yesno(financial_records_yes)) }
-  - Edit: Other_appointment_yes
-    button: |
-      **Other appointment**:
-      ${ word(yesno(Other_appointment_yes)) }
-  - Edit: Other_appointment
-    button: |
-      **Other appointment**:
-      ${ Other_appointment }
-  - Edit: General_Guardian_yes
-    button: |
-      **General guardian**:
-      ${ word(yesno(General_Guardian_yes)) }
-  - Edit: General_Guardianship_reasons
-    button: |
-      **General guardianship reasons**:
-      ${ General_Guardianship_reasons }
-  - Edit: MedCert_filed
-    button: |
-      **Medcert filed**:
-      ${ word(yesno(MedCert_filed)) }
-  - Edit: Guardianship_reasons
-    button: |
-      **Guardianship reasons**:
-      ${ Guardianship_reasons }
-  - Edit: Incapacity_reasons
-    button: |
-      **Incapacity reasons**:
-      ${ Incapacity_reasons }
-  - Edit: Respondent_family_spouse_yes
-    button: |
-      **Respondent family spouse**:
-      ${ word(yesno(Respondent_family_spouse_yes)) }
-  - Edit: Respondent_family_RepPayee_yes
-    button: |
-      **Respondent family reppayee**:
-      ${ word(yesno(Respondent_family_RepPayee_yes)) }
-  - Edit: RespondentFamily_minor_yes
-    button: |
-      **Respondentfamily minor**:
-      ${ word(yesno(RespondentFamily_minor_yes)) }
-  - Edit: Respondent_family_child_yes
-    button: |
-      **Respondent family child**:
-      ${ word(yesno(Respondent_family_child_yes)) }
-  - Edit: Respondent_family_HealthProxy_yes
-    button: |
-      **Respondent family healthproxy**:
-      ${ word(yesno(Respondent_family_HealthProxy_yes)) }
-  - Edit: Respondent_family_incompetent_yes
-    button: |
-      **Respondent family incompetent**:
-      ${ word(yesno(Respondent_family_incompetent_yes)) }
-  - Edit: Respondent_family_address_street1
-    button: |
-      **Respondent family address street1**:
-      ${ Respondent_family_address_street1 }
-  - Edit: Respondent_family_Guardian_yes
-    button: |
-      **Respondent family guardian**:
-      ${ word(yesno(Respondent_family_Guardian_yes)) }
-  - Edit: Respondent_family_DPH_yes
-    button: |
-      **Respondent family dph**:
-      ${ word(yesno(Respondent_family_DPH_yes)) }
-  - Edit: Respondent_family_NomGuardian_yes
-    button: |
-      **Respondent family nomguardian**:
-      ${ word(yesno(Respondent_family_NomGuardian_yes)) }
-  - Edit: Respondent_family_custody_yes
-    button: |
-      **Respondent family custody**:
-      ${ word(yesno(Respondent_family_custody_yes)) }
-  - Edit: Respondent_family_address_unit
-    button: |
-      **Respondent family address unit**:
-      ${ Respondent_family_address_unit }
-  - Edit: Respondent_family_Conservator_yes
-    button: |
-      **Respondent family conservator**:
-      ${ word(yesno(Respondent_family_Conservator_yes)) }
-  - Edit: Respondent_family_Relative_yes
-    button: |
-      **Respondent family relative**:
-      ${ word(yesno(Respondent_family_Relative_yes)) }
-  - Edit: other_family_relationship
-    button: |
-      **Other family relationship**:
-      ${ other_family_relationship }
-  - Edit: Respondent_family_name
-    button: |
-      **Respondent family name**:
-      ${ Respondent_family_name }
-  - Edit: Respondent_family_address_citystatezip
-    button: |
-      **Respondent family address citystatezip**:
-      ${ Respondent_family_address_citystatezip }
-  - Edit: Respondent_family_phone
-    button: |
-      **Respondent family phone**:
-      ${ Respondent_family_phone }
-  - Edit: Respondent_family2_RepPayee_yes
-    button: |
-      **Respondent family2 reppayee**:
-      ${ word(yesno(Respondent_family2_RepPayee_yes)) }
-  - Edit: Respondent_family2_spouse_yes
-    button: |
-      **Respondent family2 spouse**:
-      ${ word(yesno(Respondent_family2_spouse_yes)) }
-  - Edit: Respondent_family2_Minor_yes
-    button: |
-      **Respondent family2 minor**:
-      ${ word(yesno(Respondent_family2_Minor_yes)) }
-  - Edit: Respondent_family2_HealthProxy_yes
-    button: |
-      **Respondent family2 healthproxy**:
-      ${ word(yesno(Respondent_family2_HealthProxy_yes)) }
-  - Edit: Respondent_family2_Incompetent_yes
-    button: |
-      **Respondent family2 incompetent**:
-      ${ word(yesno(Respondent_family2_Incompetent_yes)) }
-  - Edit: Respondent_family2_child_yes
-    button: |
-      **Respondent family2 child**:
-      ${ word(yesno(Respondent_family2_child_yes)) }
-  - Edit: Respondent_family2_address_street1
-    button: |
-      **Respondent family2 address street1**:
-      ${ Respondent_family2_address_street1 }
-  - Edit: Respondent_family2_DPH_yes
-    button: |
-      **Respondent family2 dph**:
-      ${ word(yesno(Respondent_family2_DPH_yes)) }
-  - Edit: Respondent_family2_guardian_yes
-    button: |
-      **Respondent family2 guardian**:
-      ${ word(yesno(Respondent_family2_guardian_yes)) }
-  - Edit: Respondent_family2_custody_yes
-    button: |
-      **Respondent family2 custody**:
-      ${ word(yesno(Respondent_family2_custody_yes)) }
-  - Edit: Respondent_family2_NomGuardian_yes
-    button: |
-      **Respondent family2 nomguardian**:
-      ${ word(yesno(Respondent_family2_NomGuardian_yes)) }
-  - Edit: Respondent_family2_address_unit
-    button: |
-      **Respondent family2 address unit**:
-      ${ Respondent_family2_address_unit }
-  - Edit: Respondent_family2_Conservator_yes
-    button: |
-      **Respondent family2 conservator**:
-      ${ word(yesno(Respondent_family2_Conservator_yes)) }
-  - Edit: Respondent_family2_Relative_yes
-    button: |
-      **Respondent family2 relative**:
-      ${ word(yesno(Respondent_family2_Relative_yes)) }
-  - Edit: other_family2_relationship
-    button: |
-      **Other family2 relationship**:
-      ${ other_family2_relationship }
-  - Edit: Respondent_family2_name
-    button: |
-      **Respondent family2 name**:
-      ${ Respondent_family2_name }
-  - Edit: Respondent_family2_address_citystatezip
-    button: |
-      **Respondent family2 address citystatezip**:
-      ${ Respondent_family2_address_citystatezip }
-  - Edit: Respondent_family2_phone
-    button: |
-      **Respondent family2 phone**:
-      ${ Respondent_family2_phone }
-  - Edit: Respondent_family3_Spouse_yes
-    button: |
-      **Respondent family3 spouse**:
-      ${ word(yesno(Respondent_family3_Spouse_yes)) }
-  - Edit: Respondent_family3_RepPayee_yes
-    button: |
-      **Respondent family3 reppayee**:
-      ${ word(yesno(Respondent_family3_RepPayee_yes)) }
-  - Edit: Respondent_family3_Minor_yes
-    button: |
-      **Respondent family3 minor**:
-      ${ word(yesno(Respondent_family3_Minor_yes)) }
-  - Edit: Respondent_family3_Child_yes
-    button: |
-      **Respondent family3 child**:
-      ${ word(yesno(Respondent_family3_Child_yes)) }
-  - Edit: Respondent_family3_HealthProxy_yes
-    button: |
-      **Respondent family3 healthproxy**:
-      ${ word(yesno(Respondent_family3_HealthProxy_yes)) }
-  - Edit: Respondent_family3_Incompetent_yes
-    button: |
-      **Respondent family3 incompetent**:
-      ${ word(yesno(Respondent_family3_Incompetent_yes)) }
-  - Edit: Respondent_family3_address_street1
-    button: |
-      **Respondent family3 address street1**:
-      ${ Respondent_family3_address_street1 }
-  - Edit: Respondent_family3_Guardian_yes
-    button: |
-      **Respondent family3 guardian**:
-      ${ word(yesno(Respondent_family3_Guardian_yes)) }
-  - Edit: Respondent_family3_DPH_yes
-    button: |
-      **Respondent family3 dph**:
-      ${ word(yesno(Respondent_family3_DPH_yes)) }
-  - Edit: Respondent_family3_NomGuardian_yes
-    button: |
-      **Respondent family3 nomguardian**:
-      ${ word(yesno(Respondent_family3_NomGuardian_yes)) }
-  - Edit: Respondent_family3_custody_yes
-    button: |
-      **Respondent family3 custody**:
-      ${ word(yesno(Respondent_family3_custody_yes)) }
-  - Edit: Respondent_family3_address_unit
-    button: |
-      **Respondent family3 address unit**:
-      ${ Respondent_family3_address_unit }
-  - Edit: Respondent_family3_Conservator_yes
-    button: |
-      **Respondent family3 conservator**:
-      ${ word(yesno(Respondent_family3_Conservator_yes)) }
-  - Edit: other_family3_relationship
-    button: |
-      **Other family3 relationship**:
-      ${ other_family3_relationship }
-  - Edit: Respondent_family3_Relative_yes
-    button: |
-      **Respondent family3 relative**:
-      ${ word(yesno(Respondent_family3_Relative_yes)) }
-  - Edit: Respondent_family3_name
-    button: |
-      **Respondent family3 name**:
-      ${ Respondent_family3_name }
-  - Edit: Respondent_family3_address_citystatezip
-    button: |
-      **Respondent family3 address citystatezip**:
-      ${ Respondent_family3_address_citystatezip }
-  - Edit: Respondent_family3_phone
-    button: |
-      **Respondent family3 phone**:
-      ${ Respondent_family3_phone }
-  - Edit: Current_Guardian_Attached
-    button: |
-      **Current guardian attached**:
-      ${ word(yesno(Current_Guardian_Attached)) }
-  - Edit: Current_Guardian
-    button: |
-      **Current guardian**:
-      ${ word(yesno(Current_Guardian)) }
-  - Edit: Current_Guardian_Uncertain
-    button: |
-      **Current guardian uncertain**:
-      ${ word(yesno(Current_Guardian_Uncertain)) }
-  - Edit: Current_Guardian_info
-    button: |
-      **Current guardian info**:
-      ${ Current_Guardian_info }
-  - Edit: GuardianDoc_attached
-    button: |
-      **Guardiandoc attached**:
-      ${ word(yesno(GuardianDoc_attached)) }
-  - Edit: Current_GuardianDoc
-    button: |
-      **Current guardiandoc**:
-      ${ word(yesno(Current_GuardianDoc)) }
-  - Edit: GuardianDoc_uncertain
-    button: |
-      **Guardiandoc uncertain**:
-      ${ word(yesno(GuardianDoc_uncertain)) }
-  - Edit: Nominated_Guardian_info
-    button: |
-      **Nominated guardian info**:
-      ${ Nominated_Guardian_info }
-  - Edit: Current_Conservator_attached
-    button: |
-      **Current conservator attached**:
-      ${ word(yesno(Current_Conservator_attached)) }
-  - Edit: Current_Conservator
-    button: |
-      **Current conservator**:
-      ${ word(yesno(Current_Conservator)) }
-  - Edit: Current_Conservator_uncertain
-    button: |
-      **Current conservator uncertain**:
-      ${ word(yesno(Current_Conservator_uncertain)) }
-  - Edit: Current_Conservator_info
-    button: |
-      **Current conservator info**:
-      ${ Current_Conservator_info }
-  - Edit: RepPayee_attached
-    button: |
-      **Reppayee attached**:
-      ${ word(yesno(RepPayee_attached)) }
-  - Edit: RepPayee
-    button: |
-      **Reppayee**:
-      ${ word(yesno(RepPayee)) }
-  - Edit: RepPayee_uncertain
-    button: |
-      **Reppayee uncertain**:
-      ${ word(yesno(RepPayee_uncertain)) }
-  - Edit: RepPayee_info
-    button: |
-      **Reppayee info**:
-      ${ RepPayee_info }
-  - Edit: HealthProxy_attached
-    button: |
-      **Healthproxy attached**:
-      ${ word(yesno(HealthProxy_attached)) }
-  - Edit: HealthProxy
-    button: |
-      **Healthproxy**:
-      ${ word(yesno(HealthProxy)) }
-  - Edit: HealthProxy_uncertain
-    button: |
-      **Healthproxy uncertain**:
-      ${ word(yesno(HealthProxy_uncertain)) }
-  - Edit: HealthProxy_info
-    button: |
-      **Healthproxy info**:
-      ${ HealthProxy_info }
-  - Edit: DPA_attached
-    button: |
-      **Dpa attached**:
-      ${ word(yesno(DPA_attached)) }
-  - Edit: DPA
-    button: |
-      **Dpa**:
-      ${ word(yesno(DPA)) }
-  - Edit: DPA_uncertain
-    button: |
-      **Dpa uncertain**:
-      ${ word(yesno(DPA_uncertain)) }
-  - Edit: DPA_info
-    button: |
-      **Dpa info**:
-      ${ DPA_info }
-  - Edit: RespondentMOLST
-    button: |
-      **Respondentmolst**:
-      ${ word(yesno(RespondentMOLST)) }
-  - Edit: RespondentVA
-    button: |
-      **Respondentva**:
-      ${ word(yesno(RespondentVA)) }
-  - Edit: RespondentVA_uncertain
-    button: |
-      **Respondentva uncertain**:
-      ${ word(yesno(RespondentVA_uncertain)) }
-  - Edit: Has_Assets
-    button: |
-      **Has assets**:
-      ${ (Has_Assets) }
-  - Edit: Respondent_Property1
-    button: |
-      **Respondent property1**:
-      ${ Respondent_Property1 }
-  - Edit: Respondent_Property1_value
-    button: |
-      **Respondent property1 value**:
-      ${ Respondent_Property1_value }
-  - Edit: Respondent_Property2
-    button: |
-      **Respondent property2**:
-      ${ Respondent_Property2 }
-  - Edit: Respondent_Property2_value
-    button: |
-      **Respondent property2 value**:
-      ${ Respondent_Property2_value }
-  - Edit: Respondent_Property_total
-    button: |
-      **Respondent property total**:
-      ${ Respondent_Property_total }
-  - Edit: Petition_Assetattachment_yes
-    button: |
-      **Petition assetattachment**:
-      ${ word(yesno(Petition_Assetattachment_yes)) }
-  - Edit: Has_Income
-    button: |
-      **Has income**:
-      ${ word(yesno(Has_Income)) }
-  - Edit: Has_Income_uncertain
-    button: |
-      **Has income uncertain**:
-      ${ word(yesno(Has_Income_uncertain)) }
-  - Edit: Respondent_Income1
-    button: |
-      **Respondent income1**:
-      ${ Respondent_Income1 }
-  - Edit: Respondent_Income1_value
-    button: |
-      **Respondent income1 value**:
-      ${ Respondent_Income1_value }
-  - Edit: Respondent_Income2
-    button: |
-      **Respondent income2**:
-      ${ Respondent_Income2 }
-  - Edit: Respondent_Income2_value
-    button: |
-      **Respondent income2 value**:
-      ${ Respondent_Income2_value }
-  - Edit: Respondent_Income2_total
-    button: |
-      **Respondent income2 total**:
-      ${ Respondent_Income2_total }
-  - Edit: Respondent_income_attachment_yes
-    button: |
-      **Respondent income attachment**:
-      ${ word(yesno(Respondent_income_attachment_yes)) }
-  - Edit: subJudgment_yes
-    button: |
-      **Subjudgment**:
-      ${ word(yesno(subJudgment_yes)) }
-  - Edit: Nursing_facility_yes
-    button: |
-      **Nursing facility**:
-      ${ word(yesno(Nursing_facility_yes)) }
-  - Edit: antipsychotic_meds_yes
-    button: |
-      **Antipsychotic meds**:
-      ${ word(yesno(antipsychotic_meds_yes)) }
-  - Edit: other_treatment_yes
-    button: |
-      **Other treatment**:
-      ${ word(yesno(other_treatment_yes)) }
-  - Edit: substituted_Judgment_reasons
-    button: |
-      **Substituted judgment reasons**:
-      ${ substituted_Judgment_reasons }
-  - Edit: Revoke_healthproxy_yes
-    button: |
-      **Revoke healthproxy**:
-      ${ word(yesno(Revoke_healthproxy_yes)) }
-  - Edit: Petitioner_appointed_yes_1
-    button: |
-      **Petitioner appointed yes 1**:
-      ${ word(yesno(Petitioner_appointed_yes_1)) }
-  - Edit: Petitioner_appointee_no_1
-    button: |
-      **Petitioner appointee no 1**:
-      ${ word(yesno(Petitioner_appointee_no_1)) }
-  - Edit: Guardian_name_last_1
-    button: |
-      **Guardian name last 1**:
-      ${ Guardian_name_last_1 }
-  - Edit: Guardian_name_first_1
-    button: |
-      **Guardian name first 1**:
-      ${ Guardian_name_first_1 }
-  - Edit: Guardian_name_MI_1
-    button: |
-      **Guardian name mi 1**:
-      ${ Guardian_name_MI_1 }
-  - Edit: Other_appointee_yes_1
-    button: |
-      **Other appointee yes 1**:
-      ${ word(yesno(Other_appointee_yes_1)) }
-  - Edit: Limited_Guardian_yes_2
-    button: |
-      **Limited guardian yes 2**:
-      ${ word(yesno(Limited_Guardian_yes_2)) }
-  - Edit: General_Guardian_yes_2
-    button: |
-      **General guardian yes 2**:
-      ${ word(yesno(General_Guardian_yes_2)) }
-  - Edit: Bond_Waiver_yes
-    button: |
-      **Bond waiver**:
-      ${ word(yesno(Bond_Waiver_yes)) }
-  - Edit: Respondent_minimalfunds_yes
-    button: |
-      **Respondent minimalfunds**:
-      ${ word(yesno(Respondent_minimalfunds_yes)) }
-  - Edit: Conservator_requested_yes
-    button: |
-      **Conservator requested**:
-      ${ word(yesno(Conservator_requested_yes)) }
-  - Edit: Other_bondwaiver_yes
-    button: |
-      **Other bondwaiver**:
-      ${ word(yesno(Other_bondwaiver_yes)) }
-  - Edit: Other_Bondwaiver
-    button: |
-      **Other bondwaiver**:
-      ${ Other_Bondwaiver }
-  - Edit: Additional_request_yes
-    button: |
-      **Additional request**:
-      ${ word(yesno(Additional_request_yes)) }
-  - Edit: Additional_requests
-    button: |
-      **Additional requests**:
-      ${ Additional_requests }
-  - Edit: Date
-    button: |
-      **Date**:
-      ${ Date }
-  - Edit: Date_2
-    button: |
-      **Date 2**:
-      ${ Date_2 }
-  - Edit: Date_3
-    button: |
-      **Date 3**:
-      ${ Date_3 }
-  - Edit: Date_4
-    button: |
-      **Date 4**:
-      ${ Date_4 }
-  - Edit: Date_5
-    button: |
-      **Date 5**:
-      ${ Date_5 }
-  - Edit: Date_6
-    button: |
-      **Date 6**:
-      ${ Date_6 }
-  - Edit: Attorney_BBO
-    button: |
-      **Attorney bbo**:
-      ${ Attorney_BBO }
-  - Edit: docket_numbers[0].name.first
-    button: |
-      **docket_numbers**
+# ---
+# id: Guardianship_Assistant review screen
+# event: review_Guardianship_Assistant
+# question: |
+#   Review Screen
+# subquestion: |
+#   Edit your answers below
+# review: 
+#   - Edit: County
+#     button: |
+#       **County**:
+#       ${ County }
+#   - Edit: Respondent_name_middleinitial
+#     button: |
+#       **Respondent name middleinitial**:
+#       ${ Respondent_name_middleinitial }
+#   - Edit: Language_english_yes
+#     button: |
+#       **Language english**:
+#       ${ word(yesno(Language_english_yes)) }
+#   - Edit: Langauge_other_yes
+#     button: |
+#       **Langauge other**:
+#       ${ word(yesno(Langauge_other_yes)) }
+#   - Edit: Other_language
+#     button: |
+#       **Other language**:
+#       ${ Other_language }
+#   - Edit: other_parties[0].birthdate
+#     button: |
+#       **Respondent's birthdate**:
+#       ${ other_parties[0].birthdate }
+#   - Edit: other_parties[0].address.city
+#     button: |
+#       **Respondent address city**:
+#       ${ other_parties[0].address.city }
+#   - Edit: Respondent_Address_street
+#     button: |
+#       **Respondent address street**:
+#       ${ Respondent_Address_street }
+#   - Edit: Respondent_Address_unit
+#     button: |
+#       **Respondent address unit**:
+#       ${ Respondent_Address_unit }
+#   - Edit: Respondent_address_State
+#     button: |
+#       **Respondent address state**:
+#       ${ Respondent_address_State }
+#   - Edit: Respondent_address_Zip
+#     button: |
+#       **Respondent address zip**:
+#       ${ Respondent_address_Zip }
+#   - Edit: Respondent_address_date
+#     button: |
+#       **Date of Respondent address**:
+#       ${ Respondent_address_date }
+#   - Edit: Same_address_yes
+#     button: |
+#       **Same address**:
+#       ${ word(yesno(Same_address_yes)) }
+#   - Edit: Different_address_yes
+#     button: |
+#       **Different address**:
+#       ${ word(yesno(Different_address_yes)) }
+#   - Edit: Respondent_Current_address1
+#     button: |
+#       **Respondent current address1**:
+#       ${ Respondent_Current_address1 }
+#   - Edit: Respodnent_Current_state
+#     button: |
+#       **Respodnent current state**:
+#       ${ Respodnent_Current_state }
+#   - Edit: Respondent_Current_zip
+#     button: |
+#       **Respondent current zip**:
+#       ${ Respondent_Current_zip }
+#   - Edit: Respondent_Current_city
+#     button: |
+#       **Respondent current city**:
+#       ${ Respondent_Current_city }
+#   - Edit: Respondent_Current_address2
+#     button: |
+#       **Respondent current address2**:
+#       ${ Respondent_Current_address2 }
+#   - Edit: Potential_Residence_same
+#     button: |
+#       **Potential residence same**:
+#       ${ word(yesno(Potential_Residence_same)) }
+#   - Edit: Potential_Residence_current
+#     button: |
+#       **Potential residence current**:
+#       ${ word(yesno(Potential_Residence_current)) }
+#   - Edit: Potential_residence_new
+#     button: |
+#       **Potential residence new**:
+#       ${ word(yesno(Potential_residence_new)) }
+#   - Edit: Respondent_New_address1
+#     button: |
+#       **Respondent new address1**:
+#       ${ Respondent_New_address1 }
+#   - Edit: Respondent_New_address_state
+#     button: |
+#       **Respondent new address state**:
+#       ${ Respondent_New_address_state }
+#   - Edit: Respondent_New_address_zip
+#     button: |
+#       **Respondent new address zip**:
+#       ${ Respondent_New_address_zip }
+#   - Edit: Respondent_New_address_city
+#     button: |
+#       **Respondent new address city**:
+#       ${ Respondent_New_address_city }
+#   - Edit: Respondent_New_address_unit
+#     button: |
+#       **Respondent new address unit**:
+#       ${ Respondent_New_address_unit }
+#   - Edit: Respondent_intellectual_disabled
+#     button: |
+#       **Respondent intellectual disabled**:
+#       ${ word(yesno(Respondent_intellectual_disabled)) }
+#   - Edit: Petitioner_name_MI
+#     button: |
+#       **Petitioner name mi**:
+#       ${ Petitioner_name_MI }
+#   - Edit: users[0].address.address
+#     button: |
+#       **Petitioner address street1**:
+#       ${ users[0].address.address }
+#   - Edit: Petitioner_address_State
+#     button: |
+#       **Petitioner address state**:
+#       ${ Petitioner_address_State }
+#   - Edit: Petitioner_Address_unit
+#     button: |
+#       **Petitioner address unit**:
+#       ${ Petitioner_Address_unit }
+#   - Edit: Petitioner_relationship
+#     button: |
+#       **Petitioner relationship**:
+#       ${ Petitioner_relationship }
+#   - Edit: users[0].email
+#     button: |
+#       **Petitioner email**:
+#       ${ users[0].email }
+#   - Edit: Petitioner_interest_list
+#     button: |
+#       **Petitioner interest list**:
+#       ${ Petitioner_interest_list }
+#   - Edit: copetitioner_attachment_yes
+#     button: |
+#       **Copetitioner attachment**:
+#       ${ word(yesno(copetitioner_attachment_yes)) }
+#   - Edit: Petitioner_appointee
+#     button: |
+#       **Petitioner appointee**:
+#       ${ word(yesno(Petitioner_appointee)) }
+#   - Edit: Other_appointee_yes
+#     button: |
+#       **Other appointee**:
+#       ${ word(yesno(Other_appointee_yes)) }
+#   - Edit: Guardian_name_MI
+#     button: |
+#       **Guardian name mi**:
+#       ${ Guardian_name_MI }
+#   - Edit: Guardian_Address_Street
+#     button: |
+#       **Guardian address street**:
+#       ${ Guardian_Address_Street }
+#   - Edit: Guardian_relationship
+#     button: |
+#       **Guardian relationship**:
+#       ${ Guardian_relationship }
+#   - Edit: coguardian_attachment_yes
+#     button: |
+#       **Coguardian attachment**:
+#       ${ word(yesno(coguardian_attachment_yes)) }
+#   - Edit: guardian_poa_yes
+#     button: |
+#       **Guardian poa**:
+#       ${ word(yesno(guardian_poa_yes)) }
+#   - Edit: guardian_parent_yes
+#     button: |
+#       **Guardian parent**:
+#       ${ word(yesno(guardian_parent_yes)) }
+#   - Edit: guardian_spouse_yes
+#     button: |
+#       **Guardian spouse**:
+#       ${ word(yesno(guardian_spouse_yes)) }
+#   - Edit: guardian_appointee_not_listed_yes
+#     button: |
+#       **Guardian appointee not listed**:
+#       ${ word(yesno(guardian_appointee_not_listed_yes)) }
+#   - Edit: Limited_Guardian_yes
+#     button: |
+#       **Limited guardian**:
+#       ${ word(yesno(Limited_Guardian_yes)) }
+#   - Edit: insurance_benefits_yes
+#     button: |
+#       **Insurance benefits**:
+#       ${ word(yesno(insurance_benefits_yes)) }
+#   - Edit: financial_records_yes
+#     button: |
+#       **Financial records**:
+#       ${ word(yesno(financial_records_yes)) }
+#   - Edit: Other_appointment_yes
+#     button: |
+#       **Other appointment**:
+#       ${ word(yesno(Other_appointment_yes)) }
+#   - Edit: Other_appointment
+#     button: |
+#       **Other appointment**:
+#       ${ Other_appointment }
+#   - Edit: General_Guardian_yes
+#     button: |
+#       **General guardian**:
+#       ${ word(yesno(General_Guardian_yes)) }
+#   - Edit: General_Guardianship_reasons
+#     button: |
+#       **General guardianship reasons**:
+#       ${ General_Guardianship_reasons }
+#   - Edit: MedCert_filed
+#     button: |
+#       **Medcert filed**:
+#       ${ word(yesno(MedCert_filed)) }
+#   - Edit: Guardianship_reasons
+#     button: |
+#       **Guardianship reasons**:
+#       ${ Guardianship_reasons }
+#   - Edit: Incapacity_reasons
+#     button: |
+#       **Incapacity reasons**:
+#       ${ Incapacity_reasons }
+#   - Edit: Respondent_family_spouse_yes
+#     button: |
+#       **Respondent family spouse**:
+#       ${ word(yesno(Respondent_family_spouse_yes)) }
+#   - Edit: Respondent_family_RepPayee_yes
+#     button: |
+#       **Respondent family reppayee**:
+#       ${ word(yesno(Respondent_family_RepPayee_yes)) }
+#   - Edit: RespondentFamily_minor_yes
+#     button: |
+#       **Respondentfamily minor**:
+#       ${ word(yesno(RespondentFamily_minor_yes)) }
+#   - Edit: Respondent_family_child_yes
+#     button: |
+#       **Respondent family child**:
+#       ${ word(yesno(Respondent_family_child_yes)) }
+#   - Edit: Respondent_family_HealthProxy_yes
+#     button: |
+#       **Respondent family healthproxy**:
+#       ${ word(yesno(Respondent_family_HealthProxy_yes)) }
+#   - Edit: Respondent_family_incompetent_yes
+#     button: |
+#       **Respondent family incompetent**:
+#       ${ word(yesno(Respondent_family_incompetent_yes)) }
+#   - Edit: Respondent_family_address_street1
+#     button: |
+#       **Respondent family address street1**:
+#       ${ Respondent_family_address_street1 }
+#   - Edit: Respondent_family_Guardian_yes
+#     button: |
+#       **Respondent family guardian**:
+#       ${ word(yesno(Respondent_family_Guardian_yes)) }
+#   - Edit: Respondent_family_DPH_yes
+#     button: |
+#       **Respondent family dph**:
+#       ${ word(yesno(Respondent_family_DPH_yes)) }
+#   - Edit: Respondent_family_NomGuardian_yes
+#     button: |
+#       **Respondent family nomguardian**:
+#       ${ word(yesno(Respondent_family_NomGuardian_yes)) }
+#   - Edit: Respondent_family_custody_yes
+#     button: |
+#       **Respondent family custody**:
+#       ${ word(yesno(Respondent_family_custody_yes)) }
+#   - Edit: Respondent_family_address_unit
+#     button: |
+#       **Respondent family address unit**:
+#       ${ Respondent_family_address_unit }
+#   - Edit: Respondent_family_Conservator_yes
+#     button: |
+#       **Respondent family conservator**:
+#       ${ word(yesno(Respondent_family_Conservator_yes)) }
+#   - Edit: Respondent_family_Relative_yes
+#     button: |
+#       **Respondent family relative**:
+#       ${ word(yesno(Respondent_family_Relative_yes)) }
+#   - Edit: other_family_relationship
+#     button: |
+#       **Other family relationship**:
+#       ${ other_family_relationship }
+#   - Edit: Respondent_family_name
+#     button: |
+#       **Respondent family name**:
+#       ${ Respondent_family_name }
+#   - Edit: Respondent_family_address_citystatezip
+#     button: |
+#       **Respondent family address citystatezip**:
+#       ${ Respondent_family_address_citystatezip }
+#   - Edit: Respondent_family_phone
+#     button: |
+#       **Respondent family phone**:
+#       ${ Respondent_family_phone }
+#   - Edit: Respondent_family2_RepPayee_yes
+#     button: |
+#       **Respondent family2 reppayee**:
+#       ${ word(yesno(Respondent_family2_RepPayee_yes)) }
+#   - Edit: Respondent_family2_spouse_yes
+#     button: |
+#       **Respondent family2 spouse**:
+#       ${ word(yesno(Respondent_family2_spouse_yes)) }
+#   - Edit: Respondent_family2_Minor_yes
+#     button: |
+#       **Respondent family2 minor**:
+#       ${ word(yesno(Respondent_family2_Minor_yes)) }
+#   - Edit: Respondent_family2_HealthProxy_yes
+#     button: |
+#       **Respondent family2 healthproxy**:
+#       ${ word(yesno(Respondent_family2_HealthProxy_yes)) }
+#   - Edit: Respondent_family2_Incompetent_yes
+#     button: |
+#       **Respondent family2 incompetent**:
+#       ${ word(yesno(Respondent_family2_Incompetent_yes)) }
+#   - Edit: Respondent_family2_child_yes
+#     button: |
+#       **Respondent family2 child**:
+#       ${ word(yesno(Respondent_family2_child_yes)) }
+#   - Edit: Respondent_family2_address_street1
+#     button: |
+#       **Respondent family2 address street1**:
+#       ${ Respondent_family2_address_street1 }
+#   - Edit: Respondent_family2_DPH_yes
+#     button: |
+#       **Respondent family2 dph**:
+#       ${ word(yesno(Respondent_family2_DPH_yes)) }
+#   - Edit: Respondent_family2_guardian_yes
+#     button: |
+#       **Respondent family2 guardian**:
+#       ${ word(yesno(Respondent_family2_guardian_yes)) }
+#   - Edit: Respondent_family2_custody_yes
+#     button: |
+#       **Respondent family2 custody**:
+#       ${ word(yesno(Respondent_family2_custody_yes)) }
+#   - Edit: Respondent_family2_NomGuardian_yes
+#     button: |
+#       **Respondent family2 nomguardian**:
+#       ${ word(yesno(Respondent_family2_NomGuardian_yes)) }
+#   - Edit: Respondent_family2_address_unit
+#     button: |
+#       **Respondent family2 address unit**:
+#       ${ Respondent_family2_address_unit }
+#   - Edit: Respondent_family2_Conservator_yes
+#     button: |
+#       **Respondent family2 conservator**:
+#       ${ word(yesno(Respondent_family2_Conservator_yes)) }
+#   - Edit: Respondent_family2_Relative_yes
+#     button: |
+#       **Respondent family2 relative**:
+#       ${ word(yesno(Respondent_family2_Relative_yes)) }
+#   - Edit: other_family2_relationship
+#     button: |
+#       **Other family2 relationship**:
+#       ${ other_family2_relationship }
+#   - Edit: Respondent_family2_name
+#     button: |
+#       **Respondent family2 name**:
+#       ${ Respondent_family2_name }
+#   - Edit: Respondent_family2_address_citystatezip
+#     button: |
+#       **Respondent family2 address citystatezip**:
+#       ${ Respondent_family2_address_citystatezip }
+#   - Edit: Respondent_family2_phone
+#     button: |
+#       **Respondent family2 phone**:
+#       ${ Respondent_family2_phone }
+#   - Edit: Respondent_family3_Spouse_yes
+#     button: |
+#       **Respondent family3 spouse**:
+#       ${ word(yesno(Respondent_family3_Spouse_yes)) }
+#   - Edit: Respondent_family3_RepPayee_yes
+#     button: |
+#       **Respondent family3 reppayee**:
+#       ${ word(yesno(Respondent_family3_RepPayee_yes)) }
+#   - Edit: Respondent_family3_Minor_yes
+#     button: |
+#       **Respondent family3 minor**:
+#       ${ word(yesno(Respondent_family3_Minor_yes)) }
+#   - Edit: Respondent_family3_Child_yes
+#     button: |
+#       **Respondent family3 child**:
+#       ${ word(yesno(Respondent_family3_Child_yes)) }
+#   - Edit: Respondent_family3_HealthProxy_yes
+#     button: |
+#       **Respondent family3 healthproxy**:
+#       ${ word(yesno(Respondent_family3_HealthProxy_yes)) }
+#   - Edit: Respondent_family3_Incompetent_yes
+#     button: |
+#       **Respondent family3 incompetent**:
+#       ${ word(yesno(Respondent_family3_Incompetent_yes)) }
+#   - Edit: Respondent_family3_address_street1
+#     button: |
+#       **Respondent family3 address street1**:
+#       ${ Respondent_family3_address_street1 }
+#   - Edit: Respondent_family3_Guardian_yes
+#     button: |
+#       **Respondent family3 guardian**:
+#       ${ word(yesno(Respondent_family3_Guardian_yes)) }
+#   - Edit: Respondent_family3_DPH_yes
+#     button: |
+#       **Respondent family3 dph**:
+#       ${ word(yesno(Respondent_family3_DPH_yes)) }
+#   - Edit: Respondent_family3_NomGuardian_yes
+#     button: |
+#       **Respondent family3 nomguardian**:
+#       ${ word(yesno(Respondent_family3_NomGuardian_yes)) }
+#   - Edit: Respondent_family3_custody_yes
+#     button: |
+#       **Respondent family3 custody**:
+#       ${ word(yesno(Respondent_family3_custody_yes)) }
+#   - Edit: Respondent_family3_address_unit
+#     button: |
+#       **Respondent family3 address unit**:
+#       ${ Respondent_family3_address_unit }
+#   - Edit: Respondent_family3_Conservator_yes
+#     button: |
+#       **Respondent family3 conservator**:
+#       ${ word(yesno(Respondent_family3_Conservator_yes)) }
+#   - Edit: other_family3_relationship
+#     button: |
+#       **Other family3 relationship**:
+#       ${ other_family3_relationship }
+#   - Edit: Respondent_family3_Relative_yes
+#     button: |
+#       **Respondent family3 relative**:
+#       ${ word(yesno(Respondent_family3_Relative_yes)) }
+#   - Edit: Respondent_family3_name
+#     button: |
+#       **Respondent family3 name**:
+#       ${ Respondent_family3_name }
+#   - Edit: Respondent_family3_address_citystatezip
+#     button: |
+#       **Respondent family3 address citystatezip**:
+#       ${ Respondent_family3_address_citystatezip }
+#   - Edit: Respondent_family3_phone
+#     button: |
+#       **Respondent family3 phone**:
+#       ${ Respondent_family3_phone }
+#   - Edit: Current_Guardian_Attached
+#     button: |
+#       **Current guardian attached**:
+#       ${ word(yesno(Current_Guardian_Attached)) }
+#   - Edit: Current_Guardian
+#     button: |
+#       **Current guardian**:
+#       ${ word(yesno(Current_Guardian)) }
+#   - Edit: Current_Guardian_Uncertain
+#     button: |
+#       **Current guardian uncertain**:
+#       ${ word(yesno(Current_Guardian_Uncertain)) }
+#   - Edit: Current_Guardian_info
+#     button: |
+#       **Current guardian info**:
+#       ${ Current_Guardian_info }
+#   - Edit: GuardianDoc_attached
+#     button: |
+#       **Guardiandoc attached**:
+#       ${ word(yesno(GuardianDoc_attached)) }
+#   - Edit: Current_GuardianDoc
+#     button: |
+#       **Current guardiandoc**:
+#       ${ word(yesno(Current_GuardianDoc)) }
+#   - Edit: GuardianDoc_uncertain
+#     button: |
+#       **Guardiandoc uncertain**:
+#       ${ word(yesno(GuardianDoc_uncertain)) }
+#   - Edit: Nominated_Guardian_info
+#     button: |
+#       **Nominated guardian info**:
+#       ${ Nominated_Guardian_info }
+#   - Edit: Current_Conservator_attached
+#     button: |
+#       **Current conservator attached**:
+#       ${ word(yesno(Current_Conservator_attached)) }
+#   - Edit: Current_Conservator
+#     button: |
+#       **Current conservator**:
+#       ${ word(yesno(Current_Conservator)) }
+#   - Edit: Current_Conservator_uncertain
+#     button: |
+#       **Current conservator uncertain**:
+#       ${ word(yesno(Current_Conservator_uncertain)) }
+#   - Edit: Current_Conservator_info
+#     button: |
+#       **Current conservator info**:
+#       ${ Current_Conservator_info }
+#   - Edit: RepPayee_attached
+#     button: |
+#       **Reppayee attached**:
+#       ${ word(yesno(RepPayee_attached)) }
+#   - Edit: RepPayee
+#     button: |
+#       **Reppayee**:
+#       ${ word(yesno(RepPayee)) }
+#   - Edit: RepPayee_uncertain
+#     button: |
+#       **Reppayee uncertain**:
+#       ${ word(yesno(RepPayee_uncertain)) }
+#   - Edit: RepPayee_info
+#     button: |
+#       **Reppayee info**:
+#       ${ RepPayee_info }
+#   - Edit: HealthProxy_attached
+#     button: |
+#       **Healthproxy attached**:
+#       ${ word(yesno(HealthProxy_attached)) }
+#   - Edit: HealthProxy
+#     button: |
+#       **Healthproxy**:
+#       ${ word(yesno(HealthProxy)) }
+#   - Edit: HealthProxy_uncertain
+#     button: |
+#       **Healthproxy uncertain**:
+#       ${ word(yesno(HealthProxy_uncertain)) }
+#   - Edit: HealthProxy_info
+#     button: |
+#       **Healthproxy info**:
+#       ${ HealthProxy_info }
+#   - Edit: DPA_attached
+#     button: |
+#       **Dpa attached**:
+#       ${ word(yesno(DPA_attached)) }
+#   - Edit: DPA
+#     button: |
+#       **Dpa**:
+#       ${ word(yesno(DPA)) }
+#   - Edit: DPA_uncertain
+#     button: |
+#       **Dpa uncertain**:
+#       ${ word(yesno(DPA_uncertain)) }
+#   - Edit: DPA_info
+#     button: |
+#       **Dpa info**:
+#       ${ DPA_info }
+#   - Edit: RespondentMOLST
+#     button: |
+#       **Respondentmolst**:
+#       ${ word(yesno(RespondentMOLST)) }
+#   - Edit: RespondentVA
+#     button: |
+#       **Respondentva**:
+#       ${ word(yesno(RespondentVA)) }
+#   - Edit: RespondentVA_uncertain
+#     button: |
+#       **Respondentva uncertain**:
+#       ${ word(yesno(RespondentVA_uncertain)) }
+#   - Edit: Has_Assets
+#     button: |
+#       **Has assets**:
+#       ${ (Has_Assets) }
+#   - Edit: Respondent_Property1
+#     button: |
+#       **Respondent property1**:
+#       ${ Respondent_Property1 }
+#   - Edit: Respondent_Property1_value
+#     button: |
+#       **Respondent property1 value**:
+#       ${ Respondent_Property1_value }
+#   - Edit: Respondent_Property2
+#     button: |
+#       **Respondent property2**:
+#       ${ Respondent_Property2 }
+#   - Edit: Respondent_Property2_value
+#     button: |
+#       **Respondent property2 value**:
+#       ${ Respondent_Property2_value }
+#   - Edit: Respondent_Property_total
+#     button: |
+#       **Respondent property total**:
+#       ${ Respondent_Property_total }
+#   - Edit: Petition_Assetattachment_yes
+#     button: |
+#       **Petition assetattachment**:
+#       ${ word(yesno(Petition_Assetattachment_yes)) }
+#   - Edit: Has_Income
+#     button: |
+#       **Has income**:
+#       ${ word(yesno(Has_Income)) }
+#   - Edit: Has_Income_uncertain
+#     button: |
+#       **Has income uncertain**:
+#       ${ word(yesno(Has_Income_uncertain)) }
+#   - Edit: Respondent_Income1
+#     button: |
+#       **Respondent income1**:
+#       ${ Respondent_Income1 }
+#   - Edit: Respondent_Income1_value
+#     button: |
+#       **Respondent income1 value**:
+#       ${ Respondent_Income1_value }
+#   - Edit: Respondent_Income2
+#     button: |
+#       **Respondent income2**:
+#       ${ Respondent_Income2 }
+#   - Edit: Respondent_Income2_value
+#     button: |
+#       **Respondent income2 value**:
+#       ${ Respondent_Income2_value }
+#   - Edit: Respondent_Income2_total
+#     button: |
+#       **Respondent income2 total**:
+#       ${ Respondent_Income2_total }
+#   - Edit: Respondent_income_attachment_yes
+#     button: |
+#       **Respondent income attachment**:
+#       ${ word(yesno(Respondent_income_attachment_yes)) }
+#   - Edit: subJudgment_yes
+#     button: |
+#       **Subjudgment**:
+#       ${ word(yesno(subJudgment_yes)) }
+#   - Edit: Nursing_facility_yes
+#     button: |
+#       **Nursing facility**:
+#       ${ word(yesno(Nursing_facility_yes)) }
+#   - Edit: antipsychotic_meds_yes
+#     button: |
+#       **Antipsychotic meds**:
+#       ${ word(yesno(antipsychotic_meds_yes)) }
+#   - Edit: other_treatment_yes
+#     button: |
+#       **Other treatment**:
+#       ${ word(yesno(other_treatment_yes)) }
+#   - Edit: substituted_Judgment_reasons
+#     button: |
+#       **Substituted judgment reasons**:
+#       ${ substituted_Judgment_reasons }
+#   - Edit: Revoke_healthproxy_yes
+#     button: |
+#       **Revoke healthproxy**:
+#       ${ word(yesno(Revoke_healthproxy_yes)) }
+#   - Edit: Petitioner_appointed_yes_1
+#     button: |
+#       **Petitioner appointed yes 1**:
+#       ${ word(yesno(Petitioner_appointed_yes_1)) }
+#   - Edit: Petitioner_appointee_no_1
+#     button: |
+#       **Petitioner appointee no 1**:
+#       ${ word(yesno(Petitioner_appointee_no_1)) }
+#   - Edit: Guardian_name_last_1
+#     button: |
+#       **Guardian name last 1**:
+#       ${ Guardian_name_last_1 }
+#   - Edit: Guardian_name_first_1
+#     button: |
+#       **Guardian name first 1**:
+#       ${ Guardian_name_first_1 }
+#   - Edit: Guardian_name_MI_1
+#     button: |
+#       **Guardian name mi 1**:
+#       ${ Guardian_name_MI_1 }
+#   - Edit: Other_appointee_yes_1
+#     button: |
+#       **Other appointee yes 1**:
+#       ${ word(yesno(Other_appointee_yes_1)) }
+#   - Edit: Limited_Guardian_yes_2
+#     button: |
+#       **Limited guardian yes 2**:
+#       ${ word(yesno(Limited_Guardian_yes_2)) }
+#   - Edit: General_Guardian_yes_2
+#     button: |
+#       **General guardian yes 2**:
+#       ${ word(yesno(General_Guardian_yes_2)) }
+#   - Edit: Bond_Waiver_yes
+#     button: |
+#       **Bond waiver**:
+#       ${ word(yesno(Bond_Waiver_yes)) }
+#   - Edit: Respondent_minimalfunds_yes
+#     button: |
+#       **Respondent minimalfunds**:
+#       ${ word(yesno(Respondent_minimalfunds_yes)) }
+#   - Edit: Conservator_requested_yes
+#     button: |
+#       **Conservator requested**:
+#       ${ word(yesno(Conservator_requested_yes)) }
+#   - Edit: Other_bondwaiver_yes
+#     button: |
+#       **Other bondwaiver**:
+#       ${ word(yesno(Other_bondwaiver_yes)) }
+#   - Edit: Other_Bondwaiver
+#     button: |
+#       **Other bondwaiver**:
+#       ${ Other_Bondwaiver }
+#   - Edit: Additional_request_yes
+#     button: |
+#       **Additional request**:
+#       ${ word(yesno(Additional_request_yes)) }
+#   - Edit: Additional_requests
+#     button: |
+#       **Additional requests**:
+#       ${ Additional_requests }
+#   - Edit: Date
+#     button: |
+#       **Date**:
+#       ${ Date }
+#   - Edit: Date_2
+#     button: |
+#       **Date 2**:
+#       ${ Date_2 }
+#   - Edit: Date_3
+#     button: |
+#       **Date 3**:
+#       ${ Date_3 }
+#   - Edit: Date_4
+#     button: |
+#       **Date 4**:
+#       ${ Date_4 }
+#   - Edit: Date_5
+#     button: |
+#       **Date 5**:
+#       ${ Date_5 }
+#   - Edit: Date_6
+#     button: |
+#       **Date 6**:
+#       ${ Date_6 }
+#   - Edit: Attorney_BBO
+#     button: |
+#       **Attorney bbo**:
+#       ${ Attorney_BBO }
+#   - Edit: docket_numbers[0].name.first
+#     button: |
+#       **docket_numbers**
 
-      % for my_var in docket_numbers:
-        * ${ my_var }
-      % endfor
-    # NOTE: a question block with 'docket_numbers.revisit'
-    # lets the user edit all of the items at once
-  - Edit: other_parties[0].birthdate
-    button: |
-      **other_parties[0].birthdate**:
-      ${ other_parties[0].birthdate.format() }
-  - Edit: Attorney.address.state
-    button: |
-      **Attorney.address.state**:
-      ${ Attorney.address.state }
-  - Edit: other_parties[0].name.first
-    button: |
-      **other_parties[0].name.first**:
-      ${ other_parties[0].familiar() }
-  - Edit: Attorney.phone_number
-    button: |
-      **Attorney.phone_number**:
-      ${ Attorney.phone_number }
-  - Edit: Attorney.address.zip
-    button: |
-      **Attorney.address.zip**:
-      ${ Attorney.address.zip }
-  - Edit: users[0].address.city
-    button: |
-      **users[0].address.city**:
-      ${ users[0].address.city }
-  - Edit: Guardian.address.state
-    button: |
-      **Guardian.address.state**:
-      ${ Guardian.address.state }
-  - Edit: Attorney.address.city
-    button: |
-      **Attorney.address.city**:
-      ${ Attorney.address.city }
-  - Edit: Respondent
-    button: |
-      **Respondent**:
-      ${ other_parties[0] }
-  - Edit: other_parties[0].gender
-    button: |
-      **other_parties[0].gender**:
-      ${ other_parties[0].gender }
-  - Edit: Guardian.phone_number
-    button: |
-      **Guardian.phone_number**:
-      ${ Guardian.phone_number }
-  - Edit: Attorney.address.address
-    button: |
-      **Attorney.address.address**:
-      ${ Attorney.address.address }
-  - Edit: Guardian.name.last
-    button: |
-      **Guardian.name.last**:
-      ${ Guardian.name.last }
-  - Edit: other_parties[0].name.last
-    button: |
-      **other_parties[0].name.last**:
-      ${ other_parties[0].name.last }
-  - Edit: users[0].address.zip
-    button: |
-      **users[0].address.zip**:
-      ${ users[0].address.zip }
-  - Edit: Guardian.address.zip
-    button: |
-      **Guardian.address.zip**:
-      ${ Guardian.address.zip }
-  - Edit: users[0].name.last
-    button: |
-      **users[0].name.last**:
-      ${ users[0].name.last }
-  - Edit: Guardian.address.unit
-    button: |
-      **Guardian.address.unit**:
-      ${ Guardian.address.unit }
-  - Edit: Guardian.email
-    button: |
-      **Guardian.email**:
-      ${ Guardian.email }
-  - Edit: other_parties[0].phone_number
-    button: |
-      **other_parties[0].phone_number**:
-      ${ other_parties[0].phone_number }
-  - Edit: users[0].name.first
-    button: |
-      **users[0].name.first**:
-      ${ users[0].name.first }
-  - Edit: users[0].phone_number
-    button: |
-      **users[0].phone_number**:
-      ${ users[0].phone_number }
-  - Edit: Attorney.email
-    button: |
-      **Attorney.email**:
-      ${ Attorney.email }
-  - Edit: Guardian.address.city
-    button: |
-      **Guardian.address.city**:
-      ${ Guardian.address.city }
-  - Edit: Guardian.name.first
-    button: |
-      **Guardian.name.first**:
-      ${ Guardian.name.first }
-  - Edit: Attorney.address.unit
-    button: |
-      **Attorney.address.unit**:
-      ${ Attorney.address.unit }
-  - Edit: Attorney
-    button: |
-      **Attorney**:
-      ${ Attorney }
-  - Edit: Petitioner_Signature
-    button: |
-      **Petitioner_Signature**:
-      ${ Petitioner_Signature }
-  - Edit: Copetitioner_Signature
-    button: |
-      **Copetitioner_Signature**:
-      ${ Copetitioner_Signature }
-  - Edit: Attorney_signature
-    button: |
-      **Attorney_signature**:
-      ${ Attorney_signature }
+#       % for my_var in docket_numbers:
+#         * ${ my_var }
+#       % endfor
+#     # NOTE: a question block with 'docket_numbers.revisit'
+#     # lets the user edit all of the items at once
+#   - Edit: other_parties[0].birthdate
+#     button: |
+#       **other_parties[0].birthdate**:
+#       ${ other_parties[0].birthdate.format() }
+#   - Edit: Attorney.address.state
+#     button: |
+#       **Attorney.address.state**:
+#       ${ Attorney.address.state }
+#   - Edit: other_parties[0].name.first
+#     button: |
+#       **other_parties[0].name.first**:
+#       ${ other_parties[0].familiar() }
+#   - Edit: Attorney.phone_number
+#     button: |
+#       **Attorney.phone_number**:
+#       ${ Attorney.phone_number }
+#   - Edit: Attorney.address.zip
+#     button: |
+#       **Attorney.address.zip**:
+#       ${ Attorney.address.zip }
+#   - Edit: users[0].address.city
+#     button: |
+#       **users[0].address.city**:
+#       ${ users[0].address.city }
+#   - Edit: Guardian.address.state
+#     button: |
+#       **Guardian.address.state**:
+#       ${ Guardian.address.state }
+#   - Edit: Attorney.address.city
+#     button: |
+#       **Attorney.address.city**:
+#       ${ Attorney.address.city }
+#   - Edit: Respondent
+#     button: |
+#       **Respondent**:
+#       ${ other_parties[0] }
+#   - Edit: other_parties[0].gender
+#     button: |
+#       **other_parties[0].gender**:
+#       ${ other_parties[0].gender }
+#   - Edit: Guardian.phone_number
+#     button: |
+#       **Guardian.phone_number**:
+#       ${ Guardian.phone_number }
+#   - Edit: Attorney.address.address
+#     button: |
+#       **Attorney.address.address**:
+#       ${ Attorney.address.address }
+#   - Edit: Guardian.name.last
+#     button: |
+#       **Guardian.name.last**:
+#       ${ Guardian.name.last }
+#   - Edit: other_parties[0].name.last
+#     button: |
+#       **other_parties[0].name.last**:
+#       ${ other_parties[0].name.last }
+#   - Edit: users[0].address.zip
+#     button: |
+#       **users[0].address.zip**:
+#       ${ users[0].address.zip }
+#   - Edit: Guardian.address.zip
+#     button: |
+#       **Guardian.address.zip**:
+#       ${ Guardian.address.zip }
+#   - Edit: users[0].name.last
+#     button: |
+#       **users[0].name.last**:
+#       ${ users[0].name.last }
+#   - Edit: Guardian.address.unit
+#     button: |
+#       **Guardian.address.unit**:
+#       ${ Guardian.address.unit }
+#   - Edit: Guardian.email
+#     button: |
+#       **Guardian.email**:
+#       ${ Guardian.email }
+#   - Edit: other_parties[0].phone_number
+#     button: |
+#       **other_parties[0].phone_number**:
+#       ${ other_parties[0].phone_number }
+#   - Edit: users[0].name.first
+#     button: |
+#       **users[0].name.first**:
+#       ${ users[0].name.first }
+#   - Edit: users[0].phone_number
+#     button: |
+#       **users[0].phone_number**:
+#       ${ users[0].phone_number }
+#   - Edit: Attorney.email
+#     button: |
+#       **Attorney.email**:
+#       ${ Attorney.email }
+#   - Edit: Guardian.address.city
+#     button: |
+#       **Guardian.address.city**:
+#       ${ Guardian.address.city }
+#   - Edit: Guardian.name.first
+#     button: |
+#       **Guardian.name.first**:
+#       ${ Guardian.name.first }
+#   - Edit: Attorney.address.unit
+#     button: |
+#       **Attorney.address.unit**:
+#       ${ Attorney.address.unit }
+#   - Edit: Attorney
+#     button: |
+#       **Attorney**:
+#       ${ Attorney }
+#   - Edit: Petitioner_Signature
+#     button: |
+#       **Petitioner_Signature**:
+#       ${ Petitioner_Signature }
+#   - Edit: Copetitioner_Signature
+#     button: |
+#       **Copetitioner_Signature**:
+#       ${ Copetitioner_Signature }
+#   - Edit: Attorney_signature
+#     button: |
+#       **Attorney_signature**:
+#       ${ Attorney_signature }
