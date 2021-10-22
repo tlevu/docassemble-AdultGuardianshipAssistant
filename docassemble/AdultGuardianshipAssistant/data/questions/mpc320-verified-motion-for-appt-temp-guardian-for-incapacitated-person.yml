@@ -1,7 +1,7 @@
 ---
 objects:
   - Respondent: ALPeopleList.using(ask_number=True,target_number=1)
-  - Petitioner: ALPeopleList.using(ask_number=True,target_number=1)
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
   - TempGuardian: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 #################### Interview order #####################
@@ -17,11 +17,9 @@ code: |
   County
   Bond_WithSureties
   Respondent
-  Petitioner.name.first
+  users[0].name.first
   TempGuardian.name.last
   TempGuardian.name.first
-  Petitioner.name.last
-  Petitioner.name.middle_initial()
   interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson = True
 ---
 id: Review your form before you sign it
@@ -118,9 +116,12 @@ question: |
 subquestion: |
   Thank you ${users}. Your form is ready to download and deliver.
   
-  View, download and send your form below. Click the "Make changes" button to fix any mistakes. 
+  View, download and send your form below. Click the "Make changes" button to
+  fix any mistakes. 
   
-  ${ action_button_html(url_action('review_mpc320verifiedmotionforappttempguardianforincapacitatedperson'), label='Make changes', color='info') } 
+  ${
+  action_button_html(url_action('review_mpc320verifiedmotionforappttempguardianforincapacitatedperson'),
+  label='Make changes', color='info') } 
   
   ${ al_user_bundle.download_list_html() }
   
@@ -136,12 +137,12 @@ attachment:
     skip undefined: True
     pdf template file: mpc320-verified-motion-for-appt-temp-guardian-for-incapacitated-person.pdf
     fields: 
-      - "Respondent_name": ${ Respondent }
-      - "Petitioner_name_first": ${ Petitioner.name.first }
+      - "Respondent_name": ${ other_parties[0] }
+      - "Petitioner_name_first": ${ users[0].name.first }
       - "TempGuardian_name_last": ${ TempGuardian.name.last }
       - "TempGuardian_name_first": ${ TempGuardian.name.first }
-      - "Petitioner_name_last": ${ Petitioner.name.last }
-      - "Petitioner_name_middle_initial": ${ Petitioner.name.middle_initial() }
+      - "Petitioner_name_last": ${ users[0].name.last }
+      - "Petitioner_name_middle_initial": ${ users[0].name.middle_initial() }
       - "County": ${ County }
       - "Temporary_guardianship_reasons": ${ Temporary_guardianship_reasons }
       - "Temporary_guardianship_harm_avoided": ${ Temporary_guardianship_harm_avoided }
@@ -296,11 +297,11 @@ attachment:
 #   - Edit: Respondent
 #     button: |
 #       **Respondent**:
-#       ${ Respondent }
-#   - Edit: Petitioner.name.first
+#       ${ other_parties[0] }
+#   - Edit: users[0].name.first
 #     button: |
-#       **Petitioner.name.first**:
-#       ${ Petitioner.name.first }
+#       **users[0].name.first**:
+#       ${ users[0].name.first }
 #   - Edit: TempGuardian.name.last
 #     button: |
 #       **TempGuardian.name.last**:
@@ -309,7 +310,7 @@ attachment:
 #     button: |
 #       **TempGuardian.name.first**:
 #       ${ TempGuardian.name.first }
-#   - Edit: Petitioner.name.last
+#   - Edit: users[0].name.last
 #     button: |
-#       **Petitioner.name.last**:
-#       ${ Petitioner.name.last }
+#       **users[0].name.last**:
+#       ${ users[0].name.last }

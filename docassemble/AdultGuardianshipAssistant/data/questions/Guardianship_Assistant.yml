@@ -52,17 +52,16 @@ sections:
   - review_Guardianship_Assistant: Review your answers
 ---
 objects:
+  - users: ALPeopleList.using(ask_number=True)
+  - other_parties: ALPeopleList.using(ask_number=True, target_number=1)  
   - Guardian: ALIndividual
   - Attorney: ALIndividual
-  - Petitioner: ALIndividual
-  - Copetitioner: ALIndividual
-  - Respondent: ALIndividual
+---
+objects:
+  - other_parties[0].new_address: ALAddress  
 ---
 ###################### Main order ######################
 mandatory: True
-comment: |
-  This block includes the logic for standalone interviews.
-  Delete mandatory: True to include in another interview
 id: main_order_Guardianship_Assistant
 code: |
   al_intro_screen
@@ -88,19 +87,19 @@ code: |
   nav.set_section('review_Guardianship_Assistant')
   user_role = 'plaintiff'
   temporary_needed
-  Petitioner.name.first
-  Respondent.name.first
-  has_copetitioner
+  users[0].name.first
+  other_parties[0].name.first
+  users.gather()
+  # has_copetitioner
   if has_copetitioner:
-    CoPetitioner_name_first
-    CoPetitioner_address_address
+    users[1].address.address
   else:
-    Petitioner.address.city
-  Petitioner.address.city
+    users[0].address.city
+  users[0].address.city
   Petitioner_relationship
   if not Same_address_yes:
-    Respondent.address.address
-  Respondent_DOB
+    other_parties[0].address.address
+  other_parties[0].birthdate
   Respondent_address_date
   Current_Guardian
   set_progress(9.09)
@@ -123,7 +122,7 @@ code: |
   Guardian.address.state
   set_progress(45.45)
   Attorney.address.city
-  Respondent.gender
+  other_parties[0].gender
   Guardian.phone_number
   Attorney.address.address
   set_progress(54.55)
@@ -132,21 +131,21 @@ code: |
   if coguardian_attachment_yes:
     coguardian_name_first
     CoGuardian_relationship
-  Respondent.name.last
-  Petitioner.address.zip
-  Petitioner_Address_street1
+  other_parties[0].name.last
+  users[0].address.zip
+  users[0].address.address
   Guardian.address.zip
-  Petitioner.name.last
+  users[0].name.last
   set_progress(63.64)
   Guardian.address.unit
   Guardian.email
-  Petitioner.name.first
-  Petitioner.phone_number
+  users[0].name.first
+  users[0].phone_number
   set_progress(72.73)
   Attorney.email
   Guardian.address.city
   Guardian.name.first
-  #TODOadd conditional logic if we don't need the form
+  # TODO add conditional logic if we don't need the form
   interview_order_Bond_MPC_801
   interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
   interview_order_mpc825treatmentplan
@@ -216,7 +215,6 @@ subquestion: |
   Attorney](https://www.mass.gov/service-details/learn-about-the-power-of-attorney)
 event: all_done
 ---
-mandatory: True
 id: Temporary Guardianship
 question: | 
   Do you need guardianship for urgent situation or appointment in the next 90 days?
@@ -225,133 +223,129 @@ note:  |
   You may request a temporary guardianship if there is an emergency or urgent
   situation or appointment which requires a guardian within the next 90 days.
 ---
-mandatory: True
 id: Has Co-Petitioner?
 question: |
   Is there a Co-Petitioner?
 subquestion: |
-  The "Co-Petitioner" is a second person asking the court to appoint a guardian for the Respondent.
+  The "Co-Petitioner" is a second person asking the court to appoint a guardian for the other_parties[0].
 yesno: has_copetitioner
 ---
-mandatory: True
-Code: |
- if has_copetitioner:
-   copetitioner_attachment_yes == True
- else:
-   copetitioner_attachment_yes == False
+code: |
+  if has_copetitioner:
+    users.target_number=2
+  else:
+    users.target_number=1
 ---
+code: |
+  # TODO: use ALDocumentBundle
+  if has_copetitioner:
+    copetitioner_attachment_yes == True
+  else:
+    copetitioner_attachment_yes == False
+---
+sets: 
+  - users[1].name.first
 question: |
   What is the Co-Petitioner's name?
 subquestion: |
   The "Co-Petitioner" is a second person asking the court to appoint a guardian
-  for ${ Respondent }.
+  for ${ other_parties[0] }.
 fields:
- - First Name: CoPetitioner_name_first
- - Middle Name: CoPetitioner_name_middle
-   required: False
- - Last Name: CoPetitioner_name_last
- - Suffix: CoPetitioner_name_suffix
-   required: False
+  - code: |
+      users[1].name_fields()
 ---
+id: more about copetitioner
 question: | 
-  Tell us more about the ${ CoPetitioner_name_first } ${
-  CoPetitioner_name_last}.
+  Tell us more about ${ users[1] }.
 fields:
-  - Does ${ CoPetitioner_name_first } ${ CoPetitioner_name_last } live at a different address than ${ Petitioner.name.first } ${ Petitioner.name.last}: CoPetitioner_Petitioner_different_address
+  - Does ${ users[1] } live at a different address than ${ users[0].familiar() }?: CoPetitioner_Petitioner_different_address
     datatype: yesnoradio
     required: false
-  - Street Address: CoPetitioner_address_address
-    show if: CoPetitioner_Petitioner_different_address
-  - Apartment or Unit Number: CoPetitioner_address_unit
-    show if: CoPetitioner_Petitioner_different_address
-  - City: CoPetitioner_address_city
-    show if: CoPetitioner_Petitioner_different_address
-  - State: CoPetitioner_address_state
-    hint: e.g. MA
-    show if: CoPetitioner_Petitioner_different_address
-  - Zip Code: CoPetitioner_address_zip
-    show if: CoPetitioner_Petitioner_different_address
-  - Primary Phone: CoPetitioner_primary_phone
-  - E-mail Address: CoPetitioner_email
+    disable others: True    
+  - code: |
+      users[1].address_fields(default_state="MA")
+---
+id: other contact for copetitioner      
+question: |
+  Other contact information for the ${ users[1] }
+fields:
+  - Primary Phone: users[1].phone_number
+  - E-mail Address: users[1].email
   - Relationship to Respondent: CoPetitioner_relationship
     hint: e.g. parent, child, sibling, aunt/uncle, grandparent, etc.
-  - Why is the Co-Petitioner interested in the appointment of a Guardian for ${ Respondent }? Please explain in 1-3 sentences: CoPetitioner_interests
+  - Why is the Co-Petitioner interested in the appointment of a Guardian for ${ other_parties[0] }? Please explain in 1-3 sentences: CoPetitioner_interests
     input type: area
     rows: 10
 ---
-mandatory: True
 id: Tell me more about the Petitioner
 question: |
-  Tell me more about ${ Petitioner.name.first } ${Petitioner.name.last }.
+  Tell me more about ${ users[0] }.
 fields:
-  - E-mail Address: Petitioner_Email
+  - E-mail Address: users[0].email
     maxlength: 37
-  - Relationship to ${ Respondent.name.first} ${ Respondent.name.last}: Petitioner_relationship
+  - Relationship to ${ other_parties }: Petitioner_relationship
     hint: parent, child, sibling, aunt/uncle, grandparent, etc.
-  - Why is ${ Petitioner.name.first} ${ Petitioner.name.last} seeking a guardianship for ${ Respondent.name.first} ${ Respondent.name.last}? Please explain in 1-3 sentences: Petitioner_interest_list
+  - Why is ${ users[0] } seeking a guardianship for ${ other_parties }? Please explain in 1-3 sentences: Petitioner_interest_list
     input type: area
     rows: 10  
 ---
-mandatory: True
+sets:
+  - other_parties[0].gender
 id: Tell me more about Respondent
 question: |
-  Tell me more about the ${ Respondent.familiar() } ${Respondent.name.last }.
+  Tell me more about the ${ other_parties[0] }.
 fields:
-   - Date of Birth: Respondent_DOB
-     datatype: date 
-   - Age: Respondent_Age
-     hint: in years
-     maxlength: 6
-   - Gender Identity: Respondent.gender
-     choices:
-       - Male
-       - Female
-       - Does not identity as male or female
-   - Primary Language: primary_language
-     choices:
-       - English
-       - Spanish
-       - Other
-   - Other language: primary_language
-     show if:
-       variable: primary_language
-       is: Other
-   - Primary Phone Number: Respondent.phone_number
-   - Is the primary address of ${ Respondent } the same as ${ Petitioner.name.first } ${ Petitioner.name.last }?: Same_address_yes
-     datatype: yesnoradio
-   - Do they have a MOLST (Medical Orders for Life-Sustaining Treatment)?: RespondentMOLST
-     datatype: yesnoradio
-     help: |
-       A document executed by the Respondent that describes a person’s wishes about end-of-life medical care. For more information on what a MOLST is please visit: https://www.molst-ma.org/.
-   - Are they a Veteran?: RespondentVA
-     datatype: yesnoradio
-   - Please select all of the relationships ${ Respondent } has: has_family
-     datatype: checkboxes
-     choices:
-      - Spouse
-      - Child of Children
-      - Living Parent or Sibling
-      - Care Taker within the last 60 days
+  - Date of Birth: other_parties[0].birthdate
+    datatype: date 
+  - code: |
+      other_parties[0].gender_fields()          
+  - Primary Language: primary_language
+    choices:
+      - English
+      - Spanish
+      - Other
+  - Other language: primary_language
+    show if:
+      variable: primary_language
+      is: Other
+  - Primary Phone Number: other_parties[0].phone_number
+  - Is the primary address of ${ other_parties[0] } the same as ${ users[0] }?: Same_address_yes
+    datatype: yesnoradio
+  - Do they have a MOLST (Medical Orders for Life-Sustaining Treatment)?: RespondentMOLST
+    datatype: yesnoradio
+    help: |
+      A document executed by the Respondent that describes a person’s wishes
+      about end-of-life medical care. For more information on what a MOLST is
+      please visit: https://www.molst-ma.org/.
+  - Are they a Veteran?: RespondentVA
+    datatype: yesnoradio
+  - Please select all of the relationships ${ other_parties[0] } has: has_family
+    datatype: checkboxes
+    choices:
+    - Spouse
+    - Child of Children
+    - Living Parent or Sibling
+    - Care Taker within the last 60 days
 ---
-mandatory: True
+
 question: |
-  Tell me more about ${ Respondent }'s primary housing or living arrangements.
+  Tell me more about ${ other_parties[0] }'s primary housing or living arrangements.
 subquestion: |
   This may be different than their current address.
 fields:
-   - When did ${ Respondent } begin living there?: Respondent_address_date
+   - When did ${ other_parties[0] } begin living there?: Respondent_address_date
      help: |
         If you do not know, please provide your best guess.
-   - Does ${ Respondent } currently live here?: Potential_Residence_current
+   - Does ${ other_parties[0] } currently live here?: Potential_Residence_current
      datatype: yesnoradio
-   - Will ${ Respondent } live here if the guardianship is granted?: Potential_Residence_same
+   - Will ${ other_parties[0] } live here if the guardianship is granted?: Potential_Residence_same
      datatype: yesnoradio
 ---
-mandatory: True
+
 question: |
-  ${ Respondent }'s Relationships
+  ${ other_parties[0] }'s Relationships
 subquestion: |
-  The following questions are about current relationships ${ Respondent } has:
+  The following questions are about current relationships ${ other_parties[0] } has:
 fields:
   - Do they have a current Guardian?: Current_Guardian
     datatype: yesnomaybe
@@ -368,34 +362,33 @@ fields:
   - Do they have a Durable Power of Attorney?: DPA
     datatype: yesnomaybe
 ---
-mandatory: True
+
 id: Respondent incapacity
 question: |
-  The following questions concern ${ Respondent }'s incapacity.
+  The following questions concern ${ other_parties[0] }'s incapacity.
 fields:
- - Is ${ Respondent } intellectually disabled: Respondent_intellectual_disabled
+ - Is ${ other_parties[0] } intellectually disabled: Respondent_intellectual_disabled
    datatype: yesnoradio
- - Because you are alleging that ${ Respondent } is NOT intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
+ - Because you are alleging that ${ other_parties[0] } is NOT intellectually disabled, do you have a completed Medical Certificate?: MedCert_filed
    datatype: yesnoradio
    show if:
      variable: Respondent_intellectual_disabled
      is: False
    help: |
-     The Medical Certificate must be based on an exam of ${
-     Respondent.name.first } ${ Respondent.name.last } within 30 days of filing
+     The Medical Certificate must be based on an exam of ${other_parties[0]} within 30 days of filing
      the Petition. An updated Medical Certificate, based on a new exam, is
      required within 30 days of the hearing.
- - Because you are alleging that ${ Respondent } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
+ - Because you are alleging that ${ other_parties[0] } is intellectually disabled, do you have a completed Clinical Team Report?: CTR_completed
    datatype: yesnoradio
    show if: Respondent_intellectual_disabled
    help: |
-     The Clinical Team Report must be based on exams of ${ Respondent.name.first
-     } ${ Respondent.name.last } conducted within 180 days of filing the
+     The Clinical Team Report must be based on exams of ${ other_parties[0].name.first
+     } ${ other_parties[0].name.last } conducted within 180 days of filing the
      Petition. If there is a chance the Clinical Team Report will be more than
      180 days before filing the Petition, consider scheduling exams so that the
      licensed psychologist, registered nurse, and licensed social worked can
      issue a new Clincal Team Report.
- - Describe the nature and extent of ${ Respondent }'s incapacity: Incapacity_reasons
+ - Describe the nature and extent of ${ other_parties[0] }'s incapacity: Incapacity_reasons
    input type: area
    rows: 6
    help: |
@@ -415,9 +408,11 @@ subquestion: |
   
    ${ al_user_bundle.as_pdf(key='preview') }
   
-  Click the image to open it in a new tab. Click the 'Make changes' button to fix any mistakes.
+  Click the image to open it in a new tab. Click the 'Make changes' button to
+  fix any mistakes.
   
-  ${ action_button_html(url_action('review_Guardianship_Assistant'), label='Make changes', color='info') } 
+  ${ action_button_html(url_action('review_Guardianship_Assistant'), label='Make
+  changes', color='info') } 
   
   Remember to come back to this window to continue and sign your form.
 ---
@@ -542,14 +537,14 @@ fields:
   - 'Respondentva uncertain': RespondentVA_uncertain
     datatype: yesno
 ---
-id: Tell me more about ${ Respondent.familiar() } s primary housing or living arrangements This may b different than Petitioner s current address
+id: where respondent lives
 question: |
-  Where does ${ Respondent.familiar() } live?
+  Where does ${ other_parties[0].familiar() } live?
 fields:
   - Approximate date Respondent moved in': movein_date 
-  - '${ Respondent.familiar() } current address1': Respondent_Current_address1
+  - '${ other_parties[0].familiar() } current address1': Respondent_Current_address1
     maxlength: 27
-  - '${ Respondent.familiar() }s current state': Respodnent_Current_state
+  - '${ other_parties[0].familiar() }s current state': Respodnent_Current_state
     maxlength: 6
   - 'Respondent current zip': Respondent_Current_zip
     maxlength: 11
@@ -576,9 +571,9 @@ fields:
 ---
 id: Respondent s Relationships
 question: |
-  ${Respondent.name.first} 's Relationships
+  ${other_parties[0].name.first} 's Relationships
 subquestion: |
-  The following questions are about current relationships ${Respondent.name.first} has:
+  The following questions are about current relationships ${other_parties[0].name.first} has:
 fields:
   - 'Current guardian attached': Current_Guardian_Attached
     datatype: yesno
@@ -627,10 +622,9 @@ fields:
   - 'Dpa info': DPA_info
     maxlength: 84
 ---
-mandatory: True
-id: Tell me about ${ Respondent.familiar() } s finances
+id: Tell me about ${ other_parties[0].familiar() } s finances
 question: |
-  Tell me about ${ Respondent.familiar() }'s finances.
+  Tell me about ${ other_parties[0].familiar() }'s finances.
 fields:
   - Do they have any assets(bank account, property, insurance, pension, etc.)?: Has_Assets
     datatype: yesnomaybe
@@ -654,13 +648,13 @@ fields:
   - Do they have any other assets?: Respondent_asset_attachment_yes
     datatype: yesnomaybe
     show if: Another_asset
-#TODO need to add code that says they need to attach extra doc to petition
+# TODO need to add code that says they need to attach extra doc to petition
   - 'About how much money in total do they have in assets': Respondent_Property_total
     maxlength: 22
     show if: Respondent_asset_attachment_yes
   - 'Do they have future income? (ex: paychecks, social security pension, long-term disability, etc)': Has_Income
     datatype: yesnomaybe
-#TODO need maybe to set this variable - 'Has income uncertain': Has_Income_uncertain
+# TODO need maybe to set this variable - 'Has income uncertain': Has_Income_uncertain
   - 'What type of income is this? (ex: paycheck, social security, etc.)': Respondent_Income1
     maxlength: 136
     show if: Has_Income
@@ -679,7 +673,7 @@ fields:
   - Do they have additional sources of income?: Respondent_income_attachment_yes
     datatype: yesno
     show if: second_incomePetitioner_Signature
-#TODO need to add code that says they need to attach extra doc to petition - or ask Quinten about addendum
+# TODO need to add code that says they need to attach extra doc to petition - or ask Quinten about addendum
   - 'About how much money in total do they have in income?': Respondent_Income2_total
     maxlength: 22
     show if: Has_Income
@@ -688,9 +682,9 @@ id: Tell me more about who should be appointed guardian
 question: |
   Tell me more about who should be appointed guardian.
 fields:
-  - 'Is the proposed guardian ${Petitioner.name.full } ?': Petitioner_appointee
+  - 'Is the proposed guardian ${ users[0] } ?': Petitioner_appointee
     datatype: yesnoradio
-  - 'Is there a specific person you want the court to appoint as guardian for ${ Respondent.name.full }': Other_appointee_yes
+  - 'Is there a specific person you want the court to appoint as guardian for ${ other_parties[0].name.full }': Other_appointee_yes
     datatype: yesno
     show if: petitioner_appointee 
   - 'First Name': Guardian.name.first
@@ -698,7 +692,7 @@ fields:
     maxlength: 16
   - 'Address': Guardian.address.address
     maxlength: 28
-  - "What is ${Guardian_name_first }'s relationship to ${Respondent.name.full }?": Guardian_relationship
+  - "What is ${Guardian_name_first }'s relationship to ${other_parties[0].name.full }?": Guardian_relationship
     maxlength: 24
   - 'Guardian poa': guardian_poa_yes
     datatype: yesno
@@ -753,7 +747,7 @@ id: Additional Co-Guardian Info
 question: |
   Tell us more about the proposed Co-Guardian
 Fields:
-  - Relationship to ${ Respondent.name.first}: CoGuardian_relationship
+  - Relationship to ${ other_parties[0].name.first}: CoGuardian_relationship
   - Reasons that ${ coguardian_name_first } should be appointed co-guardian: CoGuardian_reasons
 ---
 id: What type of guardianship is being sought
@@ -828,7 +822,7 @@ fields:
   - 'Other bondwaiver': Other_Bondwaiver
     maxlength: 216
 ---
-#TODO - remove these fields from the actual PDF and then delete this section.
+# TODO - remove these fields from the actual PDF and then delete this section.
 id: REMOVE THESE FIELDS
 question: |
   REMOVE THESE FIELDS
@@ -903,28 +897,28 @@ attachment:
     pdf template file: Petition_for_Appointment_of_Guardian_for_an_Incapacitated_Person_wFields.pdf
     fields: 
       - "docket_number": ${ docket_numbers[0] }
-      - "Respondent_birthdate": ${ Respondent.birthdate.format() }
+      - "Respondent_birthdate": ${ other_parties[0].birthdate.format() }
       - "Attorney_address_state": ${ Attorney.address.state }
-      - "Respondent_name_first": ${ Respondent.familiar() }
+      - "Respondent_name_first": ${ other_parties[0].familiar() }
       - "Attorney_phone": ${ Attorney.phone_number }
       - "Attorney_address_zip": ${ Attorney.address.zip }
-      - "Petitioner_address_city": ${ Petitioner.address.city }
+      - "Petitioner_address_city": ${ users[0].address.city }
       - "Guardian_address_state": ${ Guardian.address.state }
       - "Attorney_address_city": ${ Attorney.address.city }
-      - "Respondent_name": ${ Respondent }
-      - "Respondent_gender": ${ Respondent.gender }
+      - "Respondent_name": ${ other_parties[0] }
+      - "Respondent_gender": ${ other_parties[0].gender }
       - "Guardian_phone": ${ Guardian.phone_number }
       - "Attorney_address_street": ${ Attorney.address.address }
       - "Guardian_name_last": ${ Guardian.name.last }
-      - "Respondent_name_last": ${ Respondent.name.last }
-      - "Petitioner_address_zip": ${ Petitioner.address.zip }
+      - "Respondent_name_last": ${ other_parties[0].name.last }
+      - "Petitioner_address_zip": ${ users[0].address.zip }
       - "Guardian_address_zip": ${ Guardian.address.zip }
-      - "Petitioner_name_last": ${ Petitioner.name.last }
+      - "Petitioner_name_last": ${ users[0].name.last }
       - "Guardian_address_unit": ${ Guardian.address.unit }
       - "Guardian_e-mail": ${ Guardian.email }
-      - "Respondent_phone": ${ Respondent.phone_number }
-      - "Petitioner_name_first": ${ Petitioner.name.first }
-      - "Petitioner_phone": ${ Petitioner.phone_number }
+      - "Respondent_phone": ${ other_parties[0].phone_number }
+      - "Petitioner_name_first": ${ users[0].name.first }
+      - "Petitioner_phone": ${ users[0].phone_number }
       - "Attorney_email": ${ Attorney.email }
       - "Guardian_address_city": ${ Guardian.address.city }
       - "Guardian_name_first": ${ Guardian.name.first }
@@ -935,8 +929,8 @@ attachment:
       - "Language_english_yes": ${ Language_english_yes }
       - "Langauge_other_yes": ${ Langauge_other_yes }
       - "Other_language": ${ Other_language }
-      - "Respondent_Age": ${ Respondent_Age }
-      - "Respondent_address_City": ${ Respondent_address_City }
+      - "Respondent_Age": ${ other_parties[0].age_in_years() }
+      - "Respondent_address_City": ${ other_parties[0].address.city }
       - "Respondent_Address_street": ${ Respondent_Address_street }
       - "Respondent_Address_unit": ${ Respondent_Address_unit }
       - "Respondent_address_State": ${ Respondent_address_State }
@@ -960,11 +954,11 @@ attachment:
       - "Respondent_intellectual_disabled_yes": ${ Respondent_intellectual_disabled }
       - "Respondent_intellectual_disabled_no": ${ not Respondent_intellectual_disabled }
       - "Petitioner_name_MI": ${ Petitioner_name_MI }
-      - "Petitioner_Address_street1": ${ Petitioner_Address_street1 }
+      - "Petitioner_Address_street1": ${ users[0].address.address }
       - "Petitioner_address_State": ${ Petitioner_address_State }
       - "Petitioner_Address_unit": ${ Petitioner_Address_unit }
       - "Petitioner_relationship": ${ Petitioner_relationship }
-      - "Petitioner_Email": ${ Petitioner_Email }
+      - "users[0].email": ${ users[0].email }
       - "Petitioner_interest_list": ${ Petitioner_interest_list }
       - "copetitioner_attachment_yes": ${ copetitioner_attachment_yes }
       - "Petitioner_appointee_yes": ${ Petitioner_appointee }
@@ -1130,7 +1124,7 @@ attachment:
       - "Date_5": ${ Date_5 }
       - "Date_6": ${ Date_6 }
       - "Attorney_BBO": ${ Attorney_BBO }
-      - "Petitioner_Signature": ${ Petitioner.signature_if_final(i) }
+      - "Petitioner_Signature": ${ users[0].signature_if_final(i) }
       - "Copetitioner_Signature": ${ Copetitioner.signature_if_final(i) }
       - "Attorney_signature": ${ Attorney.signature_if_final(i) }
 ---
@@ -1161,14 +1155,14 @@ review:
     button: |
       **Other language**:
       ${ Other_language }
-  - Edit: Respondent_Age
+  - Edit: other_parties[0].birthdate
     button: |
-      **Respondent age**:
-      ${ Respondent_Age }
-  - Edit: Respondent_address_City
+      **Respondent's birthdate**:
+      ${ other_parties[0].birthdate }
+  - Edit: other_parties[0].address.city
     button: |
       **Respondent address city**:
-      ${ Respondent_address_City }
+      ${ other_parties[0].address.city }
   - Edit: Respondent_Address_street
     button: |
       **Respondent address street**:
@@ -1257,10 +1251,10 @@ review:
     button: |
       **Petitioner name mi**:
       ${ Petitioner_name_MI }
-  - Edit: Petitioner_Address_street1
+  - Edit: users[0].address.address
     button: |
       **Petitioner address street1**:
-      ${ Petitioner_Address_street1 }
+      ${ users[0].address.address }
   - Edit: Petitioner_address_State
     button: |
       **Petitioner address state**:
@@ -1273,10 +1267,10 @@ review:
     button: |
       **Petitioner relationship**:
       ${ Petitioner_relationship }
-  - Edit: Petitioner_Email
+  - Edit: users[0].email
     button: |
       **Petitioner email**:
-      ${ Petitioner_Email }
+      ${ users[0].email }
   - Edit: Petitioner_interest_list
     button: |
       **Petitioner interest list**:
@@ -1870,18 +1864,18 @@ review:
       % endfor
     # NOTE: a question block with 'docket_numbers.revisit'
     # lets the user edit all of the items at once
-  - Edit: Respondent.birthdate
+  - Edit: other_parties[0].birthdate
     button: |
-      **Respondent.birthdate**:
-      ${ Respondent.birthdate.format() }
+      **other_parties[0].birthdate**:
+      ${ other_parties[0].birthdate.format() }
   - Edit: Attorney.address.state
     button: |
       **Attorney.address.state**:
       ${ Attorney.address.state }
-  - Edit: Respondent.name.first
+  - Edit: other_parties[0].name.first
     button: |
-      **Respondent.name.first**:
-      ${ Respondent.familiar() }
+      **other_parties[0].name.first**:
+      ${ other_parties[0].familiar() }
   - Edit: Attorney.phone_number
     button: |
       **Attorney.phone_number**:
@@ -1890,10 +1884,10 @@ review:
     button: |
       **Attorney.address.zip**:
       ${ Attorney.address.zip }
-  - Edit: Petitioner.address.city
+  - Edit: users[0].address.city
     button: |
-      **Petitioner.address.city**:
-      ${ Petitioner.address.city }
+      **users[0].address.city**:
+      ${ users[0].address.city }
   - Edit: Guardian.address.state
     button: |
       **Guardian.address.state**:
@@ -1905,11 +1899,11 @@ review:
   - Edit: Respondent
     button: |
       **Respondent**:
-      ${ Respondent }
-  - Edit: Respondent.gender
+      ${ other_parties[0] }
+  - Edit: other_parties[0].gender
     button: |
-      **Respondent.gender**:
-      ${ Respondent.gender }
+      **other_parties[0].gender**:
+      ${ other_parties[0].gender }
   - Edit: Guardian.phone_number
     button: |
       **Guardian.phone_number**:
@@ -1922,22 +1916,22 @@ review:
     button: |
       **Guardian.name.last**:
       ${ Guardian.name.last }
-  - Edit: Respondent.name.last
+  - Edit: other_parties[0].name.last
     button: |
-      **Respondent.name.last**:
-      ${ Respondent.name.last }
-  - Edit: Petitioner.address.zip
+      **other_parties[0].name.last**:
+      ${ other_parties[0].name.last }
+  - Edit: users[0].address.zip
     button: |
-      **Petitioner.address.zip**:
-      ${ Petitioner.address.zip }
+      **users[0].address.zip**:
+      ${ users[0].address.zip }
   - Edit: Guardian.address.zip
     button: |
       **Guardian.address.zip**:
       ${ Guardian.address.zip }
-  - Edit: Petitioner.name.last
+  - Edit: users[0].name.last
     button: |
-      **Petitioner.name.last**:
-      ${ Petitioner.name.last }
+      **users[0].name.last**:
+      ${ users[0].name.last }
   - Edit: Guardian.address.unit
     button: |
       **Guardian.address.unit**:
@@ -1946,18 +1940,18 @@ review:
     button: |
       **Guardian.email**:
       ${ Guardian.email }
-  - Edit: Respondent.phone_number
+  - Edit: other_parties[0].phone_number
     button: |
-      **Respondent.phone_number**:
-      ${ Respondent.phone_number }
-  - Edit: Petitioner.name.first
+      **other_parties[0].phone_number**:
+      ${ other_parties[0].phone_number }
+  - Edit: users[0].name.first
     button: |
-      **Petitioner.name.first**:
-      ${ Petitioner.name.first }
-  - Edit: Petitioner.phone_number
+      **users[0].name.first**:
+      ${ users[0].name.first }
+  - Edit: users[0].phone_number
     button: |
-      **Petitioner.phone_number**:
-      ${ Petitioner.phone_number }
+      **users[0].phone_number**:
+      ${ users[0].phone_number }
   - Edit: Attorney.email
     button: |
       **Attorney.email**:

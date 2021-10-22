@@ -118,7 +118,7 @@ attachment:
     skip undefined: True
     pdf template file: mpc825-treatment-plan.pdf
     fields: 
-      - "Respondent_name": ${ Respondent }
+      - "Respondent_name": ${ other_parties[0] }
       - "County": ${ County }
       - "AntiPsych_meds1": ${ AntiPsych_meds1 }
       - "AntiPsych_meds1_dose": ${ AntiPsych_meds1_dose }
@@ -205,4 +205,4 @@ attachment:
 #   - Edit: Respondent
 #     button: |
 #       **Respondent**:
-#       ${ Respondent }
+#       ${ other_parties[0] }
