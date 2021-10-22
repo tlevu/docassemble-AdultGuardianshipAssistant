@@ -711,11 +711,11 @@ fields:
     datatype: yesno
   - 'Petitioner appointee no 1': Petitioner_appointee_no_1
     datatype: yesno
-  - 'Guardian name last 1': Guardian_name_last_1
+  - 'Guardian name last 1': Guardian.name.last
     maxlength: 60
-  - 'Guardian name first 1': Guardian_name_first_1
+  - 'Guardian name first 1': Guardian.name.first
     maxlength: 58
-  - 'Guardian name mi 1': Guardian_name_MI_1
+  - 'Guardian name mi 1': Guardian.name.middle
     maxlength: 30
   - 'Other appointee yes 1': Other_appointee_yes_1
     datatype: yesno
@@ -930,10 +930,10 @@ attachment:
       - "Other_language": ${ Other_language }
       - "Respondent_Age": ${ other_parties[0].age_in_years() }
       - "Respondent_address_City": ${ other_parties[0].address.city }
-      - "Respondent_Address_street": ${ Respondent_Address_street }
-      - "Respondent_Address_unit": ${ Respondent_Address_unit }
-      - "Respondent_address_State": ${ Respondent_address_State }
-      - "Respondent_address_Zip": ${ Respondent_address_Zip }
+      - "Respondent_Address_street": ${ other_parties[0].address.address }
+      - "Respondent_Address_unit": ${ other_parties[0].address.unit }
+      - "Respondent_address_State": ${ other_parties[0].address.state }
+      - "Respondent_address_Zip": ${ other_parties[0].address.zip }
       - "Respondent_address_date": ${ Respondent_address_date }
       - "Same_address_yes": ${ Same_address_yes }
       - "Different_address_yes": ${ Different_address_yes }
@@ -954,8 +954,8 @@ attachment:
       - "Respondent_intellectual_disabled_no": ${ not Respondent_intellectual_disabled }
       - "Petitioner_name_MI": ${ Petitioner_name_MI }
       - "Petitioner_Address_street1": ${ users[0].address.address }
-      - "Petitioner_address_State": ${ Petitioner_address_State }
-      - "Petitioner_Address_unit": ${ Petitioner_Address_unit }
+      - "Petitioner_address_State": ${ users[0].address.state }
+      - "Petitioner_Address_unit": ${ users[0].address.unit }
       - "Petitioner_relationship": ${ Petitioner_relationship }
       - "users[0].email": ${ users[0].email }
       - "Petitioner_interest_list": ${ Petitioner_interest_list }
@@ -1103,9 +1103,9 @@ attachment:
       - "Revoke_healthproxy_yes": ${ Revoke_healthproxy_yes }
       - "Petitioner_appointed_yes_1": ${ Petitioner_appointed_yes_1 }
       - "Petitioner_appointee_no_1": ${ Petitioner_appointee_no_1 }
-      - "Guardian_name_last_1": ${ Guardian_name_last_1 }
-      - "Guardian_name_first_1": ${ Guardian_name_first_1 }
-      - "Guardian_name_MI_1": ${ Guardian_name_MI_1 }
+      - "Guardian_name_last_1": ${ Guardian.name.last }
+      - "Guardian_name_first_1": ${ Guardian.name.first }
+      - "Guardian_name_MI_1": ${ Guardian.name.middle }
       - "Other_appointee_yes_1": ${ Other_appointee_yes_1 }
       - "Limited_Guardian_yes_2": ${ Limited_Guardian_yes_2 }
       - "General_Guardian_yes_2": ${ General_Guardian_yes_2 }
@@ -1162,22 +1162,22 @@ attachment:
 #     button: |
 #       **Respondent address city**:
 #       ${ other_parties[0].address.city }
-#   - Edit: Respondent_Address_street
+#   - Edit: other_parties[0].address.address
 #     button: |
 #       **Respondent address street**:
-#       ${ Respondent_Address_street }
-#   - Edit: Respondent_Address_unit
+#       ${ other_parties[0].address.address }
+#   - Edit: other_parties[0].address.unit
 #     button: |
 #       **Respondent address unit**:
-#       ${ Respondent_Address_unit }
-#   - Edit: Respondent_address_State
+#       ${ other_parties[0].address.unit }
+#   - Edit: other_parties[0].address.state
 #     button: |
 #       **Respondent address state**:
-#       ${ Respondent_address_State }
-#   - Edit: Respondent_address_Zip
+#       ${ other_parties[0].address.state }
+#   - Edit: other_parties[0].address.zip
 #     button: |
 #       **Respondent address zip**:
-#       ${ Respondent_address_Zip }
+#       ${ other_parties[0].address.zip }
 #   - Edit: Respondent_address_date
 #     button: |
 #       **Date of Respondent address**:
@@ -1254,14 +1254,14 @@ attachment:
 #     button: |
 #       **Petitioner address street1**:
 #       ${ users[0].address.address }
-#   - Edit: Petitioner_address_State
+#   - Edit: users[0].address.state
 #     button: |
 #       **Petitioner address state**:
-#       ${ Petitioner_address_State }
-#   - Edit: Petitioner_Address_unit
+#       ${ users[0].address.state }
+#   - Edit: users[0].address.unit
 #     button: |
 #       **Petitioner address unit**:
-#       ${ Petitioner_Address_unit }
+#       ${ users[0].address.unit }
 #   - Edit: Petitioner_relationship
 #     button: |
 #       **Petitioner relationship**:
@@ -1774,18 +1774,18 @@ attachment:
 #     button: |
 #       **Petitioner appointee no 1**:
 #       ${ word(yesno(Petitioner_appointee_no_1)) }
-#   - Edit: Guardian_name_last_1
+#   - Edit: Guardian.name.last
 #     button: |
 #       **Guardian name last 1**:
-#       ${ Guardian_name_last_1 }
-#   - Edit: Guardian_name_first_1
+#       ${ Guardian.name.last }
+#   - Edit: Guardian.name.first
 #     button: |
 #       **Guardian name first 1**:
-#       ${ Guardian_name_first_1 }
-#   - Edit: Guardian_name_MI_1
+#       ${ Guardian.name.first }
+#   - Edit: Guardian.name.middle
 #     button: |
 #       **Guardian name mi 1**:
-#       ${ Guardian_name_MI_1 }
+#       ${ Guardian.name.middle }
 #   - Edit: Other_appointee_yes_1
 #     button: |
 #       **Other appointee yes 1**:
