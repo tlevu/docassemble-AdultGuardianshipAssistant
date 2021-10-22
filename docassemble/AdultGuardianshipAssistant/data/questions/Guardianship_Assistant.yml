@@ -690,7 +690,7 @@ fields:
     maxlength: 16
   - 'Address': Guardian.address.address
     maxlength: 28
-  - "What is ${Guardian.familiar() }'s relationship to ${other_parties[0].name.full }?": Guardian_relationship
+  - "What is ${ Guardian.familiar() }'s relationship to ${other_parties[0].name.full }?": Guardian_relationship
     maxlength: 24
   - 'Guardian poa': guardian_poa_yes
     datatype: yesno
