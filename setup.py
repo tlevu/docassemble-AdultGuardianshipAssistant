@@ -45,11 +45,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.AdultGuardianshipAssistant',
       version='0.0.1',
       description=('A package that helps individuals petition the court to assign a guardian to an incapacitated adult.'),
-<<<<<<< HEAD
-      long_description='# docassemble.AdultGuardianshipAssistant\r\n\r\nA package that helps individuals petition the court to assign a guardian to an incapacitated adult.\r\n\r\n## Author\r\n\r\nkwilson5@su.suffolk.edu\r\n\r\n',
-=======
-      long_description='# docassembe-AdultGuardianshipAssistant\r\nA guided interview to help petitioners collect and compile the appropriate court forms.\r\n\r\n## Author\r\n\r\nKisha Wilson\r\nkwilson5@su.suffolk.edu\r\n\r\n## Disclaimer\r\n\r\nThis form has been created for a class project and should not be considered legal advice or services.\r\n',
->>>>>>> main
+      long_description='<<<<<<< HEAD\r\n# docassemble.AdultGuardianshipAssistant\r\n\r\nA package that helps individuals petition the court to assign a guardian to an incapacitated adult.\r\n\r\n## Author\r\n\r\nkwilson5@su.suffolk.edu\r\n\r\n=======\r\n# docassembe-AdultGuardianshipAssistant\r\nA guided interview to help petitioners collect and compile the appropriate court forms.\r\n\r\n## Author\r\n\r\nKisha Wilson\r\nkwilson5@su.suffolk.edu\r\n\r\nThomas Levu\r\ntlevu@su.suffolk.edu\r\n\r\n## Disclaimer\r\n\r\nThis form has been created for a class project and should not be considered legal advice or services.\r\n>>>>>>> main\r\n',
       long_description_content_type='text/markdown',
       author='Kisha Wilson & Mallory Ursul',
       author_email='kwilson5@su.suffolk.edu',

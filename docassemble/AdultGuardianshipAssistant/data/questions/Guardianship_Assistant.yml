@@ -113,18 +113,18 @@ code: |
   Bond_Waiver_yes
   Petition_Assetattachment_yes
   set_progress(27.27)
-  Attorney_BBO
+  #Attorney_BBO
   docket_numbers.gather()
-  Attorney.address.state
+  #Attorney.address.state
   set_progress(36.36)
-  Attorney.phone_number
-  Attorney.address.zip
+  #Attorney.phone_number
+  #Attorney.address.zip
   Guardian.address.state
   set_progress(45.45)
-  Attorney.address.city
+  #Attorney.address.city
   other_parties[0].gender
   Guardian.phone_number
-  Attorney.address.address
+  #Attorney.address.address
   set_progress(54.55)
   Guardian.name.last
   coguardian_attachment_yes
@@ -142,15 +142,15 @@ code: |
   users[0].name.first
   users[0].phone_number
   set_progress(72.73)
-  Attorney.email
+  #Attorney.email
   Guardian.address.city
   Guardian.name.first
   # TODO add conditional logic if we don't need the form
   interview_order_Bond_MPC_801
   interview_order_mpc320verifiedmotionforappttempguardianforincapacitatedperson
   interview_order_mpc825treatmentplan
-  Attorney.address.unit
-  Attorney
+  #Attorney.address.unit
+  #Attorney
   interview_order_Guardianship_Assistant = True
 ---
 id: Request a Guardanship
@@ -841,15 +841,6 @@ fields:
     datatype: date
   - 'Date 6': Date_6
     datatype: date
----
-id: Attorney Information
-question: |
-  Attorney Information
-subquestion: |
-  Complete this information only if you are or have an attorney working on this case.
-fields:
-  - 'Attorney bbo': Attorney_BBO
-    maxlength: 43
 ---
 progress: 100
 id: download
